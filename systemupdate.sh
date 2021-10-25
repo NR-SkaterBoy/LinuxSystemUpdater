@@ -13,7 +13,7 @@ exit
 fi
 
 # Linux Systems
-    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro")
+    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro" "Test")
 
 # Script update
 read -p "Would you like to update the script? (Y/N): " ans

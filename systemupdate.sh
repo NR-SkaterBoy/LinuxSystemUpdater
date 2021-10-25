@@ -24,7 +24,7 @@ echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro"
 echo " "
 echo "Please select your Operating System! Use the SYSTEM NAME!"
 echo " "
-read opsys
+read -p "Type your system: " opsys
 
 if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys == ${systems[2]} ]] || [[ $opsys == ${systems[3]} ]] || [[ $opsys == ${systems[4]} ]] || [[ $opsys == ${systems[5]} ]] || [[ $opsys == ${systems[6]} ]] || [[ $opsys == ${systems[7]} ]] || [[ $opsys == ${systems[8]} ]] || [[ $opsys == ${systems[9]} ]]; then
     case "$opsys" in
@@ -60,9 +60,19 @@ if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys =
         ;;
     esac
     clear
-    echo "Succesfull Update!"
+    echo -e "\e[32mSuccesfull Update!"
+    echo -e "\e[32mSuccesfull Update!"
+    echo -e "\e[32mSuccesfull Update!"
+    echo " "
+    echo " "
+    echo " "
 else
     clear
-    echo "Error! Please enter valid SYSTEM!" 1>&2
-    exit 64
+    echo -e "\e[31mError! Please enter valid SYSTEM!"
+    echo -e "\e[31mError! Please enter valid SYSTEM!"
+    echo -e "\e[31mError! Please enter valid SYSTEM!"
+    echo " "
+    echo " "
+    echo " "
+    exit
 fi

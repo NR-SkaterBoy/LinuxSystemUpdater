@@ -1,6 +1,7 @@
 #!/bin/bash
 # Developer: NR-SkaterBoy
 # Github: https://github.com/NR-SkaterBoy
+# E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package update
 
 # Help menu
@@ -14,7 +15,14 @@ fi
 # Linux Systems
     systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro")
 
+# Script update
+read -p "Would you like to update the script? (Y/N): " ans
 
+if [[ $ans == [yY] || $ans == [yY][eE][sS] ]]; then
+    git pull
+fi
+
+# Inform the user
 echo -e "\nAvailable systems:"
 echo -e "\t\t\t1.\tUbuntu\t\t\t6.\tTermux"
 echo -e "\t\t\t2.\tKali\t\t\t7.\tElementary"

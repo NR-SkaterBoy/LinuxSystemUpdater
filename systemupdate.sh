@@ -34,7 +34,7 @@ echo "Please select your Operating System! Use the SYSTEM NAME!"
 echo " "
 read -p "Type your system: " opsys
 
-if [[ $opsys == ${systems[i]} ]]; then
+if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys == ${systems[2]} ]] || [[ $opsys == ${systems[3]} ]] || [[ $opsys == ${systems[4]} ]] || [[ $opsys == ${systems[5]} ]] || [[ $opsys == ${systems[6]} ]] || [[ $opsys == ${systems[7]} ]] || [[ $opsys == ${systems[8]} ]] || [[ $opsys == ${systems[9]} ]]; then
     case "$opsys" in
     ${systems[0]}) # Ubuntu
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y

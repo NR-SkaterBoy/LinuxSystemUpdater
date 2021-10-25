@@ -13,9 +13,12 @@ exit
 fi
 
 # Linux Systems
-    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro")
+    systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "termux" "elementary" "linux mint" "arch" "manjaro")
 
 # Script update
+echo -e "\e[33mKeep the script up to date! Don't forget to upgrade!"
+echo -e "\e[39m"
+
 read -p "Would you like to update the script? (Y/N): " ans
 
 if [[ $ans == [yY] || $ans == [yY][eE][sS] ]]; then
@@ -31,7 +34,8 @@ echo -e "\t\t\t4.\tFedora\t\t\t9.\tArch"
 echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro"
 echo " "
 echo "Please select your Operating System! Use the SYSTEM NAME!"
-echo "Please use lowercase characters"
+echo " "
+echo -e "\e[31mPlease use lowercase characters\e[39m"
 echo " "
 read -p "Type your system: " opsys
 
@@ -71,7 +75,7 @@ if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys =
     clear
     echo -e "\e[32mSuccesful Update!"
     echo -e "\e[32mSuccesful Update!"
-    echo -e "\e[32mSuccesful Update!"
+    echo -e "\e[32mSuccesful Update!\e[39m"
     echo " "
     echo " "
     echo " "
@@ -79,7 +83,7 @@ else
     clear
     echo -e "\e[31mError! Please enter valid SYSTEM!"
     echo -e "\e[31mError! Please enter valid SYSTEM!"
-    echo -e "\e[31mError! Please enter valid SYSTEM!"
+    echo -e "\e[31mError! Please enter valid SYSTEM!\e[39m"
     echo " "
     echo " "
     echo " "

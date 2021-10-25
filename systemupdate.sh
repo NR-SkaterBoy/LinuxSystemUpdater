@@ -12,16 +12,8 @@ exit
 fi
 
 # Linux Systems
-    system[0]="Ubuntu"
-    system[1]="Kali"
-    system[2]="Debian"
-    system[3]="Fedora"
-    system[4]="Rasberry"
-    system[5]="Termux"
-    system[6]="Elementary"
-    system[7]="Linux Mint"
-    system[8]="Arch"
-    system[9]="Manjaro"
+    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro")
+
 
 echo -e "\nAvailable systems:"
 echo -e "\t\t\t1.\tUbuntu\t\t\t6.\tTermux"
@@ -34,38 +26,43 @@ echo "Please select your Operating System! Use the SYSTEM NAME!"
 echo " "
 read opsys
 
-case "$opsys" in
-    ${system[0]}) # Ubuntu
+if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys == ${systems[2]} ]] || [[ $opsys == ${systems[3]} ]] || [[ $opsys == ${systems[4]} ]] || [[ $opsys == ${systems[5]} ]] || [[ $opsys == ${systems[6]} ]] || [[ $opsys == ${systems[7]} ]] || [[ $opsys == ${systems[8]} ]] || [[ $opsys == ${systems[9]} ]]; then
+    case "$opsys" in
+    ${systems[0]}) # Ubuntu
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
         ;;
-    ${system[1]}) # Kali
+    ${systems[1]}) # Kali
         sudo apt update && sudo apt upgrade -y && sudo apt full-upgrade -y && sudo apt autoremove -y
         ;;
-    ${system[2]}) # Debian
+    ${systems[2]}) # Debian
         sudo apt update && sudo apt upgrade && sudo apt autoremove -y
         ;;
-    ${system[3]}) # Fedora
+    ${systems[3]}) # Fedora
         sudo dnf upgrade -y
         ;;
-    ${system[4]}) # Rasberry
+    ${systems[4]}) # Rasberry
         sudo apt update && sudo apt full-upgrade
         ;;
-    ${system[5]}) # Termux
+    ${systems[5]}) # Termux
         apt update && apt upgrade && apt autoremove
         ;;
-    ${system[6]}) # Elementary OS
+    ${systems[6]}) # Elementary OS
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
         ;;
-    ${system[7]}) # Linux Mint
+    ${systems[7]}) # Linux Mint
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
         ;;
-    ${system[8]}) # Arch
+    ${systems[8]}) # Arch
         sudo pacman -Syyu
         ;;
-    ${system[9]}) # Manjaro
+    ${systems[9]}) # Manjaro
         sudo pacman -Syyu
         ;;
-esac
-clear
-echo "Error! Please enter valid SYSTEM!" 1>&2
-exit 64
+    esac
+    clear
+    echo "Succesfull Update!"
+else
+    clear
+    echo "Error! Please enter valid SYSTEM!" 1>&2
+    exit 64
+fi

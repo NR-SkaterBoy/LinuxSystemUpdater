@@ -13,7 +13,7 @@ exit
 fi
 
 # Linux Systems
-    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro" "Test")
+    systems=("Ubuntu" "Kali" "Debian" "Fedora" "Rasberry" "Termux" "Elementary" "Linux Mint" "Arch" "Manjaro")
 
 # Script update
 read -p "Would you like to update the script? (Y/N): " ans
@@ -28,7 +28,7 @@ echo -e "\t\t\t1.\tUbuntu\t\t\t6.\tTermux"
 echo -e "\t\t\t2.\tKali\t\t\t7.\tElementary"
 echo -e "\t\t\t3.\tDebian\\t\t\t8.\tLinux Mint"
 echo -e "\t\t\t4.\tFedora\t\t\t9.\tArch"
-echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro"
+echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro test"
 echo " "
 echo "Please select your Operating System! Use the SYSTEM NAME!"
 echo " "

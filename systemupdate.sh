@@ -12,16 +12,16 @@ exit
 fi
 
 # Linux Systems
-system[0]="Ubuntu"
-system[1]="Kali"
-system[2]="Debian"
-system[3]="Fedora"
-system[4]="Rasberry"
-system[5]="Termux"
-system[6]="Elementary"
-system[7]="Linux Mint"
-system[8]="Arch"
-system[9]="Manjaro"
+    system[0]="Ubuntu"
+    system[1]="Kali"
+    system[2]="Debian"
+    system[3]="Fedora"
+    system[4]="Rasberry"
+    system[5]="Termux"
+    system[6]="Elementary"
+    system[7]="Linux Mint"
+    system[8]="Arch"
+    system[9]="Manjaro"
 
 echo -e "\nAvailable systems:"
 echo -e "\t\t\t1.\tUbuntu\t\t\t6.\tTermux"
@@ -67,5 +67,5 @@ case "$opsys" in
         ;;
 esac
 clear
-echo "Error! Please use valid SYSTEM!" 1>&2
+echo "Error! Please enter valid SYSTEM!" 1>&2
 exit 64

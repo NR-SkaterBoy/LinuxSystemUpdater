@@ -9,11 +9,21 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
 echo -e "\nUsage: systemupdate.sh [Operating System]"
 echo -e "Example: systemupdate.sh kali"
 echo -e "\nOptions:\n  --help\t\t\tprint this help message\n  -h\t\t\tsame as --help"
+echo " "
+echo "Supported OS:"
+echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
+echo -e "\t3.\tDebian\t\t\t4.\tFedora"
+echo -e "\t5.\tRasberry\t\t6.\tZorin OS"
+echo -e "\t7.\tElementary OS\t\t8.\tLinux Mint"
+echo -e "\t9.\tArch Linux\t\t10.\tManjaro"
 exit
 fi
 
 # Linux Systems
-    systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "termux" "elementary" "linux mint" "arch" "manjaro")
+systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "zorin" "elementary" "linux mint" "arch" "manjaro")
+
+# Linux version ID
+. /etc/os-release
 
 # Script update
 echo -e "\e[33mKeep the script up to date! Don't forget to upgrade!"
@@ -25,22 +35,8 @@ if [[ $ans == [yY] || $ans == [yY][eE][sS] ]]; then
     git pull
 fi
 
-# Inform the user
-echo -e "\nAvailable systems:"
-echo -e "\t\t\t1.\tUbuntu\t\t\t6.\tTermux"
-echo -e "\t\t\t2.\tKali\t\t\t7.\tElementary"
-echo -e "\t\t\t3.\tDebian\\t\t\t8.\tLinux Mint"
-echo -e "\t\t\t4.\tFedora\t\t\t9.\tArch"
-echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro"
-echo " "
-echo "Please select your Operating System! Use the SYSTEM NAME!"
-echo " "
-echo -e "\e[31mPlease use lowercase characters\e[39m"
-echo " "
-read -p "Type your system: " opsys
-
-if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys == ${systems[2]} ]] || [[ $opsys == ${systems[3]} ]] || [[ $opsys == ${systems[4]} ]] || [[ $opsys == ${systems[5]} ]] || [[ $opsys == ${systems[6]} ]] || [[ $opsys == ${systems[7]} ]] || [[ $opsys == ${systems[8]} ]] || [[ $opsys == ${systems[9]} ]]; then
-    case "$opsys" in
+if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
+    case "$ID" in
     ${systems[0]}) # Ubuntu
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
         ;;
@@ -56,7 +52,7 @@ if [[ $opsys == ${systems[0]} ]] || [[ $opsys == ${systems[1]} ]] || [[ $opsys =
     ${systems[4]}) # Rasberry
         sudo apt update && sudo apt full-upgrade
         ;;
-    ${systems[5]}) # Termux
+    ${systems[5]}) # Zorin
         apt update && apt upgrade && apt autoremove
         ;;
     ${systems[6]}) # Elementary OS

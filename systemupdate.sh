@@ -31,6 +31,7 @@ echo -e "\t\t\t4.\tFedora\t\t\t9.\tArch"
 echo -e "\t\t\t5.\tRasberry\t\t10.\tManjaro"
 echo " "
 echo "Please select your Operating System! Use the SYSTEM NAME!"
+echo "Please use lowercase characters"
 echo " "
 read -p "Type your system: " opsys
 

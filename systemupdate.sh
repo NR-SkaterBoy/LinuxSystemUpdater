@@ -6,8 +6,7 @@
 
 # Help menu
 if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-echo -e "\nUsage: systemupdate.sh [Operating System]"
-echo -e "Example: systemupdate.sh kali"
+echo -e "\nUsage: systemupdate.sh"
 echo -e "\nOptions:\n  --help\t\t\tprint this help message\n  -h\t\t\tsame as --help"
 echo " "
 echo "Supported OS:"

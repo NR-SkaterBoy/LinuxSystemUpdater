@@ -23,9 +23,10 @@ This script uses the update commands `sudo apt update && sudo apt upgrade -y && 
 >Debian<br>
 >Fedora<br>
 >Rasberry PI<br>
->Termux - Android Terminal<br>
+>Zorin OS<br>
 >Elementary OS<br>
 >Linux Mint<br>
 >Arch Linux<br>
->Manjaro
+>Manjaro<br>
+>Gentoo
 

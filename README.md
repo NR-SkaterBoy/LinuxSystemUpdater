@@ -13,8 +13,7 @@ This script uses the update commands `sudo apt update && sudo apt upgrade -y && 
 1. Clone this repository! `git clone https://github.com/NR-SkaterBoy/LinuxSystemUpdate.git`<br>
 2. Open the LSU folder! `/path/LinuxSystemUpdate`<br>
 3. Run the command! `bash ./systemupdate.sh`<br>
-4. Choose your system! `Example: ubuntu`<br>
-5. Wait for the update to complete!<br><br>
+4. Wait for the update to complete!<br><br>
 
 **Supported OS - Terminal**<br>
 

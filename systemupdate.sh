@@ -16,11 +16,12 @@ echo -e "\t3.\tDebian\t\t\t4.\tFedora"
 echo -e "\t5.\tRasberry\t\t6.\tZorin OS"
 echo -e "\t7.\tElementary OS\t\t8.\tLinux Mint"
 echo -e "\t9.\tArch Linux\t\t10.\tManjaro"
+echo -e "\t11.\tGentoo"
 exit
 fi
 
 # Linux Systems
-systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "zorin" "elementary" "linux mint" "arch" "manjaro")
+systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
 
 # Linux version ID
 . /etc/os-release
@@ -67,6 +68,9 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     ${systems[9]}) # Manjaro
         sudo pacman -Syyu
         ;;
+    ${systems[10]}) # Gentoo
+        sudo emerge --sync && sudo emerge --update --deep --with-bdeps=y @world
+        ;;
     esac
     clear
     echo -e "\e[32mSuccesful Update!"
@@ -77,9 +81,9 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     echo " "
 else
     clear
-    echo -e "\e[31mError! Please enter valid SYSTEM!"
-    echo -e "\e[31mError! Please enter valid SYSTEM!"
-    echo -e "\e[31mError! Please enter valid SYSTEM!\e[39m"
+    echo -e "\e[31mUpdate failed! Please check the supported OS!"
+    echo -e "\e[31mUpdate failed! Please check the supported OS!"
+    echo -e "\e[31mUpdate failed! Please check the supported OS!\e[39m"
     echo " "
     echo " "
     echo " "

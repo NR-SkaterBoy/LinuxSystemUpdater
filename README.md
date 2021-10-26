@@ -2,7 +2,7 @@
 
 **What is it?**<br>
 
-*You can update your system with it moreover it can save you time*
+*You can update your system with it moreover it can save your time*
 
 **What the command does?**<br>
 

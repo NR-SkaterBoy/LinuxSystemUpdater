@@ -21,7 +21,7 @@ This script uses the update commands `sudo apt update && sudo apt upgrade -y && 
 >Kali Linux<br>
 >Debian<br>
 >Fedora<br>
->Rasberry PI<br>
+>Rasberry PI - Not available yet<br>
 >Zorin OS<br>
 >Elementary OS<br>
 >Linux Mint<br>

@@ -49,9 +49,9 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     ${systems[3]}) # Fedora
         sudo dnf upgrade -y
         ;;
-    ${systems[4]}) # Rasberry
-        sudo apt update && sudo apt full-upgrade
-        ;;
+   # ${systems[4]}) # Rasberry
+   #     sudo apt update && sudo apt full-upgrade
+   #     ;;
     ${systems[5]}) # Zorin
         apt update && apt upgrade && apt autoremove
         ;;

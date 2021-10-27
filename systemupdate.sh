@@ -72,9 +72,9 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
         ;;
     esac
     clear
-    echo -e "\e[32mSuccesful Update!"
-    echo -e "\e[32mSuccesful Update!"
-    echo -e "\e[32mSuccesful Update!\e[39m"
+    echo -e "\e[32mSuccessful Update!"
+    echo -e "\e[32mSuccessful Update!"
+    echo -e "\e[32mSuccessful Update!\e[39m"
     echo " "
     echo " "
     echo " "

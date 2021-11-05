@@ -23,7 +23,7 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 >Kali Linux<br>
 >Debian<br>
 >Fedora<br>
->Rasberry PI - Not available yet<br>
+>Rasberry<br>
 >Zorin OS<br>
 >Elementary OS<br>
 >Linux Mint<br>

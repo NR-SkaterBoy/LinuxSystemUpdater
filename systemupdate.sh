@@ -11,7 +11,7 @@ echo " "
 echo "Supported OS:"
 echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
 echo -e "\t3.\tDebian\t\t\t4.\tFedora"
-echo -e "\t5.\tRasberry\t\t6.\tZorin OS"
+echo -e "\t5.\tRaspberry\t\t6.\tZorin OS"
 echo -e "\t7.\tElementary OS\t\t8.\tLinux Mint"
 echo -e "\t9.\tArch Linux\t\t10.\tManjaro"
 echo -e "\t11.\tGentoo"
@@ -19,7 +19,7 @@ exit
 fi
 
 # Linux Systems
-systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
+systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
 
 # Linux version ID
 . /etc/os-release
@@ -44,9 +44,9 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     ${systems[3]}) # Fedora
         sudo dnf upgrade -y
         ;;
-   # ${systems[4]}) # Rasberry
-   #     sudo apt update && sudo apt full-upgrade
-   #     ;;
+    ${systems[4]}) # Raspberry
+        sudo apt update && sudo apt full-upgrade
+        ;;
     ${systems[5]}) # Zorin
         sudo apt update && sudo apt upgrade && sudo apt autoremove
         ;;

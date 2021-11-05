@@ -6,9 +6,7 @@
 
 # Help menu
 if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-echo -e "\nUsage: systemupdate.sh [Operating System]"
-echo -e "Example: systemupdate.sh kali"
-echo -e "\nOptions:\n  --help\t\t\tprint this help message\n  -h\t\t\tsame as --help"
+echo -e "\nOptions:\n  --help\t\t\tprint this help message\n  -h\t\t\t\tsame as --help"
 echo " "
 echo "Supported OS:"
 echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
@@ -27,14 +25,10 @@ systems=("ubuntu" "kali" "debian" "fedora" "rasberry" "zorin" "elementary" "linu
 . /etc/os-release
 
 # Script update
-echo -e "\e[33mKeep the script up to date! Don't forget to upgrade!"
-echo -e "\e[39m"
-
-read -p "Would you like to update the script? (Y/N): " ans
-
-if [[ $ans == [yY] || $ans == [yY][eE][sS] ]]; then
+if zenity --question --title="Confirm update" --text="Keep the script up to date! Don't forget to upgrade!\n\nWould you like to update the script?" --no-wrap; then
     git pull
 fi
+
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
@@ -71,21 +65,15 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     ${systems[10]}) # Gentoo
         sudo emerge --sync && sudo emerge --update --deep --with-bdeps=y @world
         ;;
+
     esac
-    clear
-    echo -e "\e[32mSuccesful Update!"
-    echo -e "\e[32mSuccesful Update!"
-    echo -e "\e[32mSuccesful Update!\e[39m"
-    echo " "
-    echo " "
-    echo " "
+    zenity --notification --text "Succesful Update!" 
+    # System restart
+    if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
+        sudo shutdown -r now
+    fi
+    exit
 else
-    clear
-    echo -e "\e[31mUpdate failed! Please check the supported OS!"
-    echo -e "\e[31mUpdate failed! Please check the supported OS!"
-    echo -e "\e[31mUpdate failed! Please check the supported OS!\e[39m"
-    echo " "
-    echo " "
-    echo " "
+    zenity --error --title="Error" --text="Update failed!\nPlease check the supported systems or your internet connection!" --no-wrap
     exit
 fi

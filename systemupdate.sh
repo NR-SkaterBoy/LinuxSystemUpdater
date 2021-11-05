@@ -45,7 +45,7 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
         sudo dnf upgrade -y
         ;;
     ${systems[4]}) # Raspberry
-        sudo apt update && sudo apt full-upgrade
+        sudo apt update && sudo apt upgrade && sudo apt autoremove -y
         ;;
     ${systems[5]}) # Zorin
         sudo apt update && sudo apt upgrade && sudo apt autoremove

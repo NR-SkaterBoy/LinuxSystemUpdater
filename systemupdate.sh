@@ -48,7 +48,7 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
    #     sudo apt update && sudo apt full-upgrade
    #     ;;
     ${systems[5]}) # Zorin
-        apt update && apt upgrade && apt autoremove
+        sudo apt update && sudo apt upgrade && sudo apt autoremove
         ;;
     ${systems[6]}) # Elementary OS
         sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y

@@ -14,7 +14,8 @@ echo -e "\t3.\tDebian\t\t\t4.\tFedora"
 echo -e "\t5.\tRaspberry\t\t6.\tZorin OS"
 echo -e "\t7.\tElementary OS\t\t8.\tLinux Mint"
 echo -e "\t9.\tArch Linux\t\t10.\tManjaro"
-echo -e "\t11.\tGentoo"
+echo -e "\t11.\tGentoo\t\t\t12\tPop!_os"
+echo -e "\t13.\tSparkyLinux"
 exit
 fi
 

@@ -19,6 +19,8 @@ echo -e "\t13.\tSparkyLinux"
 exit
 fi
 
+shell=True
+
 # Linux Systems
 systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
 
@@ -26,9 +28,9 @@ systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linu
 . /etc/os-release
 
 # Script update
-if zenity --question --title="Confirm update" --text="Keep the script up to date! Don't forget to upgrade!\n\nWould you like to update the script?" --no-wrap; then
-    git pull
-fi
+#if zenity --question --title="Confirm update" --text="Keep the script up to date! Don't forget to upgrade!\n\nWould you like to update the script?" --no-wrap; then
+#    git pull
+#fi
 
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then

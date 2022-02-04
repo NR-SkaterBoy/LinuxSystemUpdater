@@ -34,8 +34,8 @@ os_update_button = tk.Button(
     command=running_os_update_script,
     height=1,
     width=15
-)
-os_update_button.pack()
+).grid(row=0, column=0)
+
 # Source Update BTN
 source_update_button = tk.Button(
     root,
@@ -44,8 +44,8 @@ source_update_button = tk.Button(
     command=running_source_update_script,
     height=1,
     width=15,
-    
-)
-source_update_button.pack()
+).grid(row=1, column=1)
+
+# Systemboox
 
 root.mainloop()

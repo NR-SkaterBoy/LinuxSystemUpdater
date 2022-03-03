@@ -1,1 +1,4 @@
-inclode *.md *.txt LICENSE 
+include *.md *.txt LICENSE 
+include lsu/*.py
+include lsu/bash*.sh
+include lsu/icons*.png

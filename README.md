@@ -30,4 +30,3 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 >Arch Linux<br>
 >Manjaro<br>
 >Gentoo
-

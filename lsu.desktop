@@ -2,5 +2,6 @@
 Version=1.0
 Type=Application
 Encoding=UTF-8
-Name=Linux System Update
+Name=Linux System Updater
 Terminal=True
+StartupNotify=True

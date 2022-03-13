@@ -1,10 +1,14 @@
-# Import modules
+# # Import modules
 import os, sys, stat, subprocess
-from PyQt4 import QtGui
+from pickle import NONE
+import tkinter as tk
+from tkinter import ttk
+from tkinter import *
+from turtle import bgcolor, color 
 
 # print(subprocess.call("pwd"))
 
-# Set the files right
+#Set the files right
 os.chmod("bash/source_update.sh", stat.S_IRWXU)
 os.chmod("bash/system_update.sh", stat.S_IRWXU)
 
@@ -18,16 +22,31 @@ def running_source_update_script():
 
 # Application
 
-def window():
-   app = QtGui.QApplication(sys.argv)
-   w = QtGui.QWidget()
-   b = QtGui.QLabel(w)
-   b.setText("Hello World!")
-   w.setGeometry(100,100,200,50)
-   b.move(50,20)
-   w.setWindowTitle("Pyqt")
-   w.show()
-   sys.exit(app.exec_())
-	
-if __name__ == '__main__':
-   window()
+# Colors
+background_color = "#181d31"
+btn_color = "#42485d"
+
+root = Tk()
+
+# Window, title, icon, background
+root.geometry("800x450+50+50")
+root.configure(background=background_color)
+root.title('Linux Updater')
+root.iconbitmap("icons/lsu.ico")
+
+# Title
+Label(root, text='System\nUpdater', bg=background_color, fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
+
+# Btn of sysupdate
+Button(root, text='Update the system', bg='#F0F8FF', font=('arial', 12, 'normal'), command=NONE).place(x=70, y=200)
+
+# Btn of sourceupdate
+Button(root, text='LINUX UPDATER', bg='#F0F8FF', font=('arial', 12, 'normal'), command=NONE).place(x=70, y=260)
+
+# Pictures
+lsu_pic= Canvas(root, height=470, width=449, bg=background_color, borderwidth=0, highlightthickness=0)
+picture_file = PhotoImage(file = 'pictures/lsu.png')
+lsu_pic.create_image(470, 0, anchor=NE, image=picture_file)
+lsu_pic.place(x=285, y=54)
+
+root.mainloop()

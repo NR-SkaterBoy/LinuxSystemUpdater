@@ -6,7 +6,6 @@
 
 # Help menu
 if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-echo -e "\nOptions:\n  --help\t\t\tprint this help message\n  -h\t\t\t\tsame as --help"
 echo " "
 echo "Supported OS:"
 echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
@@ -20,23 +19,18 @@ exit
 fi
 
 shell=True
-
+export SUDO_ASKPASS="myaskpass.sh"
 # Linux Systems
 systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
 
 # Linux version ID
 . /etc/os-release
 
-# Script update
-if zenity --question --title="Confirm update" --text="Keep the script up to date! Don't forget to upgrade!\n\nWould you like to update the script?" --no-wrap; then
-    git pull
-fi
-
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
     ${systems[0]}) # Ubuntu
-        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        sudo -A apt update && sudo apt upgrade -y && sudo apt autoremove -y
         ;;
     ${systems[1]}) # Kali
         sudo apt update && sudo apt upgrade -y && sudo apt full-upgrade -y && sudo apt autoremove -y

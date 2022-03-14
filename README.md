@@ -41,4 +41,4 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 >Manjaro<br>
 >Gentoo
 
-![Please Support My work](https://www.paypal.com/donate/?hosted_button_id=J6XAKCQ5L9LQA)
+[Please Support My work](https://www.paypal.com/donate/?hosted_button_id=J6XAKCQ5L9LQA)

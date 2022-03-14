@@ -4,4 +4,10 @@
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package update
 
-zenity --password --title=Authentication
+# Tkinter
+sudo apt-get install python3.6
+sudo apt-get install python3-tk -y
+sudo apt-get install python-tk -y
+
+# Launc LSU
+python3 lsu.py

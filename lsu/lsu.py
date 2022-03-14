@@ -4,7 +4,6 @@ from pickle import NONE
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-from turtle import bgcolor, color 
 
 # print(subprocess.call("pwd"))
 
@@ -32,7 +31,8 @@ root = Tk()
 root.geometry("800x450+50+50")
 root.configure(background=background_color)
 root.title('Linux Updater')
-root.iconbitmap("icons/lsu.ico")
+# root.iconbitmap("icons/lsu.ico")
+root.tk.call("wm", "iconphoto", root._w, tk.PhotoImage("icons/logo2png"))
 
 # Title
 Label(root, text='System\nUpdater', bg=background_color, fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)

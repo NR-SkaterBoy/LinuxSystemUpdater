@@ -30,37 +30,37 @@ systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linu
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
     ${systems[0]}) # Ubuntu
-        sudo -A apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
         ;;
     ${systems[1]}) # Kali
-        sudo apt update && sudo apt upgrade -y && sudo apt full-upgrade -y && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt full-upgrade -y && sudo -A apt autoremove -y
         ;;
     ${systems[2]}) # Debian
-        sudo apt update && sudo apt upgrade && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove -y
         ;;
     ${systems[3]}) # Fedora
-        sudo dnf upgrade -y
+        sudo -A dnf upgrade -y
         ;;
     ${systems[4]}) # Raspberry
-        sudo apt update && sudo apt upgrade && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove -y
         ;;
     ${systems[5]}) # Zorin
-        sudo apt update && sudo apt upgrade && sudo apt autoremove
+        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove
         ;;
     ${systems[6]}) # Elementary OS
-        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
         ;;
     ${systems[7]}) # Linux Mint
-        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
         ;;
     ${systems[8]}) # Arch
-        sudo pacman -Syyu
+        sudo -A pacman -Syyu
         ;;
     ${systems[9]}) # Manjaro
-        sudo pacman -Syyu
+        sudo -A pacman -Syyu
         ;;
     ${systems[10]}) # Gentoo
-        sudo emerge --sync && sudo emerge --update --deep --with-bdeps=y @world
+        sudo -A emerge --sync && sudo -A emerge --update --deep --with-bdeps=y @world
         ;;
 
     esac

@@ -21,7 +21,7 @@ fi
 shell=True
 export SUDO_ASKPASS="myaskpass.sh"
 # Linux Systems
-systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linux mint" "arch" "manjaro" "gentoo")
+systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linuxmint" "arch" "manjaro" "gentoo")
 
 # Linux version ID
 . /etc/os-release

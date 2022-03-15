@@ -26,9 +26,8 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
         sudo apt-get install python-tk -y
         ;;
     ${systems[2]}) # Fedora
-        sudo dnf install python3.6
-        sudo dnf install python3-tk -y
-        sudo dnf install python-tk -y
+        sudo dnf install python3.6 -y
+        sudo dnf install python3-tkinter -y
         ;;
     ${systems[3]}) # Debian
         sudo apt-get install python3.6 -y

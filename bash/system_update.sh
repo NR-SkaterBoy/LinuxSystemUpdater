@@ -9,15 +9,11 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
 echo " "
 echo "Supported OS:"
 echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
-echo -e "\t3.\tDebian\t\t\t4.\tFedora"
-echo -e "\t5.\tRaspberry\t\t6.\tZorin OS"
-echo -e "\t7.\tElementary OS\t\t8.\tLinux Mint"
-echo -e "\t9.\tArch Linux\t\t10.\tManjaro"
-echo -e "\t11.\tGentoo\t\t\t12\tPop!_os"
-echo -e "\t13.\tSparkyLinux"
+echo -e "\t3.\tFedora\t\t\t4.\tRaspbian"
 exit
 fi
 
+git pull
 shell=True
 export SUDO_ASKPASS="myaskpass.sh"
 # Linux Systems

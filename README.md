@@ -29,12 +29,5 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 
 >Ubuntu<br>
 >Kali Linux<br>
->Debian<br>
 >Fedora<br>
->Rasberry<br>
->Zorin OS<br>
->Elementary OS<br>
->Linux Mint<br>
->Arch Linux<br>
->Manjaro<br>
->Gentoo
+>Raspbian<br>

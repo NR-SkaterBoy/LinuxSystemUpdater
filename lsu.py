@@ -5,19 +5,23 @@
 # Linux Systems source package update
 
 # Import modules
+from cProfile import label
 import os, sys, stat, subprocess
 import webbrowser
 from pickle import NONE
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tkinter import messagebox
+
+from setuptools import Command
 
 # print(subprocess.call("pwd"))
 
 # Set the files right
-os.chmod("bash/myaskpass.sh", stat.S_IRWXU)
-os.chmod("bash/source_update.sh", stat.S_IRWXU)
-os.chmod("bash/system_update.sh", stat.S_IRWXU)
+# os.chmod("bash/myaskpass.sh", stat.S_IRWXU)
+# os.chmod("bash/source_update.sh", stat.S_IRWXU)
+# os.chmod("bash/system_update.sh", stat.S_IRWXU)
 
 # Import Sys-update script
 def runningSystemUpdate():
@@ -30,6 +34,13 @@ def openMyWebsite():
 
 def openMyGithub():
     webbrowser.open_new(r"https://github.com/NR-SkaterBoy")
+
+def supportedSystem():
+    messagebox.showwarning("Supported Systems", "Ubuntu, Kali Linux, Fedora, Raspbian")
+
+def aboutSoftware():
+    messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.")
+    
 
 # Application
 
@@ -46,6 +57,13 @@ root.title('Linux Updater')
 # root.iconbitmap("icons/lsu.ico") 
 # root.tk.call("wm", "iconphoto", root._w, tk.PhotoImage("icons/logo2png"))
 
+menubar = Menu(root, background='#ffffff', foreground='black', activebackground='white', activeforeground='black')  
+file = Menu(menubar, tearoff=0, background='#ffffff')  
+file.add_command(label="About", command=aboutSoftware)  
+file.add_command(label="Supported System", command=supportedSystem)  
+menubar.add_cascade(label="Help", menu=file)
+
+
 # Title
 Label(root, text='System\nUpdater', bg=background_color, fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
 
@@ -53,10 +71,10 @@ Label(root, text='System\nUpdater', bg=background_color, fg="#ffffff", font=('ar
 Button(root, text='Update your system', bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=runningSystemUpdate).place(x=70, y=200)
 
 # Btn of my website
-Button(root, text='Check my Website', bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=openMyWebsite).place(x=70, y=260)
+Button(root, text='Visit my Website', bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=openMyWebsite).place(x=70, y=260)
 
 # Btn of my github profile
-Button(root, text='Check my Github profile', bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=openMyGithub).place(x=70, y=320)
+Button(root, text='Follow me on Github', bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=openMyGithub).place(x=70, y=320)
 
 
 # Pictures
@@ -65,4 +83,5 @@ picture_file = PhotoImage(file = 'pictures/lsu.png')
 lsu_pic.create_image(470, 0, anchor=NE, image=picture_file)
 lsu_pic.place(x=285, y=54)
 
+root.config(menu=menubar)
 root.mainloop()

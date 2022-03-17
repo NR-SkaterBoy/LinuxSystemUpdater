@@ -31,7 +31,6 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 
 >Ubuntu<br>
 >Kali Linux<br>
->Fedora<br>
 >Rasberry<br>
 
 [Please Support My work!](https://www.paypal.com/donate/?hosted_button_id=J6XAKCQ5L9LQA)

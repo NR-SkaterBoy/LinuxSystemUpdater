@@ -64,7 +64,7 @@ class LSU:
             fileList = glob.glob(os.path.join("logs", "*"))
             fileName = max(fileList, key=os.path.getatime)
             with open(f"{fileName}") as f:
-                print(f)
+                messagebox.showinfo("Last Log", f)
 
             # Az utolsó file lekérése és kiíratása
 

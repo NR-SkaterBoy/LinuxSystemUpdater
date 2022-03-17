@@ -62,10 +62,9 @@ class LSU:
             logFile.close()
         def openLastLog():
             fileList = glob.glob(os.path.join("logs", "*"))
-            fileName = ""
-            for log in fileList:
-                with open(f"{fileName}") as f:
-                    print()
+            fileName = max(fileList, key=os.path.getatime)
+            with open(f"{fileName}") as f:
+                print(f)
 
             # Az utolsó file lekérése és kiíratása
 
@@ -88,7 +87,7 @@ class LSU:
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')
         logs.add_command(label="Create new Log", command=createLog)
-        logs.add_command(label="Open last Log", command=NONE)
+        logs.add_command(label="Open last Log", command=openLastLog)
         logs.add_command(label="Delete all Log", command=deleteAllLog)
         self.menubar.add_cascade(label="Logger", menu=logs)
         # Title

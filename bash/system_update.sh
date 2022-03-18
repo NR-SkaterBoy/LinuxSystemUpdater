@@ -16,7 +16,6 @@ fi
 
 git pull
 shell=True
-export SUDO_ASKPASS="myaskpass.sh"
 # Linux Systems
 systems=("ubuntu" "kali" "fedora" "raspbian")
 
@@ -27,22 +26,22 @@ systems=("ubuntu" "kali" "fedora" "raspbian")
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
     ${systems[0]}) # Ubuntu
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
         ;;
     ${systems[1]}) # Kali
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt full-upgrade -y && sudo -A apt autoremove -y
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt full-upgrade -y && sudo -S apt autoremove -y
         ;;
     ${systems[2]}) # Fedora
-        sudo -A dnf upgrade -y
+        zenity --password --title=Authentication | sudo -S dnf upgrade -y
         ;;
     ${systems[3]}) # Raspberry
-        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove -y
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade && sudo -S apt autoremove -y
         ;;
      esac
     zenity --notification --text "Succesful Update!" 
     # System restart
     if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
-        sudo shutdown -r now
+        zenity --password --title=Authentication | shutdown -S -r now
     fi
     exit
 else

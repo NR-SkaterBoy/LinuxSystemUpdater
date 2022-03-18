@@ -2,7 +2,7 @@
 # Developer: NR-SkaterBoy
 # Github: https://github.com/NR-SkaterBoy
 # E-mail: nr.rick.dev@gmail.com
-# Linux Systems source package update
+# Linux Systems source package Updater
 
 # Import modules
 import os, stat, subprocess, webbrowser, time, platform, glob
@@ -11,9 +11,8 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
 
-# Set the files right
-# os.chmod("bash/myaskpass.sh", stat.S_IRWXU)
-# os.chmod("bash/system_update.sh", stat.S_IRWXU)
+# Set the file(s) rights
+os.chmod("bash/system_update.sh", stat.S_IRWXU)
 
 class LSU:
     def __init__(self, master):
@@ -41,7 +40,10 @@ class LSU:
         def questionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
         def changelog():
-            messagebox.showinfo("Changelog Alpha 0.2", "Soon")
+            with open("CHANGELOG.md", "r") as f:
+                changelog = f.read()
+                f.close()
+            messagebox.showinfo("Changelog Alpha 0.2", changelog)
         def createLog():
             getTime = time.strftime("%Y%m%d-%H%M%S")
             is_dir = os.path.isdir("logs")
@@ -62,12 +64,14 @@ class LSU:
             logFile.close()
         def openLastLog():
             fileList = glob.glob(os.path.join("logs", "*"))
-            fileName = max(fileList, key=os.path.getatime)
-            with open(f"{fileName}") as f:
-                messagebox.showinfo("Last Log", f)
-
-            # Az utolsó file lekérése és kiíratása
-
+            if len(os.listdir("logs")) == 0:
+                messagebox.showerror("Error", "No log")
+            else:
+                fileName = max(fileList, key=os.path.getatime)
+                with open(f"{fileName}", "r", encoding="utf-8") as f:
+                    logs = f.read()
+                    f.close()
+                messagebox.showinfo("Last Log", logs)
         def deleteAllLog():
             fileList = glob.glob(os.path.join("logs", "*"))
             for f in fileList:
@@ -82,14 +86,14 @@ class LSU:
         help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
-        # userHelp.add_command(label="Changelog", command=changelog)
+        userHelp.add_command(label="Changelog", command=changelog)
         userHelp.add_command(label="Questionnaire", command=questionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')
         logs.add_command(label="Create new Log", command=createLog)
         logs.add_command(label="Open last Log", command=openLastLog)
         logs.add_command(label="Delete all Log", command=deleteAllLog)
-        self.menubar.add_cascade(label="Logger", menu=logs)
+        # self.menubar.add_cascade(label="Logger", menu=logs)
         # Title
         self.label = Label(root, text='System\nUpdater', bg="#181d31", fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
         # Btn of sysupdate

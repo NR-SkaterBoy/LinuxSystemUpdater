@@ -1,8 +1,10 @@
 # Linux System Update
 
-**What is it?**<br>
+**Project Overview**<br>
 
-*This application updates a linux system with a GUI interface*
+*Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.
+<br><br>
+This app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.*
 
 !["System Updater"](/pictures/window.png)
 

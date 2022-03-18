@@ -8,6 +8,9 @@ shell=True
 
 . /etc/os-release
 
+
+# 
+
 systems=("ubuntu" "kali" "fedora" "raspbian")
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]]; then
@@ -23,9 +26,7 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
         sudo apt-get install python-tk -y
         ;;
     ${systems[2]}) # Fedora
-        sudo dnf install python3.6
-        sudo dnf install python3-tk -y
-        sudo dnf install python-tk -y
+        sudo dnf install python3-tkinter
         ;;
     ${systems[3]}) # Debian
         sudo apt-get install python3.6 -y

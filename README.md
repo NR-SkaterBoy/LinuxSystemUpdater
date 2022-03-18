@@ -16,7 +16,7 @@ This script uses the update commands `sudo apt update && sudo apt upgrade -y && 
 <br>
 1. Clone this repository! `git clone https://github.com/NR-SkaterBoy/LinuxSystemUpdate.git`<br>
 2. Open the LSU folder! `cd LinuxSystemUpdate/`<br>
-3. Run the script! `python2 setup.py`
+3. Run the script! `python2 setup.py` or `python3 setup.py`
 5. Wait for the install to finish!<br><br>
 
 You may need to give additional user input, for example: press <kbd>Enter</kbd> or <kbd>Y</kbd>
@@ -31,6 +31,5 @@ You may need to give additional user input, for example: press <kbd>Enter</kbd> 
 
 >Ubuntu<br>
 >Kali Linux<br>
->Rasberry<br>
-
-[Please Support My work!](https://www.paypal.com/donate/?hosted_button_id=J6XAKCQ5L9LQA)
+>Fedora<br>
+>Raspbian<br>

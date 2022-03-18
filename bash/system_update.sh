@@ -13,11 +13,11 @@ echo -e "\t3.\tFedora\t\t\t4.\tRaspbian"
 exit
 fi
 
+
 git pull
 shell=True
-export SUDO_ASKPASS="myaskpass.sh"
 # Linux Systems
-systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linuxmint" "arch" "manjaro" "gentoo")
+systems=("ubuntu" "kali" "fedora" "raspbian")
 
 # Linux version ID
 . /etc/os-release
@@ -26,44 +26,22 @@ systems=("ubuntu" "kali" "debian" "fedora" "raspbian" "zorin" "elementary" "linu
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
     ${systems[0]}) # Ubuntu
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
         ;;
     ${systems[1]}) # Kali
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt full-upgrade -y && sudo -A apt autoremove -y
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt full-upgrade -y && sudo -S apt autoremove -y
         ;;
-    ${systems[2]}) # Debian
-        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove -y
+    ${systems[2]}) # Fedora
+        zenity --password --title=Authentication | sudo -S dnf upgrade -y
         ;;
-    ${systems[3]}) # Fedora
-        sudo -A dnf upgrade -y
+    ${systems[3]}) # Raspberry
+        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade && sudo -S apt autoremove -y
         ;;
-    ${systems[4]}) # Raspberry
-        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove -y
-        ;;
-    ${systems[5]}) # Zorin
-        sudo -A apt update && sudo -A apt upgrade && sudo -A apt autoremove
-        ;;
-    ${systems[6]}) # Elementary OS
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
-        ;;
-    ${systems[7]}) # Linux Mint
-        sudo -A apt update && sudo -A apt upgrade -y && sudo -A apt autoremove -y
-        ;;
-    ${systems[8]}) # Arch
-        sudo -A pacman -Syyu
-        ;;
-    ${systems[9]}) # Manjaro
-        sudo -A pacman -Syyu
-        ;;
-    ${systems[10]}) # Gentoo
-        sudo -A emerge --sync && sudo -A emerge --update --deep --with-bdeps=y @world
-        ;;
-
-    esac
+     esac
     zenity --notification --text "Succesful Update!" 
     # System restart
     if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
-        sudo shutdown -r now
+        zenity --password --title=Authentication | shutdown -S -r now
     fi
     exit
 else

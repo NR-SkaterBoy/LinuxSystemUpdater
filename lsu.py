@@ -3,6 +3,7 @@
 # Github: https://github.com/NR-SkaterBoy
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package Updater
+# Version: Alpha 0.2
 
 # Import modules
 import os, stat, subprocess, webbrowser, time, platform, glob
@@ -50,17 +51,8 @@ class LSU:
             if (is_dir != True):
                 os.mkdir(os.path.join("logs"))
             
-            logFile = open(f"logs/log_{getTime}.txt", "x")
+            logFile = open(f"logs/log_{getTime}.log", "x")
             
-            # Sysinfo
-            arh = platform.platform()
-            system = platform.system()
-            vers = platform.version()
-            proc = platform.processor()
-            pyvers = platform.python_version()
-            # distro = platform.freedesktop_os_release()
-            
-            logFile.write(f"{arh}\n{system}\n{vers}\n{proc}\n{pyvers}")
             logFile.close()
         def openLastLog():
             fileList = glob.glob(os.path.join("logs", "*"))
@@ -86,7 +78,7 @@ class LSU:
         help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
-        userHelp.add_command(label="Changelog", command=changelog)
+        # userHelp.add_command(label="Changelog", command=changelog)
         userHelp.add_command(label="Questionnaire", command=questionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')

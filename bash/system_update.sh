@@ -41,7 +41,7 @@ if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${syste
     zenity --notification --text "Succesful Update!" 
     # System restart
     if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
-        zenity --password --title=Authentication | shutdown -S -r now
+        zenity --password --title=Authentication | shutdown -r now
     fi
     exit
 else

@@ -8,32 +8,18 @@ shell=True
 
 . /etc/os-release
 
-
-# 
-
-systems=("ubuntu" "kali" "fedora" "raspbian")
-
-if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]]; then
-    case "$ID" in
-    ${systems[0]}) # Ubuntu
+case "$ID" in
+    "ubuntu" | "kali" | "raspbian") # Ubuntu
         sudo apt-get install python3.6 -y
         sudo apt-get install python3-tk -y
         sudo apt-get install python-tk -y
-        ;;
-    ${systems[1]}) # Kali
-        sudo apt-get install python3.6 -y
-        sudo apt-get install python3-tk -y
-        sudo apt-get install python-tk -y
-        ;;
-    ${systems[2]}) # Fedora
+    ;;
+    "fedora") # Fedora
         sudo dnf install python3-tkinter
-        ;;
-    ${systems[3]}) # Debian
-        sudo apt-get install python3.6 -y
-        sudo apt-get install python3-tk -y
-        sudo apt-get install python-tk -y
-        ;;
-    esac
-fi
+    ;;
+    *)
+        exit 1
+    ;;
+esac
 # Launc LSU
 python3 lsu.py

@@ -1,0 +1,4 @@
+###### Requirements without Version Specifiers ######
+python3
+python3-tk
+python-tk

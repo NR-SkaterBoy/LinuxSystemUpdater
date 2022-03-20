@@ -16,7 +16,7 @@ fi
 # *** Linuy Types *** #
 # Just Supported Systems
 # Debian: Ubuntu|Kali|Raspbian
-# RPM: Fedora
+# RPM: Fedora - Later
 
 git pull
 shell=True
@@ -26,15 +26,12 @@ shell=True
 
 # Password
 PASSWD=$(zenity --password --title=authentication)
+UPDATE=$(zenity --question --text="Would you like to update your system?")
 
 case "$ID" in
-    "ubuntu" | "kali" | "raspbiand") # Ubuntu-Kali-Raspbian
-       echo -e $PASSWD | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
+    "ubuntu" | "kali" | "raspbian") # Ubuntu-Kali-Raspbian
+       echo -e $PASSWD | $UPDATE | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
     ;;
-    "fedora") # Fedora
-        zenity --password --title=Authentication | sudo -S dnf upgrade -y
-    ;;
-    
     *)
         zenity --error --title="Error" --text="Update failed!\nPlease check the supported systems or your internet connection!" --no-wrap
         exit

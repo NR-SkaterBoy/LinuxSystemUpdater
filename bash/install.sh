@@ -9,14 +9,14 @@ shell=True
 . /etc/os-release
 
 case "$ID" in
-    "ubuntu" | "kali" | "raspbian") # Ubuntu
+    "ubuntu" | "kali" | "raspbian")
         sudo apt-get install python3.6 -y
         sudo apt-get install python3-tk -y
         sudo apt-get install python-tk -y
     ;;
-    "fedora") # Fedora
-        sudo dnf install python3-tkinter
-    ;;
+    # "fedora") # Fedora - Later
+    #     sudo dnf install python3-tkinter
+    # ;;
     *)
         exit 1
     ;;

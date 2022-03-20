@@ -25,17 +25,11 @@ systems=("ubuntu" "kali" "fedora" "raspbian")
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
-    ${systems[0]}) # Ubuntu
+    ${systems[0]} || ${systems[1]} || ${systems[3]}) # Ubuntu-Kali-Raspbian
         zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
-        ;;
-    ${systems[1]}) # Kali
-        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt full-upgrade -y && sudo -S apt autoremove -y
         ;;
     ${systems[2]}) # Fedora
         zenity --password --title=Authentication | sudo -S dnf upgrade -y
-        ;;
-    ${systems[3]}) # Raspberry
-        zenity --password --title=Authentication | sudo -S apt update && sudo -S apt upgrade && sudo -S apt autoremove -y
         ;;
      esac
     zenity --notification --text "Succesful Update!" 

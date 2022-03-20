@@ -29,7 +29,7 @@ systems=("ubuntu" "kali" "fedora" "raspbian")
 
 if [[ $ID == ${systems[0]} ]] || [[ $ID == ${systems[1]} ]] || [[ $ID == ${systems[2]} ]] || [[ $ID == ${systems[3]} ]] || [[ $ID == ${systems[4]} ]] || [[ $ID == ${systems[5]} ]] || [[ $ID == ${systems[6]} ]] || [[ $ID == ${systems[7]} ]] || [[ $ID == ${systems[8]} ]] || [[ $ID == ${systems[9]} ]]; then
     case "$ID" in
-    ${systems[0]} | ${systems[1]} | ${systems[3]}) # Ubuntu-Kali-Raspbian
+    "ubuntu" | "kali" | "raspbian") # Ubuntu-Kali-Raspbian
         zenity --password --title=authentication | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
         ;;
     ${systems[2]}) # Fedora

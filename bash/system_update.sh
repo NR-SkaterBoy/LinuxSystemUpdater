@@ -13,6 +13,10 @@ echo -e "\t3.\tFedora\t\t\t4.\tRaspbian"
 exit
 fi
 
+# *** Linuy Types *** #
+# Just Supported Systems
+# Debian: Ubuntu|Kali|Raspbian
+# RPM: Fedora
 
 git pull
 shell=True

@@ -28,7 +28,7 @@ shell=True
 PASSWD=$(zenity --password --title=authentication)
 
 case "$ID" in
-    "ubuntu" | "kali" | "raspbian") # Ubuntu-Kali-Raspbian
+    "ubuntu" | "kali" | "raspbiand") # Ubuntu-Kali-Raspbian
        echo -e $PASSWD | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
     ;;
     "fedora") # Fedora

@@ -10,9 +10,10 @@ shell=True
 
 case "$ID" in
     "ubuntu" | "kali" | "raspbian")
-        sudo apt-get install python3.6 -y
-        sudo apt-get install python3-tk -y
-        sudo apt-get install python-tk -y
+        pip install -r ../requirements.txt
+        sudo apt install python3.6 -y
+        sudo apt install python3-tk -y
+        sudo apt install python-tk -y
     ;;
     # "fedora") # Fedora - Later
     #     sudo dnf install python3-tkinter

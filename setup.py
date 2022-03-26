@@ -8,5 +8,5 @@
 import subprocess, os, stat
 
 os.chmod("bash/install.sh", stat.S_IRWXU)
-subprocess.call("bash/install.sh")
+subprocess.run("bash/install.sh")
 

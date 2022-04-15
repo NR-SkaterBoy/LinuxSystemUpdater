@@ -29,7 +29,17 @@ PASSWD=$(zenity --password --title=authentication)
 
 case "$ID" in
     "ubuntu" | "kali" | "raspbian") # Ubuntu-Kali-Raspbian
-       echo -e $PASSWD | sudo -S apt update && sudo -S apt upgrade -y && sudo -S apt autoremove -y
+        if zenity --question --title="APT Update" --text="Would you like to run apt update?" --no-wrap; then
+            echo -e $PASSWD | sudo -S apt update
+        fi
+
+        if zenity --question --title="APT Upgrade" --text="Would you like to run apt upgrade?" --no-wrap; then
+            echo -e $PASSWD | sudo -S apt upgrade -y
+        fi
+        
+        if zenity --question --title="APT Autoremove" --text="Would you like to run apt autoremove?" --no-wrap; then
+            echo -e $PASSWD | sudo -S apt autoremove -y
+        fi
     ;;
     *)
         zenity --error --title="Error" --text="Update failed!\nPlease check the supported systems or your internet connection!" --no-wrap

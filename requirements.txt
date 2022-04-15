@@ -94,3 +94,5 @@ wifite==2.6.0
 winacl==0.1.2
 xdg==5
 xmltodict==0.12.0
+psutil
+py-cpuinfo

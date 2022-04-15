@@ -3,16 +3,22 @@
 # Github: https://github.com/NR-SkaterBoy
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package Updater
-# Version: Alpha 0.3
+# Version: Alpha 0.4
 
 # Import modules
 import os
+import socket
+import re
+import uuid
+import json
+import psutil
+import logging
 import stat
+import cpuinfo
 import subprocess
 import webbrowser
 import time
 import platform
-from pickle import NONE
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
@@ -20,33 +26,70 @@ from tkinter import *
 # Set the file(s) rights
 os.chmod("bash/system_update.sh", stat.S_IRWXU)
 
+# Terminal
+# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
+
 
 class LSU:
     def __init__(self, master):
         self.master = master
         master.title("Linux Updater")
         master.geometry("800x450+50+50")
-        root.resizable(width=False, height=False)
+        root.resizable(width=False, height=False)  # Edit, make min-size
         master.configure(background="#181d31")
         # master.iconbitmap("icons/lsu.ico")
         photo = PhotoImage(file="icons/logo2.png")
         master.iconphoto(False, photo)
 
-        # LogFolder
-        if (os.path.isdir("logs") != True):
-            os.mkdir(os.path.join("logs"))
+        # LogFolder and
+        def createFolders():
+            if (os.path.isdir("logs") != True):
+                os.mkdir(os.path.join("logs"))
+            if (os.path.isdir("extensions") != True):
+                os.mkdir(os.path.join("extensions"))
+        createFolders()
 
         # Autolog
         # *** Datas *** #
-        runtime = time.strftime("%Y%m%d-%H%M%S")  # When launched this software
-        sys = platform.platform()
-        py = platform.python_version()
-        platform.system()
+        def makeAutoLog():
+            try:
+                log = {}
+                log["Launched time"] = time.strftime(
+                    "%Y%m%d-%H%M%S")  # When launched this software
+                log["Python version"] = platform.python_version()
+                log["System"] = platform.system()
+                json_object = json.dumps(log, indent=9)
+                with open("logs/autolog.log", "w") as f:
+                    f.write(json_object)
+                    f.close()
+                return json.dumps(log)
+            except Exception as e:
+                logging.exception(e)
+        makeAutoLog()
 
-        logFile = open(f"logs/autolog.log", "a")
-        logFile.write(
-            f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\n\n")
-        logFile.close()
+        # About Device
+        def getSystemInfo():
+            try:
+                info = {}
+                info['Platform'] = platform.system()
+                info['Platform-release'] = platform.release()
+                info['Platform-version'] = platform.version()
+                info['Architecture'] = platform.machine()
+                info['Hostname'] = socket.gethostname()
+                info['IP-address'] = socket.gethostbyname(socket.gethostname())
+                info['MAC-address'] = ':'.join(re.findall('..',
+                                               '%012x' % uuid.getnode()))
+                info['Processor'] = cpuinfo.get_cpu_info()['brand_raw']
+                info['Ram'] = str(
+                    round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
+                json_object = json.dumps(info, indent=9)
+                with open("extensions/sysinfo.json", "w") as f:
+                    f.write(json_object)
+                    f.close()
+                return json.dumps(info)
+            except Exception as e:
+                logging.exception(e)
+        getSystemInfo()
 
         def runningSystemUpdate():
             subprocess.call("bash/system_update.sh")
@@ -61,11 +104,20 @@ class LSU:
             messagebox.showwarning("Supported Systems",
                                    "Ubuntu, Kali Linux, Raspbian")
 
-        def aboutSoftware():
-            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.3")
+        def systemInfo():
+            with open("extensions/sysinfo.json", "r") as f:
+                for line in f:
+                    print(f"{line[1::].strip('')}\n", end="")
 
-        def quitLSU():
-            root.quit()
+        def aboutSoftware():
+            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.4")
+
+        # def quitLSU():
+        #     logFile = open(f"logs/autolog.log", "a")
+        #     logFile.write(
+        #         f"Exit time: {runtime}\nPlatform: {sys}\nPython version: {py}\n\n")
+        #     logFile.close()
+        #     root.quit()
 
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
@@ -78,7 +130,8 @@ class LSU:
                 with open("logs/autolog.log", encoding="utf-8") as f:
                     for line in (f.readlines()[-4:]):
                         lastLog.append(line)
-                    messagebox.showinfo("Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
+                    messagebox.showinfo(
+                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
 
         # Menu
         self.menubar = Menu(root, background='#ffffff', foreground='black',
@@ -86,7 +139,8 @@ class LSU:
         help = Menu(self.menubar, tearoff=0, background='#ffffff')
         help.add_command(label="Supported System", command=supportedSystem)
         help.add_command(label="About", command=aboutSoftware)
-        help.add_command(label="Quit", command=quitLSU)
+        help.add_command(label="About System", command=systemInfo)
+        # help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # userHelp.add_command(label="Changelog", command=changelog) # Not available yet
@@ -117,6 +171,6 @@ class LSU:
         root.config(menu=self.menubar)
 
 
-root = Tk()
+root = Tk(className="Linux System Updater")
 lsu = LSU(root)
 root.mainloop()

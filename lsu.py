@@ -7,14 +7,13 @@
 
 # Import modules
 import os
+import sys
 import socket
 import re
 import uuid
 import json
-import psutil
 import logging
 import stat
-import cpuinfo
 import subprocess
 import webbrowser
 import time
@@ -22,6 +21,11 @@ import platform
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+
+# You won't get error message if you are on windows
+if (platform.system() != "Windows"):
+    import cpuinfo
+    import psutil
 
 # Set the file(s) rights
 os.chmod("bash/system_update.sh", stat.S_IRWXU)
@@ -35,7 +39,8 @@ class LSU:
         self.master = master
         master.title("Linux Updater")
         master.geometry("800x450+50+50")
-        root.resizable(width=False, height=False)  # Edit, make min-size
+        root.resizable(True, True)
+        root.minsize(width=800, height=450)
         master.configure(background="#181d31")
         # master.iconbitmap("icons/lsu.ico")
         photo = PhotoImage(file="icons/logo2.png")
@@ -64,6 +69,53 @@ class LSU:
         runimeLog()
 
         # About Device
+        # LogTypes
+        def criticalLog():
+            logging.basicConfig(
+                level=logging.CRITICAL,
+                format="{asctime} {levelname:<50} {message}",
+                style='{',
+                filename="logs/applog.log",
+                filemode="a"
+            )
+
+        def errorLog():
+            logging.basicConfig(
+                level=logging.ERROR,
+                format="{asctime} {levelname:<40} {message}",
+                style='{',
+                filename="logs/applog.log",
+                filemode="a"
+            )
+
+        def warningLog():
+            logging.basicConfig(
+                level=logging.WARNING,
+                format="{asctime} {levelname:<30} {message}",
+                style='{',
+                filename="logs/applog.log",
+                filemode="a"
+            )
+
+        def infoLog():
+            logging.basicConfig(
+                level=logging.INFO,
+                format="{asctime} {levelname:<20} {message}",
+                style='{',
+                filename="logs/applog.log",
+                filemode="a"
+            )
+
+        def debugLog():
+            logging.basicConfig(
+                level=logging.DEBUG,
+                format="{asctime} {levelname:<10} {message}",
+                style='{',
+                filename="logs/applog.log",
+                filemode="a"
+            )
+
+        # It doesn't work on windows
         def getSystemInfo():
             try:
                 info = {}
@@ -75,21 +127,28 @@ class LSU:
                 info['IP-address'] = socket.gethostbyname(socket.gethostname())
                 info['MAC-address'] = ':'.join(re.findall('..',
                                                '%012x' % uuid.getnode()))
-                info['Processor'] = cpuinfo.get_cpu_info()['brand_raw']
-                info['Ram'] = str(
-                    round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
-                json_object = json.dumps(info, indent=9)
+                if (platform.system() != "Windows"):
+                    info['Processor'] = cpuinfo.get_cpu_info()['brand_raw']
+                    info['Ram'] = str(
+                        round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
+                json_object = json.dumps(info, indent=3)
                 with open("extensions/sysinfo.json", "w") as f:
                     f.write(json_object)
                     f.close()
                 return json.dumps(info)
             except:
-                logging.basicConfig(filename="logs/error_sysinfo.log", encoding='utf-8', level=logging.INFO)
+                logging.basicConfig(
+                    filename="logs/error_sysinfo.log", encoding='utf-8', level=logging.INFO)
                 logging.info(f"Time: {runtime}", exc_info=True)
         getSystemInfo()
 
         def runningSystemUpdate():
-            subprocess.call("bash/system_update.sh")
+            try:
+                subprocess.call("bash/system_update.sh")
+            except Exception as e:
+                criticalLog()
+                logging.critical(
+                    "\n\nYou have to use Linux system", exc_info=True)
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")
@@ -102,9 +161,8 @@ class LSU:
                                    "Ubuntu, Kali Linux, Raspbian")
 
         def systemInfo():
-            with open("extensions/sysinfo.json", "r") as f:
-                for line in f:
-                    print("Hey")
+            log = json.load(open("extensions/sysinfo.json", "r"))
+            messagebox.showinfo("System Information", log) # TODO: Edit output
         # systemInfo()
 
         def aboutSoftware():
@@ -168,6 +226,7 @@ class LSU:
         # Menu
         root.config(menu=self.menubar)
 
+
 if __name__ == "__main__":
     try:
         root = Tk(className="Linux System Updater")
@@ -181,4 +240,4 @@ if __name__ == "__main__":
             filename="logs/applog.log",
             filemode="a"
         )
-        logging.critical("There was an error with LSU!", exc_info=True)
+        logging.critical("\n\nThere was an error with LSU!", exc_info=True)

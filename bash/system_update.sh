@@ -13,9 +13,9 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
     exit
 fi
 
-# *** Linuy Types *** #
+# *** Linux Types *** #
 # Just Supported Systems
-# Debian: Ubuntu|Kali|Raspbian
+# Debian: Ubuntu|Kali|Raspbian|Sparky
 # RPM: Fedora - Later
 
 git pull
@@ -28,7 +28,7 @@ shell=True
 PASSWD=$(zenity --password --title=authentication)
 
 case "$ID" in
-    "ubuntu" | "kali" | "raspbian" | "sparky") # Ubuntu-Kali-Raspbian
+    "ubuntu" | "kali" | "raspbian" | "sparky") # Ubuntu-Kali-Raspbian-Sparky
         if zenity --question --title="APT Update" --text="Would you like to run apt update?" --no-wrap; then
             echo -e $PASSWD | sudo -S apt update
         fi
@@ -49,5 +49,5 @@ case "$ID" in
 esac
 # System restart
 if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
-    zenity --password --title=Authentication | shutdown -r now
+    zenity --password --title=Authentication | echo -e $PASSWD | sudo -S shutdown -r now
 fi

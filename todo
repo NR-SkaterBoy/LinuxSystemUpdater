@@ -1,0 +1,13 @@
+Log ->
+    Autologba több információ
+    Log beolvasása
+    Kilépésnél az idő hozzáadása (JSON tartományba) ->
+        Idő eltárolásával megoldható
+    
+
+Bash ->
+    Bővíteni a rendszerek körét
+    Ha hiba történt, akkor "apt --fix-broken install"
+
+LSU ->
+    Tk név helyett LSU

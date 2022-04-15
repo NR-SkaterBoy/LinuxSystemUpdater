@@ -51,21 +51,17 @@ class LSU:
 
         # Autolog
         # *** Datas *** #
-        def makeAutoLog():
-            try:
-                log = {}
-                log["Launched time"] = time.strftime(
-                    "%Y%m%d-%H%M%S")  # When launched this software
-                log["Python version"] = platform.python_version()
-                log["System"] = platform.system()
-                json_object = json.dumps(log, indent=9)
-                with open("logs/autolog.log", "w") as f:
-                    f.write(json_object)
-                    f.close()
-                return json.dumps(log)
-            except Exception as e:
-                logging.exception(e)
-        makeAutoLog()
+        runtime = time.strftime("%Y%m%d-%H%M%S")
+        sys = platform.platform()
+        py = platform.python_version()
+        platform.system()
+
+        def runimeLog():
+            logFile = open(f"logs/autolog.log", "a")
+            logFile.write(
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\n")
+            logFile.close()
+        runimeLog()
 
         # About Device
         def getSystemInfo():
@@ -87,8 +83,9 @@ class LSU:
                     f.write(json_object)
                     f.close()
                 return json.dumps(info)
-            except Exception as e:
-                logging.exception(e)
+            except:
+                logging.basicConfig(filename="logs/error_sysinfo.log", encoding='utf-8', level=logging.INFO)
+                logging.info(f"Time: {runtime}", exc_info=True)
         getSystemInfo()
 
         def runningSystemUpdate():
@@ -107,17 +104,18 @@ class LSU:
         def systemInfo():
             with open("extensions/sysinfo.json", "r") as f:
                 for line in f:
-                    print(f"{line[1::].strip('')}\n", end="")
+                    print("Hey")
+        # systemInfo()
 
         def aboutSoftware():
             messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.4")
 
-        # def quitLSU():
-        #     logFile = open(f"logs/autolog.log", "a")
-        #     logFile.write(
-        #         f"Exit time: {runtime}\nPlatform: {sys}\nPython version: {py}\n\n")
-        #     logFile.close()
-        #     root.quit()
+        def quitLSU():
+            logFile = open(f"logs/autolog.log", "a")
+            logFile.write(
+                f"Exit time: {runtime}\n\n")
+            logFile.close()
+            root.quit()
 
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
@@ -140,7 +138,7 @@ class LSU:
         help.add_command(label="Supported System", command=supportedSystem)
         help.add_command(label="About", command=aboutSoftware)
         help.add_command(label="About System", command=systemInfo)
-        # help.add_command(label="Quit", command=quitLSU)
+        help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # userHelp.add_command(label="Changelog", command=changelog) # Not available yet
@@ -170,7 +168,17 @@ class LSU:
         # Menu
         root.config(menu=self.menubar)
 
-
-root = Tk(className="Linux System Updater")
-lsu = LSU(root)
-root.mainloop()
+if __name__ == "__main__":
+    try:
+        root = Tk(className="Linux System Updater")
+        lsu = LSU(root)
+        root.mainloop()
+    except Exception as e:
+        logging.basicConfig(
+            level=logging.CRITICAL,
+            format="{asctime} {levelname:<8} {message}",
+            style='{',
+            filename="logs/applog.log",
+            filemode="a"
+        )
+        logging.critical("There was an error with LSU!", exc_info=True)

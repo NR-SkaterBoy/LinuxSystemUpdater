@@ -1,13 +1,11 @@
-Log ->
+TODO: Log ->
     Autologba több információ
     Log beolvasása
     Kilépésnél az idő hozzáadása (JSON tartományba) ->
         Idő eltárolásával megoldható
     
-
-Bash ->
+TODO:Bash ->
     Bővíteni a rendszerek körét
-    Ha hiba történt, akkor "apt --fix-broken install"
 
-LSU ->
-    Tk név helyett LSU
+TODO: LSU Project ->
+    Linux telepítő készítés

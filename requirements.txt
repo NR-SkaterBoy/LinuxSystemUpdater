@@ -1,3 +1,5 @@
+# TODO: Check all components...
+
 aiocmd==0.1.2
 aioconsole==0.3.1
 aiosmb==0.2.50

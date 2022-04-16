@@ -78,7 +78,7 @@ class LSU:
                 level=logging.CRITICAL,
                 format="{asctime} {levelname:<50} {message}",
                 style='{',
-                filename="logs/applog.log",
+                filename="logs/critical.log",
                 filemode="a"
             )
 
@@ -87,7 +87,7 @@ class LSU:
                 level=logging.ERROR,
                 format="{asctime} {levelname:<40} {message}",
                 style='{',
-                filename="logs/applog.log",
+                filename="logs/error.log",
                 filemode="a"
             )
 
@@ -96,7 +96,7 @@ class LSU:
                 level=logging.WARNING,
                 format="{asctime} {levelname:<30} {message}",
                 style='{',
-                filename="logs/applog.log",
+                filename="logs/warning.log",
                 filemode="a"
             )
 
@@ -105,7 +105,7 @@ class LSU:
                 level=logging.INFO,
                 format="{asctime} {levelname:<20} {message}",
                 style='{',
-                filename="logs/applog.log",
+                filename="logs/info.log",
                 filemode="a"
             )
 
@@ -114,7 +114,7 @@ class LSU:
                 level=logging.DEBUG,
                 format="{asctime} {levelname:<10} {message}",
                 style='{',
-                filename="logs/applog.log",
+                filename="logs/debug.log",
                 filemode="a"
             )
 

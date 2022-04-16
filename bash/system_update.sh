@@ -25,22 +25,23 @@ shell=True
 . /etc/os-release
 
 # Password
-PASSWD=$(zenity --password --title=authentication)
+# PASSWD=$(zenity --password --title=authentication)
+export SUDO_ASKPASS="bash/pass.sh"
 
 case "$ID" in
     "ubuntu" | "kali" | "raspbian" | "sparky") # Ubuntu-Kali-Raspbian-Sparky
         if zenity --question --title="APT Update" --text="Would you like to run apt update?" --no-wrap; then
-            echo -e $PASSWD | sudo -S apt update
+            sudo -A apt update
         fi
 
         if zenity --question --title="APT Upgrade" --text="Would you like to run apt upgrade?" --no-wrap; then
-            echo -e $PASSWD | sudo -S apt upgrade -y
+            sudo -A apt upgrade -y
         fi
         
         if zenity --question --title="APT Autoremove" --text="Would you like to run apt autoremove?" --no-wrap; then
-            echo -e $PASSWD | sudo -S apt autoremove -y
+            sudo -A apt autoremove -y
         fi
-        echo -e $PASSWD | sudo -S apt --fix-broken install
+        sudo -A apt --fix-broken install
     ;;
     *)
         zenity --error --title="Error" --text="Update failed!\nPlease check the supported systems or your internet connection!" --no-wrap
@@ -49,5 +50,5 @@ case "$ID" in
 esac
 # System restart
 if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
-    zenity --password --title=Authentication | echo -e $PASSWD | sudo -S shutdown -r now
+    sudo -A shutdown -r now
 fi

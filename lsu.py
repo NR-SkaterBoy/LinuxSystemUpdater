@@ -6,12 +6,13 @@
 # Version: Alpha 0.4
 
 # Import modules
+from audioop import add
 from cgitb import text
 import os
 import sys
 import socket
 import re
-import tkinter
+from turtle import title
 import uuid
 import json
 import logging
@@ -147,6 +148,12 @@ class LSU:
         def runningSystemUpdate():
             try:
                 subprocess.call("bash/system_update.sh")
+                if (os.path.isfile("extensions/node.json") == True):
+                    f = open('extensions/node.json')
+                    data = json.load(f)
+                    if (data["Node update"] == "Enable"):
+                        subprocess.call("bash/node_update.sh")
+                    f.close()
             except Exception as e:
                 criticalLog()
                 logging.critical(
@@ -164,7 +171,7 @@ class LSU:
 
         def systemInfo():
             log = json.load(open("extensions/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log) # TODO: Edit output
+            messagebox.showinfo("System Information", log)  # TODO: Edit output
         # systemInfo()
 
         def aboutSoftware():
@@ -190,26 +197,41 @@ class LSU:
                         lastLog.append(line)
                     messagebox.showinfo(
                         "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
-        
-        
-        def setting():
+
+        def settings():
+            setting = Toplevel()
+            setting.title("Settings")
+            setting.geometry("300x300")
+            setting.resizable(False, False)
             add_node = IntVar()
-            
+
             def save():
                 if (add_node.get() == 1):
-                    save_btn["state"] = NORMAL
-                    save_btn.configure(text="HEY")
+                    try:
+                        node = {}
+                        node["Node update"] = "Enable"
+                        json_object = json.dumps(node, indent=3)
+                        with open("extensions/node.json", "w") as f:
+                            f.write(json_object)
+                            f.close()
+                        return json.dumps(node)
+                    except Exception as e:
+                        print("as")
+                else:
+                    try:
+                        node = {}
+                        node["Node update"] = "Disable"
+                        json_object = json.dumps(node, indent=3)
+                        with open("extensions/node.json", "w") as f:
+                            f.write(json_object)
+                            f.close()
+                        return json.dumps(node)
+                    except Exception as e:
+                        print("as")
             
-            settings = tkinter.Tk()
-            settings.title("Settings")
-            settings.geometry("300x300")
-            settings.resizable(False, False)
-            Checkbutton(settings, variable=add_node, offvalue=0, text='Node Update', bg='#F0F8FF', width=20, font=(
-            'arial', 12, 'normal'), command=save).place(x=50, y=30)
-            save_btn = Button(settings, text='Save', state=DISABLED, bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=None).place(x=50, y=240)
-            settings.mainloop()
-        setting()
-            
+            ttk.Checkbutton(setting, text="Node", command=save, variable=add_node, onvalue=1, offvalue=0).pack()
+        settings()
+                
 
         # Menu
         self.menubar = Menu(root, background='#ffffff', foreground='black',
@@ -221,7 +243,8 @@ class LSU:
         help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
-        userHelp.add_command(label="Changelog", command=setting) # Not available yet
+        # Not available yet
+        userHelp.add_command(label="Changelog", command=settings)
         userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')

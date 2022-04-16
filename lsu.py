@@ -6,9 +6,6 @@
 # Version: Alpha 0.4
 
 # Import modules
-from audioop import add
-from cgitb import text
-from msilib.schema import Directory
 import os
 import sys
 import socket
@@ -30,13 +27,12 @@ if (platform.system() != "Windows"):
     import cpuinfo
     import psutil
 
-# TODO: Make loop and set the file(s) rights
 # Set the file(s) rights
 directory = "bash"
-for i in os.listdir(directory):
-    files = os.path.join(directory, i)
-    print(files)
-    os.chmod(files, stat.S_IRWXU)
+if (platform.system() != "Windows"):
+    for i in os.listdir(directory):
+        files = os.path.join(directory, i)
+        os.chmod(files, stat.S_IRWXU)
 
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
@@ -135,7 +131,6 @@ class LSU:
                 filemode="a"
             )
 
-        # It doesn't work on windows
         def getSystemInfo():
             try:
                 info = {}
@@ -147,6 +142,7 @@ class LSU:
                 info['IP-address'] = socket.gethostbyname(socket.gethostname())
                 info['MAC-address'] = ':'.join(re.findall('..',
                                                '%012x' % uuid.getnode()))
+                # It doesn't work on windows
                 if (platform.system() != "Windows"):
                     info['Processor'] = cpuinfo.get_cpu_info()['brand_raw']
                     info['RAM'] = str(
@@ -216,6 +212,7 @@ class LSU:
                     messagebox.showinfo(
                         "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
 
+        # TODO: Make better design
         def settings():
             setting = Toplevel()
             setting.title("Settings")

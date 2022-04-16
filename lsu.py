@@ -12,7 +12,6 @@ import os
 import sys
 import socket
 import re
-from turtle import title
 import uuid
 import json
 import logging
@@ -30,8 +29,12 @@ if (platform.system() != "Windows"):
     import cpuinfo
     import psutil
 
+# TODO: Make loop and set the file(s) rights
+# TODO: Make password bash file
 # Set the file(s) rights
 os.chmod("bash/system_update.sh", stat.S_IRWXU)
+os.chmod("bash/node_update.sh", stat.S_IRWXU)
+os.chmod("bash/pass.sh", stat.S_IRWXU)
 
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
@@ -49,13 +52,24 @@ class LSU:
         photo = PhotoImage(file="icons/logo2.png")
         master.iconphoto(False, photo)
 
-        # LogFolder and
+        # LogFolder and neccesary file(s)
         def createFolders():
             if (os.path.isdir("logs") != True):
                 os.mkdir(os.path.join("logs"))
-            if (os.path.isdir("extensions") != True):
-                os.mkdir(os.path.join("extensions"))
+            if (os.path.isdir("files") != True):
+                os.mkdir(os.path.join("files"))
         createFolders()
+
+        def files():
+            if (os.path.isfile("files/node.json") != True):
+                node = {}
+                node["Node update"] = "Disable"
+                json_object = json.dumps(node, indent=3)
+                with open("files/node.json", "w") as f:
+                    f.write(json_object)
+                    f.close()
+                return json.dumps(node)
+        files()
 
         # Autolog
         # *** Datas *** #
@@ -64,6 +78,7 @@ class LSU:
         py = platform.python_version()
         platform.system()
 
+        # TODO: Add node version
         def runtimeLog():
             logFile = open(f"logs/autolog.log", "a")
             logFile.write(
@@ -135,7 +150,7 @@ class LSU:
                     info['RAM'] = str(
                         round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
                 json_object = json.dumps(info, indent=3)
-                with open("extensions/sysinfo.json", "w") as f:
+                with open("files/sysinfo.json", "w") as f:
                     f.write(json_object)
                     f.close()
                 return json.dumps(info)
@@ -148,8 +163,8 @@ class LSU:
         def runningSystemUpdate():
             try:
                 subprocess.call("bash/system_update.sh")
-                if (os.path.isfile("extensions/node.json") == True):
-                    f = open('extensions/node.json')
+                if (os.path.isfile("files/node.json") == True):
+                    f = open('files/node.json')
                     data = json.load(f)
                     if (data["Node update"] == "Enable"):
                         subprocess.call("bash/node_update.sh")
@@ -167,11 +182,12 @@ class LSU:
 
         def supportedSystem():
             messagebox.showwarning("Supported Systems",
-                                   "Ubuntu, Kali Linux, Raspbian")
+                                   "Ubuntu, Kali Linux, Raspbian, Sparky Linux")
 
+        # TODO: Edit output
         def systemInfo():
-            log = json.load(open("extensions/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log)  # TODO: Edit output
+            log = json.load(open("files/sysinfo.json", "r"))
+            messagebox.showinfo("System Information", log)
         # systemInfo()
 
         def aboutSoftware():
@@ -203,7 +219,6 @@ class LSU:
             setting.title("Settings")
             setting.geometry("300x300")
             setting.resizable(False, False)
-            add_node = IntVar()
 
             def save():
                 if (add_node.get() == 1):
@@ -211,7 +226,7 @@ class LSU:
                         node = {}
                         node["Node update"] = "Enable"
                         json_object = json.dumps(node, indent=3)
-                        with open("extensions/node.json", "w") as f:
+                        with open("files/node.json", "w") as f:
                             f.write(json_object)
                             f.close()
                         return json.dumps(node)
@@ -222,16 +237,21 @@ class LSU:
                         node = {}
                         node["Node update"] = "Disable"
                         json_object = json.dumps(node, indent=3)
-                        with open("extensions/node.json", "w") as f:
+                        with open("files/node.json", "w") as f:
                             f.write(json_object)
                             f.close()
                         return json.dumps(node)
                     except Exception as e:
                         print("as")
-            
-            ttk.Checkbutton(setting, text="Node", command=save, variable=add_node, onvalue=1, offvalue=0).pack()
-        settings()
-                
+            f = open("files/node.json", "r")
+            data = json.load(f)
+            if (data["Node update"] == "Enable"):
+                node_opts = 1
+            else:
+                node_opts = 0
+            add_node = IntVar(value=node_opts)
+            ttk.Checkbutton(setting, text="Node", command=save,
+                            variable=add_node, onvalue=1, offvalue=0).pack()
 
         # Menu
         self.menubar = Menu(root, background='#ffffff', foreground='black',
@@ -241,10 +261,10 @@ class LSU:
         help.add_command(label="About", command=aboutSoftware)
         help.add_command(label="About System", command=systemInfo)
         help.add_command(label="Quit", command=quitLSU)
+        help.add_command(label="Settings", command=settings)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # Not available yet
-        userHelp.add_command(label="Changelog", command=settings)
         userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')

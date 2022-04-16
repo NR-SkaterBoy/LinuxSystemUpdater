@@ -6,10 +6,12 @@
 # Version: Alpha 0.4
 
 # Import modules
+from cgitb import text
 import os
 import sys
 import socket
 import re
+import tkinter
 import uuid
 import json
 import logging
@@ -56,17 +58,17 @@ class LSU:
 
         # Autolog
         # *** Datas *** #
-        runtime = time.strftime("%Y%m%d-%H%M%S")
+        runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
         sys = platform.platform()
         py = platform.python_version()
         platform.system()
 
-        def runimeLog():
+        def runtimeLog():
             logFile = open(f"logs/autolog.log", "a")
             logFile.write(
                 f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\n")
             logFile.close()
-        runimeLog()
+        runtimeLog()
 
         # About Device
         # LogTypes
@@ -129,7 +131,7 @@ class LSU:
                                                '%012x' % uuid.getnode()))
                 if (platform.system() != "Windows"):
                     info['Processor'] = cpuinfo.get_cpu_info()['brand_raw']
-                    info['Ram'] = str(
+                    info['RAM'] = str(
                         round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
                 json_object = json.dumps(info, indent=3)
                 with open("extensions/sysinfo.json", "w") as f:
@@ -188,6 +190,26 @@ class LSU:
                         lastLog.append(line)
                     messagebox.showinfo(
                         "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
+        
+        
+        def setting():
+            add_node = IntVar()
+            
+            def save():
+                if (add_node.get() == 1):
+                    save_btn["state"] = NORMAL
+                    save_btn.configure(text="HEY")
+            
+            settings = tkinter.Tk()
+            settings.title("Settings")
+            settings.geometry("300x300")
+            settings.resizable(False, False)
+            Checkbutton(settings, variable=add_node, offvalue=0, text='Node Update', bg='#F0F8FF', width=20, font=(
+            'arial', 12, 'normal'), command=save).place(x=50, y=30)
+            save_btn = Button(settings, text='Save', state=DISABLED, bg='#F0F8FF', width=20, font=('arial', 12, 'normal'), command=None).place(x=50, y=240)
+            settings.mainloop()
+        setting()
+            
 
         # Menu
         self.menubar = Menu(root, background='#ffffff', foreground='black',
@@ -199,7 +221,7 @@ class LSU:
         help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
-        # userHelp.add_command(label="Changelog", command=changelog) # Not available yet
+        userHelp.add_command(label="Changelog", command=setting) # Not available yet
         userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
         logs = Menu(self.menubar, tearoff=0, background='#ffffff')

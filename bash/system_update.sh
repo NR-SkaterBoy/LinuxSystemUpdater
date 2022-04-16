@@ -40,7 +40,7 @@ case "$ID" in
         if zenity --question --title="APT Autoremove" --text="Would you like to run apt autoremove?" --no-wrap; then
             echo -e $PASSWD | sudo -S apt autoremove -y
         fi
-        echo -e $PASSWD | apt --fix-broken install
+        echo -e $PASSWD | sudo -S apt --fix-broken install
     ;;
     *)
         zenity --error --title="Error" --text="Update failed!\nPlease check the supported systems or your internet connection!" --no-wrap

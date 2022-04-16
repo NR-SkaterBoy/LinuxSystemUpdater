@@ -8,6 +8,7 @@
 # Import modules
 from audioop import add
 from cgitb import text
+from msilib.schema import Directory
 import os
 import sys
 import socket
@@ -30,11 +31,12 @@ if (platform.system() != "Windows"):
     import psutil
 
 # TODO: Make loop and set the file(s) rights
-# TODO: Make password bash file
 # Set the file(s) rights
-os.chmod("bash/system_update.sh", stat.S_IRWXU)
-os.chmod("bash/node_update.sh", stat.S_IRWXU)
-os.chmod("bash/pass.sh", stat.S_IRWXU)
+directory = "bash"
+for i in os.listdir(directory):
+    files = os.path.join(directory, i)
+    print(files)
+    os.chmod(files, stat.S_IRWXU)
 
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
@@ -82,7 +84,7 @@ class LSU:
         def runtimeLog():
             logFile = open(f"logs/autolog.log", "a")
             logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\n")
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: -\n")
             logFile.close()
         runtimeLog()
 
@@ -162,13 +164,13 @@ class LSU:
 
         def runningSystemUpdate():
             try:
-                subprocess.call("bash/system_update.sh")
                 if (os.path.isfile("files/node.json") == True):
                     f = open('files/node.json')
                     data = json.load(f)
                     if (data["Node update"] == "Enable"):
                         subprocess.call("bash/node_update.sh")
                     f.close()
+                subprocess.call("bash/system_update.sh")
             except Exception as e:
                 criticalLog()
                 logging.critical(
@@ -302,7 +304,7 @@ if __name__ == "__main__":
             level=logging.CRITICAL,
             format="{asctime} {levelname:<8} {message}",
             style='{',
-            filename="logs/applog.log",
+            filename="logs/critical.log",
             filemode="a"
         )
         logging.critical("\n\nThere was an error with LSU!", exc_info=True)

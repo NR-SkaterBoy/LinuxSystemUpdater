@@ -5,7 +5,7 @@
 # Node update
 
 # PASSWD=$(zenity --password --title=authentication)
-export SUDO_ASKPASS="./pass.sh"
+export SUDO_ASKPASS="bash/pass.sh"
 
 if zenity --question --title="Node Update" --text="Would you like to run node update?" --no-wrap; then
     sudo -A npm cache clean -f

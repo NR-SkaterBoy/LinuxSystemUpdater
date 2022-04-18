@@ -124,8 +124,9 @@ class LSU:
 
         # Check node
         # Check folder
-        node_folder = run(['ls','/usr/bin/nodejs'])
-        if (node_folder.returncode != 0):
+        node_folder = run(['which', 'node'])
+        print(node_folder)
+        if (node_folder != "node not found"):
             node_version = "NONE"
             debugLog()
         else:

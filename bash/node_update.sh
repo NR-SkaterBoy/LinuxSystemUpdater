@@ -13,7 +13,7 @@ cmd="which node"
 $cmd
 returncode=$?
 
-if [ $status -eq 0 ]
+if [ $returncode -eq 0 ]
     then
         if zenity --question --title="Node Update" --text="Would you like to run node update?" --no-wrap; then
             sudo -A npm cache clean -f

@@ -63,14 +63,15 @@ while [ $rc -eq 1 ]; do
     echo "${rc}-${ans}"
     echo $ans
 
-    if [[ $ans = "Restart" ]]
+    if [[ $ans = "Shutdown" ]]
     then
         sudo -A shutdown now
-    elif [[ $ans = "Shutdown" ]]
+    elif [[ $ans = "Restart" ]]
     then
         sudo -A shutdown -r now
     elif [[ $ans = "Quit" ]]
     then
+        # TODO: Close LSU
         exit
     fi
 done

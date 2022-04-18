@@ -47,7 +47,7 @@ class LSU:
         root.minsize(width=800, height=450)
         master.configure(background="#181d31")
         # master.iconbitmap("icons/lsu.ico")
-        photo = PhotoImage(file="icons/logo2.png")
+        photo = PhotoImage(file="icons/lsu.png")
         master.iconphoto(False, photo)
 
         # LogFolder and neccesary file(s)
@@ -214,13 +214,16 @@ class LSU:
                         "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
 
         def settings():
-            # TODO: Add icon
-            # TODO: Make, bg
+            # TODO: Add help
             # FIX: Checkbutton style
             setting = Toplevel()
             setting.title("Settings")
             setting.geometry("300x300")
             setting.resizable(False, False)
+            setting.grab_set()
+            setting.configure(background="#383838")
+            photo = PhotoImage(file="icons/setting.png")
+            setting.iconphoto(False, photo)
 
             def save():
                 if (add_node.get() == 1):
@@ -254,9 +257,10 @@ class LSU:
                 node_opts = 0
             node_stngs.close()
             add_node = IntVar(value=node_opts)
-            Label(setting, text="Modules", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5,anchor=CENTER, y=-110)
-            ttk.Checkbutton(setting, text="Node", command=save,
-                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5,anchor=CENTER, y=-60)
+
+            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5,anchor=CENTER, y=-110)
+            ttk.Checkbutton(setting, text="Node Update", command=save,
+                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
         # settings()
 
         # Menu

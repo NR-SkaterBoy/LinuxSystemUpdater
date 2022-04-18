@@ -49,6 +49,21 @@ case "$ID" in
     ;;
 esac
 # System restart
-if zenity --question --title="Restart" --text="Please restart the system!\n\nWould you like to restart the system?" --no-wrap; then
+ans=$(zenity --info --title 'What is the next step?' \
+    --text 'What is the next step?' \
+    --ok-label Shutdown \
+    --extra-button Restart \
+    --extra-button Quit \
+)
+
+
+if [[ $ans = "Restart" ]]
+then
+    sudo -A shutdown now
+elif [[ $ans = "Shutdown" ]]
+then
     sudo -A shutdown -r now
+elif [[ $ans = "Quit" ]]
+then
+    exit
 fi

@@ -29,10 +29,10 @@ if (platform.system() != "Windows"):
 
 # Set the file(s) rights
 directory = "bash"
-if (platform.system() != "Windows"):
-    for i in os.listdir(directory):
-        files = os.path.join(directory, i)
-        os.chmod(files, stat.S_IRWXU)
+for i in os.listdir(directory):
+    files = os.path.join(directory, i)
+    # print(files)
+    os.chmod(files, stat.S_IRWXU)
 
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
@@ -74,13 +74,14 @@ class LSU:
         runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
         sys = platform.platform()
         py = platform.python_version()
+        node_version = subprocess.check_output(['node', '-v'])
         platform.system()
 
-        # TODO: Add node version
+        # FIX: Node output
         def runtimeLog():
             logFile = open(f"logs/autolog.log", "a")
             logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: -\n")
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
             logFile.close()
         runtimeLog()
 
@@ -185,7 +186,7 @@ class LSU:
         # TODO: Edit output
         def systemInfo():
             log = json.load(open("files/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log)
+            messagebox.showinfo("System Information", log) 
         # systemInfo()
 
         def aboutSoftware():
@@ -210,10 +211,12 @@ class LSU:
                     for line in (f.readlines()[-4:]):
                         lastLog.append(line)
                     messagebox.showinfo(
-                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}")
+                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
 
-        # TODO: Make better design
         def settings():
+            # TODO: Add icon
+            # TODO: Make, bg
+            # FIX: Checkbutton style
             setting = Toplevel()
             setting.title("Settings")
             setting.geometry("300x300")
@@ -230,7 +233,7 @@ class LSU:
                             f.close()
                         return json.dumps(node)
                     except Exception as e:
-                        print("as")
+                        criticalLog()
                 else:
                     try:
                         node = {}
@@ -241,16 +244,20 @@ class LSU:
                             f.close()
                         return json.dumps(node)
                     except Exception as e:
-                        print("as")
-            f = open("files/node.json", "r")
-            data = json.load(f)
+                        criticalLog()
+                        
+            node_stngs = open("files/node.json", "r")
+            data = json.load(node_stngs)
             if (data["Node update"] == "Enable"):
                 node_opts = 1
             else:
                 node_opts = 0
+            node_stngs.close()
             add_node = IntVar(value=node_opts)
+            Label(setting, text="Modules", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5,anchor=CENTER, y=-110)
             ttk.Checkbutton(setting, text="Node", command=save,
-                            variable=add_node, onvalue=1, offvalue=0).pack()
+                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5,anchor=CENTER, y=-60)
+        # settings()
 
         # Menu
         self.menubar = Menu(root, background='#ffffff', foreground='black',
@@ -259,8 +266,8 @@ class LSU:
         help.add_command(label="Supported System", command=supportedSystem)
         help.add_command(label="About", command=aboutSoftware)
         help.add_command(label="About System", command=systemInfo)
-        help.add_command(label="Quit", command=quitLSU)
         help.add_command(label="Settings", command=settings)
+        help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # Not available yet
@@ -270,16 +277,16 @@ class LSU:
         logs.add_command(label="Open last Log", command=openLastLog)
         self.menubar.add_cascade(label="Logger", menu=logs)
         # Title
-        self.label = Label(root, text='System\nUpdater', bg="#181d31",
+        Label(root, text='System\nUpdater', bg="#181d31",
                            fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
         # Btn of sysupdate
-        self.add_btn = Button(root, text='Update your system', bg='#F0F8FF', width=20, font=(
+        Button(root, text='Update your system', bg='#F0F8FF', width=20, font=(
             'arial', 12, 'normal'), command=runningSystemUpdate).place(x=70, y=190)
         # Btn of my website
-        self.add_btn = Button(root, text='Visit my Website', bg='#F0F8FF', width=20, font=(
+        Button(root, text='Visit my Website', bg='#F0F8FF', width=20, font=(
             'arial', 12, 'normal'), command=openMyWebsite).place(x=70, y=250)
         # Btn of my github profile
-        self.add_btn = Button(root, text='Follow me on Github', bg='#F0F8FF', width=20, font=(
+        Button(root, text='Follow me on Github', bg='#F0F8FF', width=20, font=(
             'arial', 12, 'normal'), command=openMyGithub).place(x=70, y=310)
         # Pictures
         self.lsu_pic = Canvas(root, height=470, width=449,
@@ -304,4 +311,3 @@ if __name__ == "__main__":
             filename="logs/critical.log",
             filemode="a"
         )
-        logging.critical("\n\nThere was an error with LSU!", exc_info=True)

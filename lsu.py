@@ -15,6 +15,7 @@ import json
 import logging
 import stat
 import subprocess
+from subprocess import run
 import webbrowser
 import time
 import platform
@@ -70,22 +71,6 @@ class LSU:
         files()
 
         # Autolog
-        # *** Datas *** #
-        runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
-        sys = platform.platform()
-        py = platform.python_version()
-        node_version = subprocess.check_output(['node', '-v'])
-        platform.system()
-
-        # FIX: Node output
-        def runtimeLog():
-            logFile = open(f"logs/autolog.log", "a")
-            logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
-            logFile.close()
-        runtimeLog()
-
-        # About Device
         # LogTypes
         def criticalLog():
             logging.basicConfig(
@@ -132,6 +117,33 @@ class LSU:
                 filemode="a"
             )
 
+        # *** Datas *** #
+        runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
+        sys = platform.platform()
+        py = platform.python_version()
+
+        # Check node
+        # Check folder
+        node_folder = run(['ls','/usr/bin/nodejs'])
+        if (node_folder.returncode != 0):
+            node_version = "NONE"
+            debugLog()
+        else:
+            node_version = subprocess.check_output(['node', '-v'])
+            debugLog()
+            
+        platform.system()
+
+        # FIX: Node output
+        # FIX: Check node available
+        def runtimeLog():
+            logFile = open(f"logs/autolog.log", "a")
+            logFile.write(
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+            logFile.close()
+        runtimeLog()
+
+        # About Device
         def getSystemInfo():
             try:
                 info = {}

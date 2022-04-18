@@ -16,7 +16,7 @@ if which mode > /dev/null
         fi
     else
         if zenity --question --title="Node Installing..." --text="Would you like to install node package?" --no-wrap; then
-            sudo -A apt install node
-            sudo -A apt install npm
+            sudo -A apt install nodejs -y
+            sudo -A apt install npm -y
         fi
 fi

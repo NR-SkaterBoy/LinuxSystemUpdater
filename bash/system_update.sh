@@ -59,6 +59,9 @@ while [ $rc -eq 1 ]; do
         --extra-button Shutdown \
     )
 
+    rc=$?
+    echo "${rc}-${ans}"
+    echo $ans
 
     if [[ $ans = "Restart" ]]
     then

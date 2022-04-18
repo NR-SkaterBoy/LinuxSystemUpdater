@@ -48,22 +48,26 @@ case "$ID" in
         exit
     ;;
 esac
+
 # System restart
-ans=$(zenity --info --title 'What is the next step?' \
-    --text 'What is the next step?' \
-    --ok-label Shutdown \
-    --extra-button Restart \
-    --extra-button Quit \
-)
+rc=1
+while [ $rc -eq 1 ]; do 
+    ans=$(zenity --info --title 'What is the next step?' \
+        --text 'What is the next step?' \
+        --ok-label Quit \
+        --extra-button Restart \
+        --extra-button Shutdown \
+    )
 
 
-if [[ $ans = "Restart" ]]
-then
-    sudo -A shutdown now
-elif [[ $ans = "Shutdown" ]]
-then
-    sudo -A shutdown -r now
-elif [[ $ans = "Quit" ]]
-then
-    exit
-fi
+    if [[ $ans = "Restart" ]]
+    then
+        sudo -A shutdown now
+    elif [[ $ans = "Shutdown" ]]
+    then
+        sudo -A shutdown -r now
+    elif [[ $ans = "Quit" ]]
+    then
+        exit
+    fi
+done

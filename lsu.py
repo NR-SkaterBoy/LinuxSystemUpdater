@@ -6,6 +6,8 @@
 # Version: Alpha 0.4
 
 # Import modules
+from distutils.debug import DEBUG
+from distutils.log import debug
 import os
 import sys
 import socket
@@ -37,6 +39,25 @@ for i in os.listdir(directory):
 
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
+
+# LogTypes:
+    # CRITICAL - ERROR - WARNING - INFO - DEBUG
+
+# Levels:
+    # _Critical -> 50
+    # _Error -> 40
+    # _Warning -> 30
+    # _Info -> 20
+    # _Debug -> 10
+
+def makeLoggFiles(type, file):
+    logging.basicConfig(
+        format="{asctime} {levelname} {message}",
+        level=logging.type,
+        style='{',
+        filename=f"logs/{file}.log",
+        filemode="a"
+    )
 
 
 class LSU:
@@ -71,52 +92,6 @@ class LSU:
         files()
 
         # Autolog
-        # LogTypes
-        def criticalLog():
-            logging.basicConfig(
-                level=logging.CRITICAL,
-                format="{asctime} {levelname:<50} {message}",
-                style='{',
-                filename="logs/critical.log",
-                filemode="a"
-            )
-
-        def errorLog():
-            logging.basicConfig(
-                level=logging.ERROR,
-                format="{asctime} {levelname:<40} {message}",
-                style='{',
-                filename="logs/error.log",
-                filemode="a"
-            )
-
-        def warningLog():
-            logging.basicConfig(
-                level=logging.WARNING,
-                format="{asctime} {levelname:<30} {message}",
-                style='{',
-                filename="logs/warning.log",
-                filemode="a"
-            )
-
-        def infoLog():
-            logging.basicConfig(
-                level=logging.INFO,
-                format="{asctime} {levelname:<20} {message}",
-                style='{',
-                filename="logs/info.log",
-                filemode="a"
-            )
-
-        def debugLog():
-            logging.basicConfig(
-                level=logging.DEBUG,
-                format="{asctime} {levelname:<10} {message}",
-                style='{',
-                filename="logs/debug.log",
-                filemode="a"
-            )
-
         # *** Datas *** #
         runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
         sys = platform.platform()
@@ -124,14 +99,12 @@ class LSU:
 
         # Check node
         # Check folder
-        node_folder = run(['which', 'node'])
-        print(node_folder)
-        if (node_folder != "node not found"):
-            node_version = "NONE"
-            debugLog()
-        else:
+        if (os.path.isfile("/usr/bin/node") == True or os.path.isfile("/usr/local/bin/node") == True):
             node_version = subprocess.check_output(['node', '-v'])
-            debugLog()
+            makeLoggFiles(DEBUG, debug)
+        else:
+            node_version = "NONE"
+            makeLoggFiles(DEBUG, debug)
             
         platform.system()
 
@@ -182,9 +155,7 @@ class LSU:
                     f.close()
                 subprocess.call("bash/system_update.sh")
             except Exception as e:
-                criticalLog()
-                logging.critical(
-                    "\n\nYou have to use Linux system", exc_info=True)
+                makeLoggFiles(CRITICAL, critical)
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")

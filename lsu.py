@@ -21,10 +21,10 @@ import time
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+import platform
 
 # You won't get error message if you are on windows
 if (platform.system() != "Windows"):
-    import platform
     import cpuinfo
     import psutil
 

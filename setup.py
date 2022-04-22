@@ -7,6 +7,11 @@
 # Imports
 import subprocess, os, stat
 
-os.chmod("bash/install.sh", stat.S_IRWXU)
+# Set the file(s) rights
+directory = "bash"
+for i in os.listdir(directory):
+    files = os.path.join(directory, i)
+    # print(files)
+    os.chmod(files, stat.S_IRWXU)
 subprocess.run("bash/install.sh")
 

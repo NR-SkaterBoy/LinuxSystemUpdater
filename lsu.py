@@ -6,8 +6,6 @@
 # Version: Alpha 0.4
 
 # Import modules
-from distutils.debug import DEBUG
-from distutils.log import debug
 import os
 import sys
 import socket
@@ -20,13 +18,13 @@ import subprocess
 from subprocess import run
 import webbrowser
 import time
-import platform
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
 
 # You won't get error message if you are on windows
 if (platform.system() != "Windows"):
+    import platform
     import cpuinfo
     import psutil
 
@@ -40,22 +38,46 @@ for i in os.listdir(directory):
 # Terminal
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
 
-# LogTypes:
-    # CRITICAL - ERROR - WARNING - INFO - DEBUG
-
-# Levels:
-    # _Critical -> 50
-    # _Error -> 40
-    # _Warning -> 30
-    # _Info -> 20
-    # _Debug -> 10
-
-def makeLoggFiles(type, file):
+# LogTypes
+def criticalLog():
+     logging.basicConfig(
+         level=logging.CRITICAL,
+         format="{asctime} {levelname:<50} {message}",
+         style='{',
+         filename="logs/critical.log",
+         filemode="a"
+     )
+def errorLog():
     logging.basicConfig(
-        format="{asctime} {levelname} {message}",
-        level=logging.type,
+        level=logging.ERROR,
+        format="{asctime} {levelname:<40} {message}",
         style='{',
-        filename=f"logs/{file}.log",
+        filename="logs/error.log",
+        filemode="a"
+    )
+def warningLog():
+    logging.basicConfig(
+        level=logging.WARNING,
+        format="{asctime} {levelname:<30} {message}",
+        style='{',
+        filename="logs/warning.log",
+        filemode="a"
+    )
+def infoLog():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="{asctime} {levelname:<20} {message}",
+        style='{',
+        filename="logs/info.log",
+        filemode="a"
+    )
+
+def debugLog():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="{asctime} {levelname:<10} {message}",
+        style='{',
+        filename="logs/debug.log",
         filemode="a"
     )
 
@@ -101,11 +123,11 @@ class LSU:
         # Check folder
         if (os.path.isfile("/usr/bin/node") == True or os.path.isfile("/usr/local/bin/node") == True):
             node_version = subprocess.check_output(['node', '-v'])
-            makeLoggFiles(DEBUG, debug)
+            debugLog()
         else:
             node_version = "NONE"
-            makeLoggFiles(DEBUG, debug)
-            
+            debugLog()
+
         platform.system()
 
         # FIX: Node output
@@ -155,7 +177,7 @@ class LSU:
                     f.close()
                 subprocess.call("bash/system_update.sh")
             except Exception as e:
-                makeLoggFiles(CRITICAL, critical)
+                debugLog()
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")
@@ -170,7 +192,7 @@ class LSU:
         # TODO: Edit output
         def systemInfo():
             log = json.load(open("files/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log) 
+            messagebox.showinfo("System Information", log)
         # systemInfo()
 
         def aboutSoftware():
@@ -232,7 +254,7 @@ class LSU:
                         return json.dumps(node)
                     except Exception as e:
                         criticalLog()
-                        
+
             node_stngs = open("files/node.json", "r")
             data = json.load(node_stngs)
             if (data["Node update"] == "Enable"):
@@ -242,7 +264,7 @@ class LSU:
             node_stngs.close()
             add_node = IntVar(value=node_opts)
 
-            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5,anchor=CENTER, y=-110)
+            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
             ttk.Checkbutton(setting, text="Node Update", command=save,
                             variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
         # settings()
@@ -266,7 +288,7 @@ class LSU:
         self.menubar.add_cascade(label="Logger", menu=logs)
         # Title
         Label(root, text='System\nUpdater', bg="#181d31",
-                           fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
+              fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
         # Btn of sysupdate
         Button(root, text='Update your system', bg='#F0F8FF', width=20, font=(
             'arial', 12, 'normal'), command=runningSystemUpdate).place(x=70, y=190)
@@ -292,10 +314,5 @@ if __name__ == "__main__":
         lsu = LSU(root)
         root.mainloop()
     except Exception as e:
-        logging.basicConfig(
-            level=logging.CRITICAL,
-            format="{asctime} {levelname:<8} {message}",
-            style='{',
-            filename="logs/critical.log",
-            filemode="a"
-        )
+        criticalLog()
+        errorLog()

@@ -9,9 +9,9 @@ shell=True
 . /etc/os-release
 
 case "$ID" in
-    "ubuntu" | "kali" | "raspbian")
-        pip install -r ../requirements.txt
-        sudo apt install python3.6 -y
+    "ubuntu" | "kali" | "raspbian" | "sparky")
+        pip3 install -r ../requirements.txt
+        sudo apt-get install -y python3.6
         sudo apt install python3-tk -y
         sudo apt install python-tk -y
     ;;
@@ -22,5 +22,5 @@ case "$ID" in
         exit 1
     ;;
 esac
-# Launc LSU
+# Launch LSU
 python3 lsu.py

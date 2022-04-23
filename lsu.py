@@ -3,7 +3,10 @@
 # Github: https://github.com/NR-SkaterBoy
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package Updater
-# Version: Alpha 0.4
+# Version: Alpha 0.5
+
+# TODO: Add pm2 update
+# TODO: Make topmodel class
 
 # Import modules
 import os
@@ -21,17 +24,17 @@ import time
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+import platform
 
 # You won't get error message if you are on windows
 if (platform.system() != "Windows"):
-    import platform
     import cpuinfo
     import psutil
 
 # Set the file(s) rights
 directory = "bash"
-for i in os.listdir(directory):
-    files = os.path.join(directory, i)
+for file in os.listdir(directory):
+    files = os.path.join(directory, file)
     # print(files)
     os.chmod(files, stat.S_IRWXU)
 
@@ -39,43 +42,52 @@ for i in os.listdir(directory):
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
 
 # LogTypes
+
+
 def criticalLog():
-     logging.basicConfig(
-         level=logging.CRITICAL,
-         format="{asctime} {levelname:<50} {message}",
-         style='{',
-         filename="logs/critical.log",
-         filemode="a"
-     )
+    logging.basicConfig(
+        level=logging.CRITICAL,
+        format="{asctime} {levelname} {message}",
+        style='{',
+        filename="logs/critical.log",
+        filemode="a"
+    )
+
+
 def errorLog():
     logging.basicConfig(
         level=logging.ERROR,
-        format="{asctime} {levelname:<40} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
         filename="logs/error.log",
         filemode="a"
     )
+
+
 def warningLog():
     logging.basicConfig(
         level=logging.WARNING,
-        format="{asctime} {levelname:<30} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
         filename="logs/warning.log",
         filemode="a"
     )
+
+
 def infoLog():
     logging.basicConfig(
         level=logging.INFO,
-        format="{asctime} {levelname:<20} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
         filename="logs/info.log",
         filemode="a"
     )
 
+
 def debugLog():
     logging.basicConfig(
         level=logging.DEBUG,
-        format="{asctime} {levelname:<10} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
         filename="logs/debug.log",
         filemode="a"
@@ -108,6 +120,15 @@ class LSU:
                 node["Node update"] = "Disable"
                 json_object = json.dumps(node, indent=3)
                 with open("files/node.json", "w") as f:
+                    f.write(json_object)
+                    f.close()
+                return json.dumps(node)
+            
+            if (os.path.isfile("files/pm2.json") != True):
+                pm2 = {}
+                pm2["pm2 update"] = "Disable"
+                json_object = json.dumps(pm2, indent=3)
+                with open("files/pm2.json", "w") as f:
                     f.write(json_object)
                     f.close()
                 return json.dumps(node)
@@ -196,7 +217,7 @@ class LSU:
         # systemInfo()
 
         def aboutSoftware():
-            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.4")
+            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5")
 
         def quitLSU():
             logFile = open(f"logs/autolog.log", "a")
@@ -232,6 +253,7 @@ class LSU:
             setting.iconphoto(False, photo)
 
             def save():
+                # NODE
                 if (add_node.get() == 1):
                     try:
                         node = {}
@@ -255,18 +277,58 @@ class LSU:
                     except Exception as e:
                         criticalLog()
 
-            node_stngs = open("files/node.json", "r")
-            data = json.load(node_stngs)
+                # PM2
+                if (add_pm2.get() == 1):
+                    try:
+                        pm2 = {}
+                        pm2["pm2 update"] = "Enable"
+                        json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as f:
+                            f.write(json_object)
+                            f.close()
+                        return json.dumps(pm2)
+                    except Exception as e:
+                        criticalLog()
+                        debugLog()
+                else:
+                    try:
+                        pm2 = {}
+                        pm2["pm2 update"] = "Disable"
+                        json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as f:
+                            f.write(json_object)
+                            f.close()
+                        return json.dumps(pm2)
+                    except Exception as e:
+                        criticalLog()
+
+            # NODE
+            node_strngs = open("files/node.json", "r")
+            data = json.load(node_strngs)
             if (data["Node update"] == "Enable"):
                 node_opts = 1
             else:
                 node_opts = 0
-            node_stngs.close()
-            add_node = IntVar(value=node_opts)
+            node_strngs.close()
 
-            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
+            # PM2
+            pm2_strngs = open("files/pm2.json", "r")
+            data = json.load(pm2_strngs)
+            if (data["pm2 update"] == "Enable"):
+                pm2_opts = 1
+            else:
+                pm2_opts = 0
+            pm2_strngs.close()
+
+            add_node = IntVar(value=node_opts)
+            add_pm2 = IntVar(value=pm2_opts)
+
+            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
             ttk.Checkbutton(setting, text="Node Update", command=save,
                             variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
+            ttk.Checkbutton(setting, text="pm2 Update", command=save,
+                            variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
         # settings()
 
         # Menu

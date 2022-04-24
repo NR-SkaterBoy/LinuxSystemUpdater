@@ -274,15 +274,14 @@ class LSU(tk.Tk):
         else:
             node_version = "NONE"
 
-        # FIX: Node output
-        # TODO: Use infoLog instead
-        def runtimeLog():
-            logFile = open(f"logs/autolog.log", "a")
-            logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
-            logFile.close()
-        runtimeLog()
-        # infoLog(f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+        # TODO: FIX: Node output
+        # def runtimeLog():
+        #     logFile = open(f"logs/autolog.log", "a")
+        #     logFile.write(
+        #         f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+        #     logFile.close()
+        # runtimeLog()
+        infoLog(f"\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
 
         # About Device
         def getSystemInfo():
@@ -359,18 +358,17 @@ class LSU(tk.Tk):
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
 
-        # TODO: Read from infolog file
-        # TODO: Chech infolog file, look line 366
         def openLastLog():
             lastLog = []
-            if len(os.listdir("logs")) == 0:
+            if (os.path.isfile("logs/info.log")) == False:
                 messagebox.showerror("Error", "No log file")
             else:
-                with open("logs/autolog.log", encoding="utf-8") as f:
-                    for line in (f.readlines()[-4:]):
+                with open("logs/info.log", encoding="utf-8") as f:
+                    for line in (f.readlines()[-5:]):
                         lastLog.append(line)
+                    date = lastLog[0]
                     messagebox.showinfo(
-                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
+                        "Last Log", f"{date[:19]}\n{lastLog[1]}{lastLog[2]}{lastLog[3]}")
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',

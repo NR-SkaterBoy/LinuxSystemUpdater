@@ -8,12 +8,18 @@
 export SUDO_ASKPASS="bash/pass.sh"
 
 command
-returncode=$?
+returncode_node=$?
+cmd_n="which node"
+$cmd_n
+returncode_node=$?
+returncode_pm2=$?
 cmd="which pm2"
 $cmd
-returncode=$?
+returncode_pm2=$?
 
-if [ $returncode -eq 0 ]
+if [ $returncode_node -eq 0 ]
+then
+    if [ $returncode_pm2 -eq 0 ]
     then
         if zenity --question --title="pm2 Update" --text="Would you like to run pm2 update?" --no-wrap; then
             sudo -A npm install pm2 -g
@@ -25,4 +31,11 @@ if [ $returncode -eq 0 ]
         if zenity --question --title="pm2 Installing..." --text="Would you like to install pm2 package?" --no-wrap; then
             sudo -A npm install pm2 -g
         fi
+    fi
+else
+    if zenity --question --title="Node Installing..." --text="Would you like to install node package? This package is required for pm2!" --no-wrap; then
+        sudo -A apt install nodejs -y
+        sudo -A apt install npm -y
+        sudo -A npm install pm2 -g
+    fi
 fi

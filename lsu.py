@@ -16,7 +16,6 @@ import json
 import logging
 import stat
 import subprocess
-from subprocess import run
 import webbrowser
 import time
 import tkinter as tk
@@ -39,6 +38,9 @@ for file in os.listdir(directory):
 # os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
 
 # LogTypes:
+
+# () => task        @not necessary
+# [] => function    @important          Do not use to gather information
 
 
 def criticalLog(msg):
@@ -154,7 +156,7 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(node)
                 except Exception as node_err:
-                    errorLog("Error with node", node_err)
+                    errorLog(f"Error writing node file (Enable) [node_save] - {node_err}")
             else:
                 try:
                     node = {}
@@ -165,7 +167,7 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(node)
                 except Exception as node_err:
-                    errorLog("Error witn node", node_err)
+                    errorLog("Error writing node file (Disable) [node_save] - {node_err}")
 
         def pm2_save():
             if (add_pm2.get() == 1):
@@ -178,7 +180,7 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(pm2)
                 except Exception as pm2_err:
-                    errorLog("Error with pm2", pm2_err)
+                    errorLog(f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
             else:
                 try:
                     pm2 = {}
@@ -189,7 +191,7 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(pm2)
                 except Exception as pm2_err:
-                    errorLog("Error with pm2", pm2_err)
+                    errorLog(f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
 
         # NODE
         node_strngs = open("files/node.json", "r")
@@ -273,12 +275,14 @@ class LSU(tk.Tk):
             node_version = "NONE"
 
         # FIX: Node output
+        # TODO: Use infoLog instead
         def runtimeLog():
             logFile = open(f"logs/autolog.log", "a")
             logFile.write(
                 f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
             logFile.close()
         runtimeLog()
+        # infoLog(f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
 
         # About Device
         def getSystemInfo():
@@ -303,7 +307,7 @@ class LSU(tk.Tk):
                     f.close()
                 return json.dumps(info)
             except Exception as sysinfo_err:
-                infoLog("Error with systeminfo", sysinfo_err)
+                errorLog(f"An error occurred while retrieving system information [getSystemInfo] - {sysinfo_err}")
         getSystemInfo()
 
         def runningSystemUpdate():
@@ -324,7 +328,7 @@ class LSU(tk.Tk):
 
                 subprocess.call("bash/system_update.sh")
             except Exception as upd_err:
-                errorLog(f"Error with update - {upd_err}")
+                errorLog(f"An error occurred while updating the system [runningSystemUpdate] - {upd_err}")
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")
@@ -355,6 +359,8 @@ class LSU(tk.Tk):
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
 
+        # TODO: Read from infolog file
+        # TODO: Chech infolog file, look line 366
         def openLastLog():
             lastLog = []
             if len(os.listdir("logs")) == 0:
@@ -365,11 +371,6 @@ class LSU(tk.Tk):
                         lastLog.append(line)
                     messagebox.showinfo(
                         "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
-
-        # place a button on the root window
-        # ttk.Button(self,
-        #            text='Open a window',
-        #            command=self.open_window).pack(expand=True)
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',
@@ -417,9 +418,7 @@ class LSU(tk.Tk):
 if __name__ == "__main__":
     try:
         # TODO: Display name
-        # lsu = tk.Tk()
-        # lsu.wm_title("Linux System Updater")
         lsu = LSU()
         lsu.mainloop()
     except Exception as startup_err:
-        criticalLog(f"Error with the launch - {startup_err}")
+        criticalLog(f"An error occurred while starting the application - {startup_err}")

@@ -59,7 +59,7 @@ def errorLog(msg):
         level=logging.ERROR,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/error.log",
+        filename="logs/dev.log",
         filemode="a"
     )
     logging.error(msg)
@@ -70,7 +70,7 @@ def warningLog(msg):
         level=logging.WARNING,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/warning.log",
+        filename="logs/dev.log",
         filemode="a"
     )
     logging.warning(msg)
@@ -92,7 +92,7 @@ def debugLog(msg):
         level=logging.DEBUG,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/debug.log",
+        filename="logs/dev.log",
         filemode="a"
     )
     logging.debug(msg)
@@ -129,10 +129,22 @@ def pm2_file():
             pm2_file.write(json_object)
             pm2_file.close()
         return json.dumps(pm2)
+    
+def forever_file():
+    if (os.path.isfile("files/forever.json") != True):
+        forever = {}
+        forever["forever Update"] = "Disable"
+        json_object = json.dumps(forever, indent=3)
+        with open("files/forever.json", "w") as forever_file:
+            forever_file.write(json_object)
+            forever_file.close()
+        return json.dumps(forever)
 
 
 node_file()
 pm2_file()
+forever_file()
+
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
@@ -156,7 +168,8 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(node)
                 except Exception as node_err:
-                    errorLog(f"Error writing node file (Enable) [node_save] - {node_err}")
+                    errorLog(
+                        f"Error writing node file (Enable) [node_save] - {node_err}")
             else:
                 try:
                     node = {}
@@ -167,7 +180,8 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(node)
                 except Exception as node_err:
-                    errorLog("Error writing node file (Disable) [node_save] - {node_err}")
+                    errorLog(
+                        "Error writing node file (Disable) [node_save] - {node_err}")
 
         def pm2_save():
             if (add_pm2.get() == 1):
@@ -180,7 +194,8 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(pm2)
                 except Exception as pm2_err:
-                    errorLog(f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
+                    errorLog(
+                        f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
             else:
                 try:
                     pm2 = {}
@@ -191,7 +206,34 @@ class Settings(tk.Toplevel):
                         f.close()
                     return json.dumps(pm2)
                 except Exception as pm2_err:
-                    errorLog(f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
+                    errorLog(
+                        f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
+                    
+        def forever_save():
+            if (add_forever.get() == 1):
+                try:
+                    forever = {}
+                    forever["forever Update"] = "Enable"
+                    forever_json_object = json.dumps(forever, indent=3)
+                    with open("files/forever.json", "w") as f:
+                        f.write(forever_json_object)
+                        f.close()
+                    return json.dumps(forever)
+                except Exception as forever_err:
+                    errorLog(
+                        f"Error writing forever file (Enable) [forever_save] - {forever_err}")
+            else:
+                try:
+                    forever = {}
+                    forever["forever Update"] = "Disable"
+                    forever_json_object = json.dumps(forever, indent=3)
+                    with open("files/forever.json", "w") as f:
+                        f.write(forever_json_object)
+                        f.close()
+                    return json.dumps(forever)
+                except Exception as forever_err:
+                    errorLog(
+                        f"Error writing forever file (Disable) [forever_save] - {forever_err}")
 
         # NODE
         node_strngs = open("files/node.json", "r")
@@ -210,11 +252,21 @@ class Settings(tk.Toplevel):
         else:
             pm2_opts = 0
         pm2_strngs.close()
+        
+        # Forever
+        forever_strngs = open("files/forever.json", "r")
+        data = json.load(forever_strngs)
+        if (data["forever Update"] == "Enable"):
+            forever_opts = 1
+        else:
+            forever_opts = 0
+        forever_strngs.close()
 
         ############################################
         # Button variables
         add_node = IntVar(value=node_opts)
         add_pm2 = IntVar(value=pm2_opts)
+        add_forever = IntVar(value=forever_opts)
         ############################################
 
         Label(self, text="Modules", bg="#383838", fg="#FFFFFF", font=(
@@ -223,10 +275,12 @@ class Settings(tk.Toplevel):
                         variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
         ttk.Checkbutton(self, text="pm2 Update", command=pm2_save,
                         variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
+        ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
+                        onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
 
-        # TODO: Add description
         def aboutSettings():
-            pass
+            messagebox.showinfo(
+                "How to use it?", "Please check in these modules what you want to update?")
 
         def aboutNode():
             webbrowser.open_new(r"https://nodejs.org/en/about/")
@@ -240,7 +294,7 @@ class Settings(tk.Toplevel):
                        activebackground='white', activeforeground='black')
 
         help = Menu(menubar, tearoff=0, background='#ffffff')
-        help.add_command(label="What is it?", command=NONE)
+        help.add_command(label="What is it?", command=aboutSettings)
         menu.add_cascade(label="Help", menu=help)
 
         modules = Menu(menubar, tearoff=0, background='#ffffff')
@@ -251,7 +305,7 @@ class Settings(tk.Toplevel):
 
 class LSU(tk.Tk):
     def __init__(self):
-        super().__init__()
+        super().__init__(className="Linux System Updater")
 
         self.title("Linux Updater")
         self.geometry("800x450+50+50")
@@ -263,25 +317,27 @@ class LSU(tk.Tk):
         self.iconphoto(False, photo)
 
         # Autolog
-        # *** Datas *** #
+        # *** Data *** #
         runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
         sys = platform.platform()
         py = platform.python_version()
 
         # Check node folder
         if (os.path.isfile("/usr/bin/node") == True or os.path.isfile("/usr/local/bin/node") == True):
-            node_version = subprocess.check_output(['node', '-v'])
+            get_node_version = subprocess.check_output(['node', '-v'])
+            node_version = get_node_version[:8]
         else:
             node_version = "NONE"
 
-        # TODO: FIX: Node output
+        # TODO: Add modules
         # def runtimeLog():
         #     logFile = open(f"logs/autolog.log", "a")
         #     logFile.write(
         #         f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
         #     logFile.close()
         # runtimeLog()
-        infoLog(f"\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+        infoLog(
+            f"\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
 
         # About Device
         def getSystemInfo():
@@ -306,7 +362,8 @@ class LSU(tk.Tk):
                     f.close()
                 return json.dumps(info)
             except Exception as sysinfo_err:
-                errorLog(f"An error occurred while retrieving system information [getSystemInfo] - {sysinfo_err}")
+                errorLog(
+                    f"An error occurred while retrieving system information [getSystemInfo] - {sysinfo_err}")
         getSystemInfo()
 
         def runningSystemUpdate():
@@ -327,7 +384,8 @@ class LSU(tk.Tk):
 
                 subprocess.call("bash/system_update.sh")
             except Exception as upd_err:
-                errorLog(f"An error occurred while updating the system [runningSystemUpdate] - {upd_err}")
+                errorLog(
+                    f"An error occurred while updating the system [runningSystemUpdate] - {upd_err}")
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")
@@ -339,10 +397,10 @@ class LSU(tk.Tk):
             messagebox.showwarning("Supported Systems",
                                    "Ubuntu, Kali Linux, Raspbian, Sparky Linux")
 
-        # TODO: Edit output
         def systemInfo():
             log = json.load(open("files/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log)
+            sysinfo = (f"Platform: {log['Platform']}\nPlatform-release: {log['Platform-release']}\nPlatform-version: {log['Platform-version']}\nArchitecture: {log['Architecture']}\nHostname: {log['Hostname']}\nIP-address: {log['IP-address']}\nMAC-address: {log['MAC-address']}\nProcessor: {log['Processor']}\nRAM: {log['RAM']}")
+            messagebox.showinfo("System Information", sysinfo)
         # systemInfo()
 
         def aboutSoftware():
@@ -415,8 +473,8 @@ class LSU(tk.Tk):
 
 if __name__ == "__main__":
     try:
-        # TODO: Display name
         lsu = LSU()
         lsu.mainloop()
     except Exception as startup_err:
-        criticalLog(f"An error occurred while starting the application - {startup_err}")
+        criticalLog(
+            f"An error occurred while starting the application - {startup_err}")

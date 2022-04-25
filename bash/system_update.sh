@@ -5,13 +5,14 @@
 # Linux Systems source package update
 
 # Help menu
-if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-    echo " "
-    echo "Supported OS:"
-    echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
-    echo -e "\t3.\tFedora\t\t\t4.\tRaspbian"
-    exit
-fi
+# if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+#     echo " "
+#     echo "Supported OS:"
+#     echo -e "\t1.\tUbuntu\t\t\t2.\tKali Linux"
+#     echo -e "\t3.\tFedora\t\t\t4.\tRaspbian"
+#     echo -e "\t5.\tSparky\t\t\t6.\t-"
+#     exit
+# fi
 
 # *** Linux Types *** #
 # Just Supported Systems
@@ -71,7 +72,6 @@ while [ $rc -eq 1 ]; do
         sudo -A shutdown -r now
     elif [[ $ans = "Quit" ]]
     then
-        # TODO: Close LSU
         exit
     fi
 done

@@ -48,7 +48,7 @@ def criticalLog(msg):
         level=logging.CRITICAL,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/critical.log",
+        filename="logs/dev.log",
         filemode="a"
     )
     logging.critical(msg)
@@ -81,7 +81,7 @@ def infoLog(msg):
         level=logging.INFO,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/info.log",
+        filename="logs/dev.log",
         filemode="a"
     )
     logging.info(msg)
@@ -143,164 +143,177 @@ def forever_file():
 
 node_file()
 pm2_file()
-forever_file()
+# forever_file()
 
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
-        super().__init__(parent)
+        try:
+            super().__init__(parent)
 
-        self.geometry("300x300")
-        self.title("Settings")
-        self.resizable(False, False)
-        self.configure(background="#383838")
-        photo = PhotoImage(file="icons/setting.png")
-        self.iconphoto(False, photo)
+            self.geometry("300x300")
+            self.title("Settings")
+            self.resizable(False, False)
+            self.configure(background="#383838")
+            photo = PhotoImage(file="icons/setting.png")
+            self.iconphoto(False, photo)
 
-        def node_save():
-            if (add_node.get() == 1):
-                try:
-                    node = {}
-                    node["Node Update"] = "Enable"
-                    node_json_object = json.dumps(node, indent=3)
-                    with open("files/node.json", "w") as f:
-                        f.write(node_json_object)
-                        f.close()
-                    return json.dumps(node)
-                except Exception as node_err:
-                    errorLog(
-                        f"Error writing node file (Enable) [node_save] - {node_err}")
+            def node_save():
+                if (add_node.get() == 1):
+                    try:
+                        node = {}
+                        node["Node Update"] = "Enable"
+                        node_json_object = json.dumps(node, indent=3)
+                        with open("files/node.json", "w") as f:
+                            f.write(node_json_object)
+                            f.close()
+                        return json.dumps(node)
+                    except Exception as node_err:
+                        errorLog(
+                            f"Error writing node file (Enable) [node_save] - {node_err}")
+                else:
+                    try:
+                        node = {}
+                        node["Node Update"] = "Disable"
+                        node_json_object = json.dumps(node, indent=3)
+                        with open("files/node.json", "w") as f:
+                            f.write(node_json_object)
+                            f.close()
+                        return json.dumps(node)
+                    except Exception as node_err:
+                        errorLog(
+                            "Error writing node file (Disable) [node_save] - {node_err}")
+
+            def pm2_save():
+                if (add_pm2.get() == 1):
+                    try:
+                        pm2 = {}
+                        pm2["pm2 Update"] = "Enable"
+                        pm2_json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as f:
+                            f.write(pm2_json_object)
+                            f.close()
+                        return json.dumps(pm2)
+                    except Exception as pm2_err:
+                        errorLog(
+                            f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
+                else:
+                    try:
+                        pm2 = {}
+                        pm2["pm2 Update"] = "Disable"
+                        pm2_json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as f:
+                            f.write(pm2_json_object)
+                            f.close()
+                        return json.dumps(pm2)
+                    except Exception as pm2_err:
+                        errorLog(
+                            f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
+                        
+            def forever_save():
+                if (add_forever.get() == 1):
+                    try:
+                        forever = {}
+                        forever["forever Update"] = "Enable"
+                        forever_json_object = json.dumps(forever, indent=3)
+                        with open("files/forever.json", "w") as f:
+                            f.write(forever_json_object)
+                            f.close()
+                        return json.dumps(forever)
+                    except Exception as forever_err:
+                        errorLog(
+                            f"Error writing forever file (Enable) [forever_save] - {forever_err}")
+                else:
+                    try:
+                        forever = {}
+                        forever["forever Update"] = "Disable"
+                        forever_json_object = json.dumps(forever, indent=3)
+                        with open("files/forever.json", "w") as f:
+                            f.write(forever_json_object)
+                            f.close()
+                        return json.dumps(forever)
+                    except Exception as forever_err:
+                        errorLog(
+                            f"Error writing forever file (Disable) [forever_save] - {forever_err}")
+                    finally:
+                        if (len(os.listdir("files")) != 4):
+                            self.destroy()
+                            messagebox.showerror ("Error", "An error occurred! Please restart the application")
+
+
+            # NODE
+            node_strngs = open("files/node.json", "r")
+            data = json.load(node_strngs)
+            if (data["Node Update"] == "Enable"):
+                node_opts = 1
             else:
-                try:
-                    node = {}
-                    node["Node Update"] = "Disable"
-                    node_json_object = json.dumps(node, indent=3)
-                    with open("files/node.json", "w") as f:
-                        f.write(node_json_object)
-                        f.close()
-                    return json.dumps(node)
-                except Exception as node_err:
-                    errorLog(
-                        "Error writing node file (Disable) [node_save] - {node_err}")
+                node_opts = 0
+            node_strngs.close()
 
-        def pm2_save():
-            if (add_pm2.get() == 1):
-                try:
-                    pm2 = {}
-                    pm2["pm2 Update"] = "Enable"
-                    pm2_json_object = json.dumps(pm2, indent=3)
-                    with open("files/pm2.json", "w") as f:
-                        f.write(pm2_json_object)
-                        f.close()
-                    return json.dumps(pm2)
-                except Exception as pm2_err:
-                    errorLog(
-                        f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
+            # PM2
+            pm2_strngs = open("files/pm2.json", "r")
+            data = json.load(pm2_strngs)
+            if (data["pm2 Update"] == "Enable"):
+                pm2_opts = 1
             else:
-                try:
-                    pm2 = {}
-                    pm2["pm2 Update"] = "Disable"
-                    pm2_json_object = json.dumps(pm2, indent=3)
-                    with open("files/pm2.json", "w") as f:
-                        f.write(pm2_json_object)
-                        f.close()
-                    return json.dumps(pm2)
-                except Exception as pm2_err:
-                    errorLog(
-                        f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
-                    
-        def forever_save():
-            if (add_forever.get() == 1):
-                try:
-                    forever = {}
-                    forever["forever Update"] = "Enable"
-                    forever_json_object = json.dumps(forever, indent=3)
-                    with open("files/forever.json", "w") as f:
-                        f.write(forever_json_object)
-                        f.close()
-                    return json.dumps(forever)
-                except Exception as forever_err:
-                    errorLog(
-                        f"Error writing forever file (Enable) [forever_save] - {forever_err}")
+                pm2_opts = 0
+            pm2_strngs.close()
+            
+            # Forever
+            forever_strngs = open("files/forever.json", "r")
+            data = json.load(forever_strngs)
+            if (data["forever Update"] == "Enable"):
+                forever_opts = 1
             else:
-                try:
-                    forever = {}
-                    forever["forever Update"] = "Disable"
-                    forever_json_object = json.dumps(forever, indent=3)
-                    with open("files/forever.json", "w") as f:
-                        f.write(forever_json_object)
-                        f.close()
-                    return json.dumps(forever)
-                except Exception as forever_err:
-                    errorLog(
-                        f"Error writing forever file (Disable) [forever_save] - {forever_err}")
+                forever_opts = 0
+            forever_strngs.close()
 
-        # NODE
-        node_strngs = open("files/node.json", "r")
-        data = json.load(node_strngs)
-        if (data["Node Update"] == "Enable"):
-            node_opts = 1
-        else:
-            node_opts = 0
-        node_strngs.close()
+            ############################################
+            # Button variables
+            add_node = IntVar(value=node_opts)
+            add_pm2 = IntVar(value=pm2_opts)
+            add_forever = IntVar(value=forever_opts)
+            ############################################
 
-        # PM2
-        pm2_strngs = open("files/pm2.json", "r")
-        data = json.load(pm2_strngs)
-        if (data["pm2 Update"] == "Enable"):
-            pm2_opts = 1
-        else:
-            pm2_opts = 0
-        pm2_strngs.close()
-        
-        # Forever
-        forever_strngs = open("files/forever.json", "r")
-        data = json.load(forever_strngs)
-        if (data["forever Update"] == "Enable"):
-            forever_opts = 1
-        else:
-            forever_opts = 0
-        forever_strngs.close()
+            Label(self, text="Modules", bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
+            ttk.Checkbutton(self, text="Node Update", command=node_save,
+                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
+            ttk.Checkbutton(self, text="pm2 Update", command=pm2_save,
+                            variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
+            ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
+                            onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
 
-        ############################################
-        # Button variables
-        add_node = IntVar(value=node_opts)
-        add_pm2 = IntVar(value=pm2_opts)
-        add_forever = IntVar(value=forever_opts)
-        ############################################
+            def aboutSettings():
+                messagebox.showinfo(
+                    "How to use it?", "Please check in these modules what you want to update?")
 
-        Label(self, text="Modules", bg="#383838", fg="#FFFFFF", font=(
-            'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
-        ttk.Checkbutton(self, text="Node Update", command=node_save,
-                        variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
-        ttk.Checkbutton(self, text="pm2 Update", command=pm2_save,
-                        variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
-        ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
-                        onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
+            def aboutNode():
+                webbrowser.open_new(r"https://nodejs.org/en/about/")
 
-        def aboutSettings():
-            messagebox.showinfo(
-                "How to use it?", "Please check in these modules what you want to update?")
+            def aboutPm2():
+                webbrowser.open_new(r"https://pm2.keymetrics.io/")
 
-        def aboutNode():
-            webbrowser.open_new(r"https://nodejs.org/en/about/")
+            menu = tk.Menu(self)
+            self.configure(menu=menu)
+            menubar = Menu(self, background='#ffffff', foreground='black',
+                        activebackground='white', activeforeground='black')
 
-        def aboutPm2():
-            webbrowser.open_new(r"https://pm2.keymetrics.io/")
+            help = Menu(menubar, tearoff=0, background='#ffffff')
+            help.add_command(label="What is it?", command=aboutSettings)
+            menu.add_cascade(label="Help", menu=help)
 
-        menu = tk.Menu(self)
-        self.configure(menu=menu)
-        menubar = Menu(self, background='#ffffff', foreground='black',
-                       activebackground='white', activeforeground='black')
-
-        help = Menu(menubar, tearoff=0, background='#ffffff')
-        help.add_command(label="What is it?", command=aboutSettings)
-        menu.add_cascade(label="Help", menu=help)
-
-        modules = Menu(menubar, tearoff=0, background='#ffffff')
-        modules.add_command(label="What is node?", command=aboutNode)
-        modules.add_command(label="What is pm2?", command=aboutPm2)
-        menu.add_cascade(label="Modules", menu=modules)
+            modules = Menu(menubar, tearoff=0, background='#ffffff')
+            modules.add_command(label="What is node?", command=aboutNode)
+            modules.add_command(label="What is pm2?", command=aboutPm2)
+            menu.add_cascade(label="Modules", menu=modules)
+        except Exception as settings_err:
+            criticalLog(f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
+        finally:
+            if (len(os.listdir("files")) != 4):
+                self.destroy()
+                self.update()
+                messagebox.showerror ("Error", "An error occurred! Please restart the application")
 
 
 class LSU(tk.Tk):
@@ -329,15 +342,12 @@ class LSU(tk.Tk):
         else:
             node_version = "NONE"
 
-        # TODO: Add modules
-        # def runtimeLog():
-        #     logFile = open(f"logs/autolog.log", "a")
-        #     logFile.write(
-        #         f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
-        #     logFile.close()
-        # runtimeLog()
-        infoLog(
-            f"\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+        def runtimeLog():
+            logFile = open(f"logs/runtime.log", "a")
+            logFile.write(
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+            logFile.close()
+        runtimeLog()
 
         # About Device
         def getSystemInfo():
@@ -418,15 +428,14 @@ class LSU(tk.Tk):
 
         def openLastLog():
             lastLog = []
-            if (os.path.isfile("logs/info.log")) == False:
+            if (os.path.isfile("logs/runtime.log")) == False:
                 messagebox.showerror("Error", "No log file")
             else:
-                with open("logs/info.log", encoding="utf-8") as f:
-                    for line in (f.readlines()[-5:]):
+                with open("logs/runtime.log", encoding="utf-8") as f:
+                    for line in (f.readlines()[-4:]):
                         lastLog.append(line)
-                    date = lastLog[0]
                     messagebox.showinfo(
-                        "Last Log", f"{date[:19]}\n{lastLog[1]}{lastLog[2]}{lastLog[3]}")
+                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',

@@ -424,7 +424,7 @@ class LSU(tk.Tk):
             logFile.write(
                 f"Exit time: {runtime}\n\n")
             logFile.close()
-            self.quit()
+            self.protocol("WM_DELETE_WINDOW", self.quit())
 
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
@@ -438,7 +438,7 @@ class LSU(tk.Tk):
                     for line in (f.readlines()[-4:]):
                         lastLog.append(line)
                     messagebox.showinfo(
-                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
+                        "Last Log", "{}{}{}{}".format(*lastLog))
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',

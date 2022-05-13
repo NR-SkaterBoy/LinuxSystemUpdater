@@ -35,7 +35,7 @@ for file in os.listdir(directory):
     os.chmod(files, stat.S_IRWXU)
 
 # Terminal
-# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
+# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") # It opens terminal
 
 # LogTypes:
 
@@ -110,7 +110,7 @@ createFolders()
 
 
 def node_file():
-    if (os.path.isfile("files/node.json") != True):
+    if (not os.path.isfile("files/node.json")):
         node = {}
         node["Node Update"] = "Disable"
         json_object = json.dumps(node, indent=3)
@@ -121,7 +121,7 @@ def node_file():
 
 
 def pm2_file():
-    if (os.path.isfile("files/pm2.json") != True):
+    if (not os.path.isfile("files/pm2.json")):
         pm2 = {}
         pm2["pm2 Update"] = "Disable"
         json_object = json.dumps(pm2, indent=3)
@@ -129,9 +129,10 @@ def pm2_file():
             pm2_file.write(json_object)
             pm2_file.close()
         return json.dumps(pm2)
-    
+
+
 def forever_file():
-    if (os.path.isfile("files/forever.json") != True):
+    if (not os.path.isfile("files/forever.json")):
         forever = {}
         forever["forever Update"] = "Disable"
         json_object = json.dumps(forever, indent=3)
@@ -209,7 +210,7 @@ class Settings(tk.Toplevel):
                     except Exception as pm2_err:
                         errorLog(
                             f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
-                        
+
             def forever_save():
                 if (add_forever.get() == 1):
                     try:
@@ -238,8 +239,8 @@ class Settings(tk.Toplevel):
                     finally:
                         if (len(os.listdir("files")) != 4):
                             self.destroy()
-                            messagebox.showerror ("Error", "An error occurred! Please restart the application")
-
+                            messagebox.showerror(
+                                "Error", "An error occurred! Please restart the application")
 
             # NODE
             node_strngs = open("files/node.json", "r")
@@ -258,7 +259,7 @@ class Settings(tk.Toplevel):
             else:
                 pm2_opts = 0
             pm2_strngs.close()
-            
+
             # Forever
             forever_strngs = open("files/forever.json", "r")
             data = json.load(forever_strngs)
@@ -297,7 +298,7 @@ class Settings(tk.Toplevel):
             menu = tk.Menu(self)
             self.configure(menu=menu)
             menubar = Menu(self, background='#ffffff', foreground='black',
-                        activebackground='white', activeforeground='black')
+                           activebackground='white', activeforeground='black')
 
             help = Menu(menubar, tearoff=0, background='#ffffff')
             help.add_command(label="What is it?", command=aboutSettings)
@@ -308,12 +309,14 @@ class Settings(tk.Toplevel):
             modules.add_command(label="What is pm2?", command=aboutPm2)
             menu.add_cascade(label="Modules", menu=modules)
         except Exception as settings_err:
-            criticalLog(f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
+            criticalLog(
+                f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
         finally:
             if (len(os.listdir("files")) != 4):
                 self.destroy()
                 self.update()
-                messagebox.showerror ("Error", "An error occurred! Please restart the application")
+                messagebox.showerror(
+                    "Error", "An error occurred! Please restart the application")
 
 
 class LSU(tk.Tk):
@@ -336,7 +339,7 @@ class LSU(tk.Tk):
         py = platform.python_version()
 
         # Check node folder
-        if (os.path.isfile("/usr/bin/node") == True or os.path.isfile("/usr/local/bin/node") == True):
+        if (os.path.isfile("/usr/bin/node") or os.path.isfile("/usr/local/bin/node")):
             get_node_version = subprocess.check_output(['node', '-v'])
             node_version = get_node_version[:8]
         else:
@@ -378,14 +381,14 @@ class LSU(tk.Tk):
 
         def runningSystemUpdate():
             try:
-                if (os.path.isfile("files/node.json") == True):
+                if (os.path.isfile("files/node.json")):
                     node = open('files/node.json')
                     node_data = json.load(node)
                     if (node_data["Node Update"] == "Enable"):
                         subprocess.call("bash/node_update.sh")
                     node.close()
 
-                if (os.path.isfile("files/pm2.json") == True):
+                if (os.path.isfile("files/pm2.json")):
                     pm2 = open('files/pm2.json')
                     pm2_data = json.load(pm2)
                     if (pm2_data["pm2 Update"] == "Enable"):
@@ -428,7 +431,7 @@ class LSU(tk.Tk):
 
         def openLastLog():
             lastLog = []
-            if (os.path.isfile("logs/runtime.log")) == False:
+            if (not os.path.isfile("logs/runtime.log")):
                 messagebox.showerror("Error", "No log file")
             else:
                 with open("logs/runtime.log", encoding="utf-8") as f:

@@ -116,7 +116,6 @@ def node_file():
         json_object = json.dumps(node, indent=3)
         with open("files/node.json", "w") as node_file:
             node_file.write(json_object)
-            node_file.close()
         return json.dumps(node)
 
 
@@ -127,7 +126,6 @@ def pm2_file():
         json_object = json.dumps(pm2, indent=3)
         with open("files/pm2.json", "w") as pm2_file:
             pm2_file.write(json_object)
-            pm2_file.close()
         return json.dumps(pm2)
 
 
@@ -138,13 +136,12 @@ def forever_file():
         json_object = json.dumps(forever, indent=3)
         with open("files/forever.json", "w") as forever_file:
             forever_file.write(json_object)
-            forever_file.close()
         return json.dumps(forever)
 
 
 node_file()
 pm2_file()
-# forever_file()
+forever_file()
 
 
 class Settings(tk.Toplevel):
@@ -167,7 +164,6 @@ class Settings(tk.Toplevel):
                         node_json_object = json.dumps(node, indent=3)
                         with open("files/node.json", "w") as f:
                             f.write(node_json_object)
-                            f.close()
                         return json.dumps(node)
                     except Exception as node_err:
                         errorLog(
@@ -179,7 +175,6 @@ class Settings(tk.Toplevel):
                         node_json_object = json.dumps(node, indent=3)
                         with open("files/node.json", "w") as f:
                             f.write(node_json_object)
-                            f.close()
                         return json.dumps(node)
                     except Exception as node_err:
                         errorLog(
@@ -193,7 +188,6 @@ class Settings(tk.Toplevel):
                         pm2_json_object = json.dumps(pm2, indent=3)
                         with open("files/pm2.json", "w") as f:
                             f.write(pm2_json_object)
-                            f.close()
                         return json.dumps(pm2)
                     except Exception as pm2_err:
                         errorLog(
@@ -205,7 +199,6 @@ class Settings(tk.Toplevel):
                         pm2_json_object = json.dumps(pm2, indent=3)
                         with open("files/pm2.json", "w") as f:
                             f.write(pm2_json_object)
-                            f.close()
                         return json.dumps(pm2)
                     except Exception as pm2_err:
                         errorLog(
@@ -219,7 +212,6 @@ class Settings(tk.Toplevel):
                         forever_json_object = json.dumps(forever, indent=3)
                         with open("files/forever.json", "w") as f:
                             f.write(forever_json_object)
-                            f.close()
                         return json.dumps(forever)
                     except Exception as forever_err:
                         errorLog(
@@ -231,7 +223,6 @@ class Settings(tk.Toplevel):
                         forever_json_object = json.dumps(forever, indent=3)
                         with open("files/forever.json", "w") as f:
                             f.write(forever_json_object)
-                            f.close()
                         return json.dumps(forever)
                     except Exception as forever_err:
                         errorLog(
@@ -282,8 +273,8 @@ class Settings(tk.Toplevel):
                             variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
             ttk.Checkbutton(self, text="pm2 Update", command=pm2_save,
                             variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
-            ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
-                            onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
+            # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
+            #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
 
             def aboutSettings():
                 messagebox.showinfo(
@@ -348,7 +339,7 @@ class LSU(tk.Tk):
         def runtimeLog():
             logFile = open(f"logs/runtime.log", "a")
             logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n\n")
             logFile.close()
         runtimeLog()
 
@@ -372,7 +363,6 @@ class LSU(tk.Tk):
                 json_object = json.dumps(info, indent=3)
                 with open("files/sysinfo.json", "w") as f:
                     f.write(json_object)
-                    f.close()
                 return json.dumps(info)
             except Exception as sysinfo_err:
                 errorLog(
@@ -420,7 +410,7 @@ class LSU(tk.Tk):
             messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5")
 
         def quitLSU():
-            logFile = open(f"logs/autolog.log", "a")
+            logFile = open(f"logs/runtime.log", "a")
             logFile.write(
                 f"Exit time: {runtime}\n\n")
             logFile.close()
@@ -439,6 +429,12 @@ class LSU(tk.Tk):
                         lastLog.append(line)
                     messagebox.showinfo(
                         "Last Log", "{}{}{}{}".format(*lastLog))
+        
+        def openLogFile():
+            try:
+                os.system("gedit logs/runtime.log")
+            except Exception as openLog:
+                errorLog(f"Error occured while opening the file [logfile] - {openLog}")
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',
@@ -446,7 +442,6 @@ class LSU(tk.Tk):
         help = Menu(self.menubar, tearoff=0, background='#ffffff')
         help.add_command(label="Supported System", command=supportedSystem)
         help.add_command(label="About", command=aboutSoftware)
-        help.add_command(label="About System", command=systemInfo)
         help.add_command(label="Settings", command=self.open_settings)
         help.add_command(label="Quit", command=quitLSU)
         self.menubar.add_cascade(label="Help", menu=help)
@@ -454,9 +449,11 @@ class LSU(tk.Tk):
         # Not available yet
         userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
         self.menubar.add_cascade(label="News", menu=userHelp)
-        logs = Menu(self.menubar, tearoff=0, background='#ffffff')
-        logs.add_command(label="Open last Log", command=openLastLog)
-        self.menubar.add_cascade(label="Logger", menu=logs)
+        info = Menu(self.menubar, tearoff=0, background='#ffffff')
+        info.add_command(label="Log file", command=openLogFile)
+        info.add_command(label="Last Log", command=openLastLog)
+        info.add_command(label="System", command=systemInfo)
+        self.menubar.add_cascade(label="Info", menu=info)
         # Title
         Label(self, text='System\nUpdater', bg="#181d31",
               fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)

@@ -21,6 +21,7 @@ import time
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+from PIL import ImageTk, Image
 import platform
 
 # You won't get error message if you are on windows
@@ -97,7 +98,7 @@ def debugLog(msg):
     )
     logging.debug(msg)
 
-
+# TODO: Check if
 # LogFolder and neccesary file(s)
 def createFolders():
     if (os.path.isdir("logs") != True):
@@ -143,6 +144,8 @@ node_file()
 pm2_file()
 forever_file()
 
+# Set language
+
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
@@ -178,7 +181,7 @@ class Settings(tk.Toplevel):
                         return json.dumps(node)
                     except Exception as node_err:
                         errorLog(
-                            "Error writing node file (Disable) [node_save] - {node_err}")
+                            "Error writing node file (Disable) [node_save] - {node_err} ")
 
             def pm2_save():
                 if (add_pm2.get() == 1):
@@ -227,11 +230,11 @@ class Settings(tk.Toplevel):
                     except Exception as forever_err:
                         errorLog(
                             f"Error writing forever file (Disable) [forever_save] - {forever_err}")
-                    finally:
-                        if (len(os.listdir("files")) != 4):
-                            self.destroy()
-                            messagebox.showerror(
-                                "Error", "An error occurred! Please restart the application")
+                    # finally:
+                    #     if (len(os.listdir("files")) != 4):
+                    #         self.destroy()
+                    #         messagebox.showerror(
+                    #             "Error", "An error occurred! Please restart the application")
 
             # NODE
             node_strngs = open("files/node.json", "r")
@@ -259,12 +262,43 @@ class Settings(tk.Toplevel):
             else:
                 forever_opts = 0
             forever_strngs.close()
+            
+            def setLanguage():
+                if (lang.get() == 1):
+                    try:
+                        language_file = {}
+                        language_file["Language"] = "English"
+                        language_file_json_object = json.dumps(language_file, indent=3)
+                        with open("files/language.json", "w") as f:
+                            f.write(language_file_json_object)
+                        return json.dumps(language_file)
+                    except Exception as language_file_err:
+                        errorLog(
+                            f"Error writing language_file file (Enable) [language_file_save] - {language_file_err}")
+                else:
+                    try:
+                        language_file = {}
+                        language_file["Language"] = "Hungary"
+                        language_file_json_object = json.dumps(language_file, indent=3)
+                        with open("files/language.json", "w") as f:
+                            f.write(language_file_json_object)
+                        return json.dumps(language_file)
+                    except Exception as language_file_err:
+                        errorLog(
+                            f"Error writing language_file file (Disable) [language_file_save] - {language_file_err}")
+                    # finally:
+                    #     if (len(os.listdir("files")) != 4):
+                    #         self.destroy()
+                    #         messagebox.showerror(
+                    #             "Error", "An error occurred! Please restart the application")
+
 
             ############################################
             # Button variables
             add_node = IntVar(value=node_opts)
             add_pm2 = IntVar(value=pm2_opts)
             add_forever = IntVar(value=forever_opts)
+            lang = IntVar(value=None)
             ############################################
 
             Label(self, text="Modules", bg="#383838", fg="#FFFFFF", font=(
@@ -275,6 +309,23 @@ class Settings(tk.Toplevel):
                             variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
             # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
             #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
+            
+            # Language
+            Label(self, text="Language", bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
+            # en_flag = Image.open("./pictures/Flag_of_the_United_States.png")
+            # en_flag.resize(width=35, height=50)
+            # en_flag_file = ImageTk.PhotoImage(en_flag)
+            # photo_label= Label(self, image=en_flag_file)
+            # photo_label.place(x=20, y=280)
+            lang_en = Radiobutton(self, text="Englis", variable=lang, value=1,
+                  command=setLanguage)
+            lang_en.pack( anchor = W )
+
+            lang_hu = Radiobutton(self, text="Hungary", variable=lang, value=2,
+                            command=setLanguage)
+            lang_hu.pack( anchor = W )
+            
 
             def aboutSettings():
                 messagebox.showinfo(
@@ -302,12 +353,12 @@ class Settings(tk.Toplevel):
         except Exception as settings_err:
             criticalLog(
                 f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
-        finally:
-            if (len(os.listdir("files")) != 4):
-                self.destroy()
-                self.update()
-                messagebox.showerror(
-                    "Error", "An error occurred! Please restart the application")
+        # finally:
+        #     if (len(os.listdir("files")) != 4):
+        #         self.destroy()
+        #         self.update()
+        #         messagebox.showerror(
+        #             "Error", "An error occurred! Please restart the application")
 
 
 class LSU(tk.Tk):
@@ -407,7 +458,7 @@ class LSU(tk.Tk):
         # systemInfo()
 
         def aboutSoftware():
-            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5")
+            messagebox.showinfo(f"About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5")
 
         def quitLSU():
             logFile = open(f"logs/runtime.log", "a")

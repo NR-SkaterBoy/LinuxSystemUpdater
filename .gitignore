@@ -1,5 +1,5 @@
 logs
 files
-test.py
-test.sh
+test*.py
+test*.sh
 venv

@@ -1,0 +1,40 @@
+{
+    "main": {
+        "app_name": "",
+        "app_title": "",
+        "upd_btn": "",
+        "web_btn": "",
+        "help": {
+            "category": "",
+            "sup_sys": "",
+            "about": "",
+            "setting": "",
+            "quit": ""
+        },
+        "news": {
+            "category": "",
+            "questionaire": ""
+        },
+        "info": {
+            "category": "",
+            "log_file": "",
+            "last_log": "",
+            "system": ""
+        }
+    },
+    "settings": {
+        "window_name": "",
+        "title": "",
+        "node": "",
+        "pm2": "",
+        "help": {
+            "category": "",
+            "whatisit": ""
+        },
+        "modules": {
+            "category": "",
+            "node": "",
+            "pm2": ""
+        }
+    }
+}

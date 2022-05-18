@@ -23,6 +23,7 @@ from tkinter import ttk, messagebox
 from tkinter import *
 from PIL import ImageTk, Image
 import platform
+import language
 
 # You won't get error message if you are on windows
 if (platform.system() != "Windows"):
@@ -98,12 +99,11 @@ def debugLog(msg):
     )
     logging.debug(msg)
 
-# TODO: Check if
 # LogFolder and neccesary file(s)
 def createFolders():
-    if (os.path.isdir("logs") != True):
+    if (not os.path.isdir("logs")):
         os.mkdir(os.path.join("logs"))
-    if (os.path.isdir("files") != True):
+    if ( not os.path.isdir("files")):
         os.mkdir(os.path.join("files"))
 
 
@@ -144,8 +144,6 @@ node_file()
 pm2_file()
 forever_file()
 
-# Set language
-
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
@@ -153,7 +151,7 @@ class Settings(tk.Toplevel):
             super().__init__(parent)
 
             self.geometry("300x300")
-            self.title("Settings")
+            self.title(language.s_window_name)
             self.resizable(False, False)
             self.configure(background="#383838")
             photo = PhotoImage(file="icons/setting.png")
@@ -230,11 +228,10 @@ class Settings(tk.Toplevel):
                     except Exception as forever_err:
                         errorLog(
                             f"Error writing forever file (Disable) [forever_save] - {forever_err}")
-                    # finally:
-                    #     if (len(os.listdir("files")) != 4):
-                    #         self.destroy()
-                    #         messagebox.showerror(
-                    #             "Error", "An error occurred! Please restart the application")
+                    finally:
+                        if (not os.path.isfile("files/forever.json")):
+                            self.destroy()
+                            messagebox.showerror(language.t_error, language.d_restart)
 
             # NODE
             node_strngs = open("files/node.json", "r")
@@ -262,13 +259,14 @@ class Settings(tk.Toplevel):
             else:
                 forever_opts = 0
             forever_strngs.close()
-            
-            def setLanguage():
+
+            def writeLanguageFile():
                 if (lang.get() == 1):
                     try:
                         language_file = {}
                         language_file["Language"] = "English"
-                        language_file_json_object = json.dumps(language_file, indent=3)
+                        language_file_json_object = json.dumps(
+                            language_file, indent=3)
                         with open("files/language.json", "w") as f:
                             f.write(language_file_json_object)
                         return json.dumps(language_file)
@@ -279,19 +277,18 @@ class Settings(tk.Toplevel):
                     try:
                         language_file = {}
                         language_file["Language"] = "Hungary"
-                        language_file_json_object = json.dumps(language_file, indent=3)
+                        language_file_json_object = json.dumps(
+                            language_file, indent=3)
                         with open("files/language.json", "w") as f:
                             f.write(language_file_json_object)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
                             f"Error writing language_file file (Disable) [language_file_save] - {language_file_err}")
-                    # finally:
-                    #     if (len(os.listdir("files")) != 4):
-                    #         self.destroy()
-                    #         messagebox.showerror(
-                    #             "Error", "An error occurred! Please restart the application")
-
+                    finally:
+                        if (not os.path.isfile("files/language.json")):
+                            self.destroy()
+                            messagebox.showerror(language.t_error, language.d_restart)
 
             ############################################
             # Button variables
@@ -301,35 +298,41 @@ class Settings(tk.Toplevel):
             lang = IntVar(value=None)
             ############################################
 
-            Label(self, text="Modules", bg="#383838", fg="#FFFFFF", font=(
+            # TODO: Notify the user to restart the aplication when changed lang file
+            # Add value to lang
+            read_lang_file = open("files/language.json", "r")
+            getLang = json.load(read_lang_file)
+            if getLang["Language"] == "English":
+                lang.set(1)
+            elif getLang["Language"] == "Hungary":
+                lang.set(2)
+
+            Label(self, text=language.s_title, bg="#383838", fg="#FFFFFF", font=(
                 'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
-            ttk.Checkbutton(self, text="Node Update", command=node_save,
+            ttk.Checkbutton(self, text=language.s_node, command=node_save,
                             variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
-            ttk.Checkbutton(self, text="pm2 Update", command=pm2_save,
+            ttk.Checkbutton(self, text=language.s_pm2, command=pm2_save,
                             variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
             # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
             #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
-            
+
             # Language
-            Label(self, text="Language", bg="#383838", fg="#FFFFFF", font=(
+            Label(self, text=language.s_lang_title, bg="#383838", fg="#FFFFFF", font=(
                 'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
             # en_flag = Image.open("./pictures/Flag_of_the_United_States.png")
             # en_flag.resize(width=35, height=50)
             # en_flag_file = ImageTk.PhotoImage(en_flag)
             # photo_label= Label(self, image=en_flag_file)
             # photo_label.place(x=20, y=280)
-            lang_en = Radiobutton(self, text="Englis", variable=lang, value=1,
-                  command=setLanguage)
-            lang_en.pack( anchor = W )
-
-            lang_hu = Radiobutton(self, text="Hungary", variable=lang, value=2,
-                            command=setLanguage)
-            lang_hu.pack( anchor = W )
-            
+            lang_en = Radiobutton(
+                self, text=language.s_lang_en, variable=lang, value=1, width=15, command=writeLanguageFile)
+            lang_en.place(relx=0.5, rely=0.5, anchor=CENTER, y=70)
+            lang_hu = Radiobutton(
+                self, text=language.s_lang_hu, variable=lang, value=2, width=15, command=writeLanguageFile)
+            lang_hu.place(relx=0.5, rely=0.5, anchor=CENTER, y=100)
 
             def aboutSettings():
-                messagebox.showinfo(
-                    "How to use it?", "Please check in these modules what you want to update?")
+                messagebox.showinfo(language.t_howtouse, language.d_howtouse)
 
             def aboutNode():
                 webbrowser.open_new(r"https://nodejs.org/en/about/")
@@ -343,29 +346,23 @@ class Settings(tk.Toplevel):
                            activebackground='white', activeforeground='black')
 
             help = Menu(menubar, tearoff=0, background='#ffffff')
-            help.add_command(label="What is it?", command=aboutSettings)
-            menu.add_cascade(label="Help", menu=help)
+            help.add_command(label=language.s_h_whatisit, command=aboutSettings)
+            menu.add_cascade(label=language.s_h_category, menu=help)
 
             modules = Menu(menubar, tearoff=0, background='#ffffff')
-            modules.add_command(label="What is node?", command=aboutNode)
-            modules.add_command(label="What is pm2?", command=aboutPm2)
-            menu.add_cascade(label="Modules", menu=modules)
+            modules.add_command(label=language.s_m_node, command=aboutNode)
+            modules.add_command(label=language.s_m_pm2, command=aboutPm2)
+            menu.add_cascade(label=language.s_m_category, menu=modules)
         except Exception as settings_err:
             criticalLog(
                 f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
-        # finally:
-        #     if (len(os.listdir("files")) != 4):
-        #         self.destroy()
-        #         self.update()
-        #         messagebox.showerror(
-        #             "Error", "An error occurred! Please restart the application")
 
 
 class LSU(tk.Tk):
     def __init__(self):
         super().__init__(className="Linux System Updater")
 
-        self.title("Linux Updater")
+        self.title(language.m_app_name)
         self.geometry("800x450+50+50")
         self.resizable(True, True)
         self.minsize(width=800, height=450)
@@ -448,17 +445,17 @@ class LSU(tk.Tk):
             webbrowser.open_new(r"https://github.com/NR-SkaterBoy")
 
         def supportedSystem():
-            messagebox.showwarning("Supported Systems",
+            messagebox.showwarning(language.t_sup_sys,
                                    "Ubuntu, Kali Linux, Raspbian, Sparky Linux")
 
         def systemInfo():
             log = json.load(open("files/sysinfo.json", "r"))
             sysinfo = (f"Platform: {log['Platform']}\nPlatform-release: {log['Platform-release']}\nPlatform-version: {log['Platform-version']}\nArchitecture: {log['Architecture']}\nHostname: {log['Hostname']}\nIP-address: {log['IP-address']}\nMAC-address: {log['MAC-address']}\nProcessor: {log['Processor']}\nRAM: {log['RAM']}")
-            messagebox.showinfo("System Information", sysinfo)
+            messagebox.showinfo(language.t_sys_inf, sysinfo)
         # systemInfo()
 
         def aboutSoftware():
-            messagebox.showinfo(f"About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5")
+            messagebox.showinfo(language.t_about, language.d_about)
 
         def quitLSU():
             logFile = open(f"logs/runtime.log", "a")
@@ -473,56 +470,56 @@ class LSU(tk.Tk):
         def openLastLog():
             lastLog = []
             if (not os.path.isfile("logs/runtime.log")):
-                messagebox.showerror("Error", "No log file")
+                messagebox.showerror(language.t_error, "No log file")
             else:
                 with open("logs/runtime.log", encoding="utf-8") as f:
                     for line in (f.readlines()[-4:]):
                         lastLog.append(line)
-                    messagebox.showinfo(
-                        "Last Log", "{}{}{}{}".format(*lastLog))
-        
+                    messagebox.showinfo(language.t_lastlog, "{}{}{}{}".format(*lastLog))
+
         def openLogFile():
             try:
                 os.system("gedit logs/runtime.log")
             except Exception as openLog:
-                errorLog(f"Error occured while opening the file [logfile] - {openLog}")
+                errorLog(
+                    f"Error occured while opening the file [logfile] - {openLog}")
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',
                             activebackground='white', activeforeground='black')
         help = Menu(self.menubar, tearoff=0, background='#ffffff')
-        help.add_command(label="Supported System", command=supportedSystem)
-        help.add_command(label="About", command=aboutSoftware)
-        help.add_command(label="Settings", command=self.open_settings)
-        help.add_command(label="Quit", command=quitLSU)
-        self.menubar.add_cascade(label="Help", menu=help)
+        help.add_command(label=language.m_h_sup_sys, command=supportedSystem)
+        help.add_command(label=language.m_h_about, command=aboutSoftware)
+        help.add_command(label=language.m_h_settings, command=self.open_settings)
+        help.add_command(label=language.m_h_quit, command=quitLSU)
+        self.menubar.add_cascade(label=language.m_h_category, menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # Not available yet
-        userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
-        self.menubar.add_cascade(label="News", menu=userHelp)
+        userHelp.add_command(label=language.m_n_questionaire, command=openQuestionnaire)
+        self.menubar.add_cascade(label=language.m_n_category, menu=userHelp)
         info = Menu(self.menubar, tearoff=0, background='#ffffff')
-        info.add_command(label="Log file", command=openLogFile)
-        info.add_command(label="Last Log", command=openLastLog)
-        info.add_command(label="System", command=systemInfo)
-        self.menubar.add_cascade(label="Info", menu=info)
+        info.add_command(label=language.m_i_log_file, command=openLogFile)
+        info.add_command(label=language.m_i_last_log, command=openLastLog)
+        info.add_command(label=language.m_i_system, command=systemInfo)
+        self.menubar.add_cascade(label=language.m_i_category, menu=info)
         # Title
-        Label(self, text='System\nUpdater', bg="#181d31",
+        Label(self, text=language.m_app_title, bg="#181d31",
               fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
         # Btn of sysupdate
-        Button(self, text='Update your system', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_upd_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=runningSystemUpdate).place(x=70, y=190)
         # Btn of my website
-        Button(self, text='Visit my Website', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_web_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=openMyWebsite).place(x=70, y=250)
         # Btn of my github profile
-        Button(self, text='Follow me on Github', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_git_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=openMyGithub).place(x=70, y=310)
         # Pictures
         self.lsu_pic = Canvas(self, height=470, width=449,
                               bg="#181d31", borderwidth=0, highlightthickness=0)
         self.picture_file = PhotoImage(file='pictures/lsu.png')
         self.lsu_pic.create_image(470, 0, anchor=NE, image=self.picture_file)
-        self.lsu_pic.place(x=290, y=54)
+        self.lsu_pic.place(x=310, y=84)
         # Menu
         self.config(menu=self.menubar)
 

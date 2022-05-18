@@ -100,10 +100,12 @@ def debugLog(msg):
     logging.debug(msg)
 
 # LogFolder and neccesary file(s)
+
+
 def createFolders():
     if (not os.path.isdir("logs")):
         os.mkdir(os.path.join("logs"))
-    if ( not os.path.isdir("files")):
+    if (not os.path.isdir("files")):
         os.mkdir(os.path.join("files"))
 
 
@@ -231,7 +233,8 @@ class Settings(tk.Toplevel):
                     finally:
                         if (not os.path.isfile("files/forever.json")):
                             self.destroy()
-                            messagebox.showerror(language.t_error, language.d_restart)
+                            messagebox.showerror(
+                                language.t_error, language.d_restart)
 
             # NODE
             node_strngs = open("files/node.json", "r")
@@ -269,6 +272,7 @@ class Settings(tk.Toplevel):
                             language_file, indent=3)
                         with open("files/language.json", "w") as f:
                             f.write(language_file_json_object)
+                        messagebox.showinfo(language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -281,6 +285,7 @@ class Settings(tk.Toplevel):
                             language_file, indent=3)
                         with open("files/language.json", "w") as f:
                             f.write(language_file_json_object)
+                            messagebox.showinfo(language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -288,7 +293,8 @@ class Settings(tk.Toplevel):
                     finally:
                         if (not os.path.isfile("files/language.json")):
                             self.destroy()
-                            messagebox.showerror(language.t_error, language.d_restart)
+                            messagebox.showerror(
+                                language.t_error, language.d_restart)
 
             ############################################
             # Button variables
@@ -298,7 +304,6 @@ class Settings(tk.Toplevel):
             lang = IntVar(value=None)
             ############################################
 
-            # TODO: Notify the user to restart the aplication when changed lang file
             # Add value to lang
             read_lang_file = open("files/language.json", "r")
             getLang = json.load(read_lang_file)
@@ -346,7 +351,8 @@ class Settings(tk.Toplevel):
                            activebackground='white', activeforeground='black')
 
             help = Menu(menubar, tearoff=0, background='#ffffff')
-            help.add_command(label=language.s_h_whatisit, command=aboutSettings)
+            help.add_command(label=language.s_h_whatisit,
+                             command=aboutSettings)
             menu.add_cascade(label=language.s_h_category, menu=help)
 
             modules = Menu(menubar, tearoff=0, background='#ffffff')
@@ -475,7 +481,8 @@ class LSU(tk.Tk):
                 with open("logs/runtime.log", encoding="utf-8") as f:
                     for line in (f.readlines()[-4:]):
                         lastLog.append(line)
-                    messagebox.showinfo(language.t_lastlog, "{}{}{}{}".format(*lastLog))
+                    messagebox.showinfo(language.t_lastlog,
+                                        "{}{}{}{}".format(*lastLog))
 
         def openLogFile():
             try:
@@ -490,12 +497,14 @@ class LSU(tk.Tk):
         help = Menu(self.menubar, tearoff=0, background='#ffffff')
         help.add_command(label=language.m_h_sup_sys, command=supportedSystem)
         help.add_command(label=language.m_h_about, command=aboutSoftware)
-        help.add_command(label=language.m_h_settings, command=self.open_settings)
+        help.add_command(label=language.m_h_settings,
+                         command=self.open_settings)
         help.add_command(label=language.m_h_quit, command=quitLSU)
         self.menubar.add_cascade(label=language.m_h_category, menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # Not available yet
-        userHelp.add_command(label=language.m_n_questionaire, command=openQuestionnaire)
+        userHelp.add_command(label=language.m_n_questionaire,
+                             command=openQuestionnaire)
         self.menubar.add_cascade(label=language.m_n_category, menu=userHelp)
         info = Menu(self.menubar, tearoff=0, background='#ffffff')
         info.add_command(label=language.m_i_log_file, command=openLogFile)

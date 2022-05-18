@@ -47,11 +47,13 @@
         "sup_sys": "Támogatott Rendszerek",
         "sys_inf": "Rendszerinformációk",
         "about_project": "Az alkalmazásról",
-        "lastlog": "Utolsó log"
+        "lastlog": "Utolsó log",
+        "notify": "Értesítés"
     },
     "dmessagebox": {
         "restart": "Hiba történt! Kérlek indítsd újra az alkalmazást!",
         "howtouse": "Jelölje ki azokat a modulokat amelyeket frissíteni szeretne!",
-        "about": "A legtöbb PC felhasználó ragaszkodik a Windowshoz, és nem hajlandó linuxra váltani, mert kevesebb a grafikus felületű szoftver, és meg kell tanulniuk az alapvető Linux parancsokat. Ráadásul a legtöbb Linux alapú redszer hetente kap frissítést, és egyesek úgy gondolják, hogy időpocsékolás a frissítési parancsok begépelése.\nEz az alkalmazás kezdőknek és haladóknak egyaránt hasznos lehet, mert képes a rendszer frissítésére egyszerűen egy gombra kattintva. 4 különböző rendszert támogat, és felismeri az operációs rendszert."
+        "about": "A legtöbb PC felhasználó ragaszkodik a Windowshoz, és nem hajlandó linuxra váltani, mert kevesebb a grafikus felületű szoftver, és meg kell tanulniuk az alapvető Linux parancsokat. Ráadásul a legtöbb Linux alapú redszer hetente kap frissítést, és egyesek úgy gondolják, hogy időpocsékolás a frissítési parancsok begépelése.\nEz az alkalmazás kezdőknek és haladóknak egyaránt hasznos lehet, mert képes a rendszer frissítésére egyszerűen egy gombra kattintva. 4 különböző rendszert támogat, és felismeri az operációs rendszert.",
+        "notify_res": "Kérlek indítsd újra az alkalmazást a nyelvi beállítások befezéséhez!"
     }
 }

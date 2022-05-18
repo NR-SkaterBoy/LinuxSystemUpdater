@@ -54,11 +54,13 @@ if getLang["Language"] == "English":
     t_sys_inf = en["tmessagebox"]["sys_inf"]
     t_about = en["tmessagebox"]["about_project"]
     t_lastlog = en["tmessagebox"]["lastlog"]
+    t_notify = en["tmessagebox"]["notify"]
 
     # Description of messagebox (pref.: d)
     d_restart = en["dmessagebox"]["restart"]
     d_howtouse = en["dmessagebox"]["howtouse"]
     d_about = en["dmessagebox"]["about"]
+    d_not_res = en["dmessagebox"]["notify_res"]
 
 elif getLang["Language"] == "Hungary":
     hun_lang = open("locales/hungary.json", "r")
@@ -103,8 +105,10 @@ elif getLang["Language"] == "Hungary":
     t_sys_inf = hu["tmessagebox"]["sys_inf"]
     t_about = hu["tmessagebox"]["about_project"]
     t_lastlog = hu["tmessagebox"]["lastlog"]
+    t_notify = hu["tmessagebox"]["notify"]
 
     # Description of messagebox (pref.: d)
     d_restart = hu["dmessagebox"]["restart"]
     d_howtouse = hu["dmessagebox"]["howtouse"]
     d_about = hu["dmessagebox"]["about"]
+    d_not_res = hu["dmessagebox"]["notify_res"]

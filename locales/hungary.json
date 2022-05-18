@@ -3,38 +3,55 @@
         "app_name": "Linux Rendszerfrissítő",
         "app_title": "Rendszerfrissítő",
         "upd_btn": "Frissítés",
-        "web_btn": "Web",
+        "web_btn": "Látogasd meg a Weboldalam",
+        "git_btn": "Kövess engem Githubon",
         "help": {
-            "category": "",
-            "sup_sys": "",
-            "about": "",
-            "setting": "",
-            "quit": ""
+            "category": "Menü",
+            "sup_sys": "Támogatott Rendszerek",
+            "about": "A programról",
+            "setting": "Beállítások",
+            "quit": "Kilépés"
         },
         "news": {
-            "category": "",
-            "questionaire": ""
+            "category": "Újdonságok",
+            "questionaire": "Kérdőív"
         },
         "info": {
-            "category": "",
-            "log_file": "",
-            "last_log": "",
-            "system": ""
+            "category": "Információk",
+            "log_file": "Log file",
+            "last_log": "Utolsó log",
+            "system": "Rendszerinformációk"
         }
     },
     "settings": {
-        "window_name": "",
-        "title": "",
-        "node": "",
-        "pm2": "",
+        "window_name": "Beállítások",
+        "title": "Modulok",
+        "node": "Node Frissítés",
+        "pm2": "PM2 Frissítés",
+        "l_title": "Nyelv",
+        "english": "Angol",
+        "hungary": "Magyar",
         "help": {
-            "category": "",
-            "whatisit": ""
+            "category": "Menü",
+            "whatisit": "Mire szolgál a felüet?"
         },
         "modules": {
-            "category": "",
-            "node": "",
-            "pm2": ""
+            "category": "Modulok",
+            "node": "Információ a NODE-ról",
+            "pm2": "Információ a PM2-ről"
         }
+    },
+    "tmessagebox": {
+        "howtouseit": "Használati útmutató",
+        "error": "Hiba",
+        "sup_sys": "Támogatott Rendszerek",
+        "sys_inf": "Rendszerinformációk",
+        "about_project": "Az alkalmazásról",
+        "lastlog": "Utolsó log"
+    },
+    "dmessagebox": {
+        "restart": "Hiba történt! Kérlek indítsd újra az alkalmazást!",
+        "howtouse": "Jelölje ki azokat a modulokat amelyeket frissíteni szeretne!",
+        "about": "A legtöbb PC felhasználó ragaszkodik a Windowshoz, és nem hajlandó linuxra váltani, mert kevesebb a grafikus felületű szoftver, és meg kell tanulniuk az alapvető Linux parancsokat. Ráadásul a legtöbb Linux alapú redszer hetente kap frissítést, és egyesek úgy gondolják, hogy időpocsékolás a frissítési parancsok begépelése.\nEz az alkalmazás kezdőknek és haladóknak egyaránt hasznos lehet, mert képes a rendszer frissítésére egyszerűen egy gombra kattintva. 4 különböző rendszert támogat, és felismeri az operációs rendszert."
     }
 }

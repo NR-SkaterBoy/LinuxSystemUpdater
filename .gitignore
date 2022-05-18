@@ -3,3 +3,4 @@ files
 test*.py
 test*.sh
 venv
+__pycache__

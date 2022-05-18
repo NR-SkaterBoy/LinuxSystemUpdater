@@ -146,8 +146,6 @@ node_file()
 pm2_file()
 forever_file()
 
-# TODO:  [automatikus file létrehozása, def ang]
-
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
@@ -158,17 +156,17 @@ class Settings(tk.Toplevel):
             self.title(language.s_window_name)
             self.resizable(False, False)
             self.configure(background="#383838")
-            photo = PhotoImage(file="icons/setting.png")
-            self.iconphoto(False, photo)
+            self.photo = PhotoImage(file="icons/setting.png")
+            self.iconphoto(False, self.photo)
 
             def node_save():
-                if (add_node.get() == 1):
+                if (self.add_node.get() == 1):
                     try:
                         node = {}
                         node["Node Update"] = "Enable"
                         node_json_object = json.dumps(node, indent=3)
-                        with open("files/node.json", "w") as f:
-                            f.write(node_json_object)
+                        with open("files/node.json", "w") as node_file:
+                            node_file.write(node_json_object)
                         return json.dumps(node)
                     except Exception as node_err:
                         errorLog(
@@ -178,21 +176,21 @@ class Settings(tk.Toplevel):
                         node = {}
                         node["Node Update"] = "Disable"
                         node_json_object = json.dumps(node, indent=3)
-                        with open("files/node.json", "w") as f:
-                            f.write(node_json_object)
+                        with open("files/node.json", "w") as node_file:
+                            node_file.write(node_json_object)
                         return json.dumps(node)
                     except Exception as node_err:
                         errorLog(
                             "Error writing node file (Disable) [node_save] - {node_err} ")
 
             def pm2_save():
-                if (add_pm2.get() == 1):
+                if (self.add_pm2.get() == 1):
                     try:
                         pm2 = {}
                         pm2["pm2 Update"] = "Enable"
                         pm2_json_object = json.dumps(pm2, indent=3)
-                        with open("files/pm2.json", "w") as f:
-                            f.write(pm2_json_object)
+                        with open("files/pm2.json", "w") as pm2_file:
+                            pm2_file.write(pm2_json_object)
                         return json.dumps(pm2)
                     except Exception as pm2_err:
                         errorLog(
@@ -202,21 +200,21 @@ class Settings(tk.Toplevel):
                         pm2 = {}
                         pm2["pm2 Update"] = "Disable"
                         pm2_json_object = json.dumps(pm2, indent=3)
-                        with open("files/pm2.json", "w") as f:
-                            f.write(pm2_json_object)
+                        with open("files/pm2.json", "w") as pm2_file:
+                            pm2_file.write(pm2_json_object)
                         return json.dumps(pm2)
                     except Exception as pm2_err:
                         errorLog(
                             f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
 
             def forever_save():
-                if (add_forever.get() == 1):
+                if (self.add_forever.get() == 1):
                     try:
                         forever = {}
                         forever["forever Update"] = "Enable"
                         forever_json_object = json.dumps(forever, indent=3)
-                        with open("files/forever.json", "w") as f:
-                            f.write(forever_json_object)
+                        with open("files/forever.json", "w") as forever_file:
+                            forever_file.write(forever_json_object)
                         return json.dumps(forever)
                     except Exception as forever_err:
                         errorLog(
@@ -226,8 +224,8 @@ class Settings(tk.Toplevel):
                         forever = {}
                         forever["forever Update"] = "Disable"
                         forever_json_object = json.dumps(forever, indent=3)
-                        with open("files/forever.json", "w") as f:
-                            f.write(forever_json_object)
+                        with open("files/forever.json", "w") as forever_file:
+                            forever_file.write(forever_json_object)
                         return json.dumps(forever)
                     except Exception as forever_err:
                         errorLog(
@@ -239,42 +237,43 @@ class Settings(tk.Toplevel):
                                 language.t_error, language.d_restart)
 
             # NODE
-            node_strngs = open("files/node.json", "r")
-            data = json.load(node_strngs)
-            if (data["Node Update"] == "Enable"):
-                node_opts = 1
+            self.node_strngs = open("files/node.json", "r")
+            self.data = json.load(self.node_strngs)
+            if (self.data["Node Update"] == "Enable"):
+                self.node_opts = 1
             else:
-                node_opts = 0
-            node_strngs.close()
+                self.node_opts = 0
+            self.node_strngs.close()
 
             # PM2
-            pm2_strngs = open("files/pm2.json", "r")
-            data = json.load(pm2_strngs)
-            if (data["pm2 Update"] == "Enable"):
-                pm2_opts = 1
+            self.pm2_strngs = open("files/pm2.json", "r")
+            self.data = json.load(self.pm2_strngs)
+            if (self.data["pm2 Update"] == "Enable"):
+                self.pm2_opts = 1
             else:
-                pm2_opts = 0
-            pm2_strngs.close()
+                self.pm2_opts = 0
+            self.pm2_strngs.close()
 
             # Forever
-            forever_strngs = open("files/forever.json", "r")
-            data = json.load(forever_strngs)
-            if (data["forever Update"] == "Enable"):
-                forever_opts = 1
+            self.forever_strngs = open("files/forever.json", "r")
+            self.data = json.load(self.forever_strngs)
+            if (self.data["forever Update"] == "Enable"):
+                self.forever_opts = 1
             else:
-                forever_opts = 0
-            forever_strngs.close()
+                self.forever_opts = 0
+            self.forever_strngs.close()
 
             def writeLanguageFile():
-                if (lang.get() == 1):
+                if (self.lang.get() == 1):
                     try:
                         language_file = {}
                         language_file["Language"] = "English"
                         language_file_json_object = json.dumps(
                             language_file, indent=3)
-                        with open("files/language.json", "w") as f:
-                            f.write(language_file_json_object)
-                        messagebox.showinfo(language.t_notify, language.d_not_res)
+                        with open("files/language.json", "w") as language_file:
+                            language_file.write(language_file_json_object)
+                        messagebox.showinfo(
+                            language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -285,9 +284,10 @@ class Settings(tk.Toplevel):
                         language_file["Language"] = "Hungary"
                         language_file_json_object = json.dumps(
                             language_file, indent=3)
-                        with open("files/language.json", "w") as f:
-                            f.write(language_file_json_object)
-                            messagebox.showinfo(language.t_notify, language.d_not_res)
+                        with open("files/language.json", "w") as language_file:
+                            language_file.write(language_file_json_object)
+                            messagebox.showinfo(
+                                language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -300,42 +300,38 @@ class Settings(tk.Toplevel):
 
             ############################################
             # Button variables
-            add_node = IntVar(value=node_opts)
-            add_pm2 = IntVar(value=pm2_opts)
-            add_forever = IntVar(value=forever_opts)
-            lang = IntVar(value=None)
+            self.add_node = IntVar(value=self.node_opts)
+            self.add_pm2 = IntVar(value=self.pm2_opts)
+            self.add_forever = IntVar(value=self.forever_opts)
+            self.lang = IntVar(value=None)
             ############################################
 
             # Add value to lang
-            read_lang_file = open("files/language.json", "r")
-            getLang = json.load(read_lang_file)
-            if getLang["Language"] == "English":
-                lang.set(1)
-            elif getLang["Language"] == "Hungary":
-                lang.set(2)
+            self.read_lang_file = open("files/language.json", "r")
+            self.getLang = json.load(self.read_lang_file)
+            if self.getLang["Language"] == "English":
+                self.lang.set(1)
+            elif self.getLang["Language"] == "Hungary":
+                self.lang.set(2)
 
             Label(self, text=language.s_title, bg="#383838", fg="#FFFFFF", font=(
                 'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
             ttk.Checkbutton(self, text=language.s_node, command=node_save,
-                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
+                            variable=self.add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
             ttk.Checkbutton(self, text=language.s_pm2, command=pm2_save,
-                            variable=add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
+                            variable=self.add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
             # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
             #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
 
             # Language
             Label(self, text=language.s_lang_title, bg="#383838", fg="#FFFFFF", font=(
                 'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
-            # en_flag = Image.open("./pictures/Flag_of_the_United_States.png")
-            # en_flag.resize(width=35, height=50)
-            # en_flag_file = ImageTk.PhotoImage(en_flag)
-            # photo_label= Label(self, image=en_flag_file)
-            # photo_label.place(x=20, y=280)
+
             lang_en = Radiobutton(
-                self, text=language.s_lang_en, variable=lang, value=1, width=15, command=writeLanguageFile)
+                self, text=language.s_lang_en, variable=self.lang, value=1, width=15, command=writeLanguageFile)
             lang_en.place(relx=0.5, rely=0.5, anchor=CENTER, y=70)
             lang_hu = Radiobutton(
-                self, text=language.s_lang_hu, variable=lang, value=2, width=15, command=writeLanguageFile)
+                self, text=language.s_lang_hu, variable=self.lang, value=2, width=15, command=writeLanguageFile)
             lang_hu.place(relx=0.5, rely=0.5, anchor=CENTER, y=100)
 
             def aboutSettings():
@@ -376,26 +372,26 @@ class LSU(tk.Tk):
         self.minsize(width=800, height=450)
         self.configure(background="#181d31")
         # self.iconbitmap("icons/lsu.ico")
-        photo = PhotoImage(file="icons/lsu.png")
-        self.iconphoto(False, photo)
+        self.photo = PhotoImage(file="icons/lsu.png")
+        self.iconphoto(False, self.photo)
 
         # Autolog
         # *** Data *** #
-        runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
-        sys = platform.platform()
-        py = platform.python_version()
+        self.runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
+        self.sys = platform.platform()
+        self.py = platform.python_version()
 
         # Check node folder
         if (os.path.isfile("/usr/bin/node") or os.path.isfile("/usr/local/bin/node")):
-            get_node_version = subprocess.check_output(['node', '-v'])
-            node_version = get_node_version[:8]
+            self.get_node_version = subprocess.check_output(['node', '-v'])
+            self.node_version = self.get_node_version[:8]
         else:
-            node_version = "NONE"
+            self.node_version = "NONE"
 
         def runtimeLog():
             logFile = open(f"logs/runtime.log", "a")
             logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n\n")
+                f"Launched time: {self.runtime}\nPlatform: {self.sys}\nPython version: {self.py}\nNode version: {self.node_version}\n\n")
             logFile.close()
         runtimeLog()
 
@@ -417,8 +413,8 @@ class LSU(tk.Tk):
                     info['RAM'] = str(
                         round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
                 json_object = json.dumps(info, indent=3)
-                with open("files/sysinfo.json", "w") as f:
-                    f.write(json_object)
+                with open("files/sysinfo.json", "w") as sysinfo_file:
+                    sysinfo_file.write(json_object)
                 return json.dumps(info)
             except Exception as sysinfo_err:
                 errorLog(
@@ -468,7 +464,7 @@ class LSU(tk.Tk):
         def quitLSU():
             logFile = open(f"logs/runtime.log", "a")
             logFile.write(
-                f"Exit time: {runtime}\n\n")
+                f"Exit time: {self.runtime}\n\n")
             logFile.close()
             self.protocol("WM_DELETE_WINDOW", self.quit())
 
@@ -480,8 +476,8 @@ class LSU(tk.Tk):
             if (not os.path.isfile("logs/runtime.log")):
                 messagebox.showerror(language.t_error, "No log file")
             else:
-                with open("logs/runtime.log", encoding="utf-8") as f:
-                    for line in (f.readlines()[-4:]):
+                with open("logs/runtime.log", encoding="utf-8") as lastlog_file:
+                    for line in (lastlog_file.readlines()[-4:]):
                         lastLog.append(line)
                     messagebox.showinfo(language.t_lastlog,
                                         "{}{}{}{}".format(*lastLog))

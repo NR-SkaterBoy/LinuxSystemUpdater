@@ -146,6 +146,8 @@ node_file()
 pm2_file()
 forever_file()
 
+# TODO:  [automatikus file létrehozása, def ang]
+
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):

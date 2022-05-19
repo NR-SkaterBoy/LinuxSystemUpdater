@@ -25,10 +25,10 @@ read_lang_file = open("files/language.json", "r")
 getLang = json.load(read_lang_file)
 
 if getLang["Language"] == "English":
-    eng_lang = open("locales/englis.json", "r")
+    eng_lang = open("./locales/englis.json", "r")
     lang = json.load(eng_lang)
 elif getLang["Language"] == "Hungary":
-    hun_lang = open("locales/hungary.json", "r")
+    hun_lang = open("./locales/hungary.json", "r")
     lang = json.load(hun_lang)
 
 # Main (pref.: m)

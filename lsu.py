@@ -21,7 +21,7 @@ import time
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
-from PIL import ImageTk, Image
+# from PIL import ImageTk, Image
 import platform
 import language
 

@@ -4,3 +4,4 @@ test*.py
 test*.sh
 venv
 __pycache__
+.vscode

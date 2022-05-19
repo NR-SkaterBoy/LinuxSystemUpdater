@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-# Developer: NR-SkaterBoy
+# Developer/Author: NR-SkaterBoy
 # Github: https://github.com/NR-SkaterBoy
+# Website: https://richardneuvald.tk
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package Updater
-# Version: Alpha 0.4
+# Version: Alpha 0.5
 
 # Import modules
 import os
@@ -15,13 +16,14 @@ import json
 import logging
 import stat
 import subprocess
-from subprocess import run
 import webbrowser
 import time
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+# from PIL import ImageTk, Image
 import platform
+import language
 
 # You won't get error message if you are on windows
 if (platform.system() != "Windows"):
@@ -30,112 +32,366 @@ if (platform.system() != "Windows"):
 
 # Set the file(s) rights
 directory = "bash"
-for i in os.listdir(directory):
-    files = os.path.join(directory, i)
-    # print(files)
+for file in os.listdir(directory):
+    files = os.path.join(directory, file)
     os.chmod(files, stat.S_IRWXU)
 
 # Terminal
-# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") // It opens terminal
+# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") # It opens terminal
 
-# LogTypes
-def criticalLog():
-     logging.basicConfig(
-         level=logging.CRITICAL,
-         format="{asctime} {levelname:<50} {message}",
-         style='{',
-         filename="logs/critical.log",
-         filemode="a"
-     )
-def errorLog():
+# LogTypes:
+
+# () => task        @not necessary
+# [] => function    @important          Do not use to gather information
+
+
+def criticalLog(msg):
+    logging.basicConfig(
+        level=logging.CRITICAL,
+        format="{asctime} {levelname} {message}",
+        style='{',
+        filename="logs/dev.log",
+        filemode="a"
+    )
+    logging.critical(msg)
+
+
+def errorLog(msg):
     logging.basicConfig(
         level=logging.ERROR,
-        format="{asctime} {levelname:<40} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/error.log",
+        filename="logs/dev.log",
         filemode="a"
     )
-def warningLog():
+    logging.error(msg)
+
+
+def warningLog(msg):
     logging.basicConfig(
         level=logging.WARNING,
-        format="{asctime} {levelname:<30} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/warning.log",
+        filename="logs/dev.log",
         filemode="a"
     )
-def infoLog():
+    logging.warning(msg)
+
+
+def infoLog(msg):
     logging.basicConfig(
         level=logging.INFO,
-        format="{asctime} {levelname:<20} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/info.log",
+        filename="logs/dev.log",
         filemode="a"
     )
+    logging.info(msg)
 
-def debugLog():
+
+def debugLog(msg):
     logging.basicConfig(
         level=logging.DEBUG,
-        format="{asctime} {levelname:<10} {message}",
+        format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/debug.log",
+        filename="logs/dev.log",
         filemode="a"
     )
+    logging.debug(msg)
+
+# LogFolder and neccesary file(s)
 
 
-class LSU:
-    def __init__(self, master):
-        self.master = master
-        master.title("Linux Updater")
-        master.geometry("800x450+50+50")
-        root.resizable(True, True)
-        root.minsize(width=800, height=450)
-        master.configure(background="#181d31")
-        # master.iconbitmap("icons/lsu.ico")
-        photo = PhotoImage(file="icons/lsu.png")
-        master.iconphoto(False, photo)
+def createFolders():
+    if (not os.path.isdir("logs")):
+        os.mkdir(os.path.join("logs"))
+    if (not os.path.isdir("files")):
+        os.mkdir(os.path.join("files"))
 
-        # LogFolder and neccesary file(s)
-        def createFolders():
-            if (os.path.isdir("logs") != True):
-                os.mkdir(os.path.join("logs"))
-            if (os.path.isdir("files") != True):
-                os.mkdir(os.path.join("files"))
-        createFolders()
 
-        def files():
-            if (os.path.isfile("files/node.json") != True):
-                node = {}
-                node["Node update"] = "Disable"
-                json_object = json.dumps(node, indent=3)
-                with open("files/node.json", "w") as f:
-                    f.write(json_object)
-                    f.close()
-                return json.dumps(node)
-        files()
+createFolders()
+
+
+def node_file():
+    if (not os.path.isfile("files/node.json")):
+        node = {}
+        node["Node Update"] = "Disable"
+        json_object = json.dumps(node, indent=3)
+        with open("files/node.json", "w") as node_file:
+            node_file.write(json_object)
+        return json.dumps(node)
+
+
+def pm2_file():
+    if (not os.path.isfile("files/pm2.json")):
+        pm2 = {}
+        pm2["pm2 Update"] = "Disable"
+        json_object = json.dumps(pm2, indent=3)
+        with open("files/pm2.json", "w") as pm2_file:
+            pm2_file.write(json_object)
+        return json.dumps(pm2)
+
+
+def forever_file():
+    if (not os.path.isfile("files/forever.json")):
+        forever = {}
+        forever["forever Update"] = "Disable"
+        json_object = json.dumps(forever, indent=3)
+        with open("files/forever.json", "w") as forever_file:
+            forever_file.write(json_object)
+        return json.dumps(forever)
+
+
+node_file()
+pm2_file()
+forever_file()
+
+
+class Settings(tk.Toplevel):
+    def __init__(self, parent):
+        try:
+            super().__init__(parent)
+
+            self.geometry("300x300")
+            self.title(language.s_window_name)
+            self.resizable(False, False)
+            self.configure(background="#383838")
+            self.photo = PhotoImage(file="icons/setting.png")
+            self.iconphoto(False, self.photo)
+
+            def node_save():
+                if (self.add_node.get() == 1):
+                    try:
+                        node = {}
+                        node["Node Update"] = "Enable"
+                        node_json_object = json.dumps(node, indent=3)
+                        with open("files/node.json", "w") as node_file:
+                            node_file.write(node_json_object)
+                        return json.dumps(node)
+                    except Exception as node_err:
+                        errorLog(
+                            f"Error writing node file (Enable) [node_save] - {node_err}")
+                else:
+                    try:
+                        node = {}
+                        node["Node Update"] = "Disable"
+                        node_json_object = json.dumps(node, indent=3)
+                        with open("files/node.json", "w") as node_file:
+                            node_file.write(node_json_object)
+                        return json.dumps(node)
+                    except Exception as node_err:
+                        errorLog(
+                            "Error writing node file (Disable) [node_save] - {node_err} ")
+
+            def pm2_save():
+                if (self.add_pm2.get() == 1):
+                    try:
+                        pm2 = {}
+                        pm2["pm2 Update"] = "Enable"
+                        pm2_json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as pm2_file:
+                            pm2_file.write(pm2_json_object)
+                        return json.dumps(pm2)
+                    except Exception as pm2_err:
+                        errorLog(
+                            f"Error writing pm2 file (Enable) [pm2_save] - {pm2_err}")
+                else:
+                    try:
+                        pm2 = {}
+                        pm2["pm2 Update"] = "Disable"
+                        pm2_json_object = json.dumps(pm2, indent=3)
+                        with open("files/pm2.json", "w") as pm2_file:
+                            pm2_file.write(pm2_json_object)
+                        return json.dumps(pm2)
+                    except Exception as pm2_err:
+                        errorLog(
+                            f"Error writing pm2 file (Disable) [pm2_save] - {pm2_err}")
+
+            def forever_save():
+                if (self.add_forever.get() == 1):
+                    try:
+                        forever = {}
+                        forever["forever Update"] = "Enable"
+                        forever_json_object = json.dumps(forever, indent=3)
+                        with open("files/forever.json", "w") as forever_file:
+                            forever_file.write(forever_json_object)
+                        return json.dumps(forever)
+                    except Exception as forever_err:
+                        errorLog(
+                            f"Error writing forever file (Enable) [forever_save] - {forever_err}")
+                else:
+                    try:
+                        forever = {}
+                        forever["forever Update"] = "Disable"
+                        forever_json_object = json.dumps(forever, indent=3)
+                        with open("files/forever.json", "w") as forever_file:
+                            forever_file.write(forever_json_object)
+                        return json.dumps(forever)
+                    except Exception as forever_err:
+                        errorLog(
+                            f"Error writing forever file (Disable) [forever_save] - {forever_err}")
+                    finally:
+                        if (not os.path.isfile("files/forever.json")):
+                            self.destroy()
+                            messagebox.showerror(
+                                language.t_error, language.d_restart)
+
+            # NODE
+            self.node_strngs = open("files/node.json", "r")
+            self.data = json.load(self.node_strngs)
+            if (self.data["Node Update"] == "Enable"):
+                self.node_opts = 1
+            else:
+                self.node_opts = 0
+            self.node_strngs.close()
+
+            # PM2
+            self.pm2_strngs = open("files/pm2.json", "r")
+            self.data = json.load(self.pm2_strngs)
+            if (self.data["pm2 Update"] == "Enable"):
+                self.pm2_opts = 1
+            else:
+                self.pm2_opts = 0
+            self.pm2_strngs.close()
+
+            # Forever
+            self.forever_strngs = open("files/forever.json", "r")
+            self.data = json.load(self.forever_strngs)
+            if (self.data["forever Update"] == "Enable"):
+                self.forever_opts = 1
+            else:
+                self.forever_opts = 0
+            self.forever_strngs.close()
+
+            def writeLanguageFile():
+                if (self.lang.get() == 1):
+                    try:
+                        language_file = {}
+                        language_file["Language"] = "English"
+                        language_file_json_object = json.dumps(
+                            language_file, indent=3)
+                        with open("files/language.json", "w") as language_file:
+                            language_file.write(language_file_json_object)
+                        messagebox.showinfo(
+                            language.t_notify, language.d_not_res)
+                        return json.dumps(language_file)
+                    except Exception as language_file_err:
+                        errorLog(
+                            f"Error writing language_file file (Enable) [language_file_save] - {language_file_err}")
+                else:
+                    try:
+                        language_file = {}
+                        language_file["Language"] = "Hungary"
+                        language_file_json_object = json.dumps(
+                            language_file, indent=3)
+                        with open("files/language.json", "w") as language_file:
+                            language_file.write(language_file_json_object)
+                            messagebox.showinfo(
+                                language.t_notify, language.d_not_res)
+                        return json.dumps(language_file)
+                    except Exception as language_file_err:
+                        errorLog(
+                            f"Error writing language_file file (Disable) [language_file_save] - {language_file_err}")
+                    finally:
+                        if (not os.path.isfile("files/language.json")):
+                            self.destroy()
+                            messagebox.showerror(
+                                language.t_error, language.d_restart)
+
+            ############################################
+            # Button variables
+            self.add_node = IntVar(value=self.node_opts)
+            self.add_pm2 = IntVar(value=self.pm2_opts)
+            self.add_forever = IntVar(value=self.forever_opts)
+            self.lang = IntVar(value=None)
+            ############################################
+
+            # Add value to lang
+            self.read_lang_file = open("files/language.json", "r")
+            self.getLang = json.load(self.read_lang_file)
+            if self.getLang["Language"] == "English":
+                self.lang.set(1)
+            elif self.getLang["Language"] == "Hungary":
+                self.lang.set(2)
+
+            Label(self, text=language.s_title, bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
+            ttk.Checkbutton(self, text=language.s_node, command=node_save,
+                            variable=self.add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
+            ttk.Checkbutton(self, text=language.s_pm2, command=pm2_save,
+                            variable=self.add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
+            # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
+            #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
+
+            # Language
+            Label(self, text=language.s_lang_title, bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
+
+            lang_en = Radiobutton(
+                self, text=language.s_lang_en, variable=self.lang, value=1, width=15, command=writeLanguageFile)
+            lang_en.place(relx=0.5, rely=0.5, anchor=CENTER, y=70)
+            lang_hu = Radiobutton(
+                self, text=language.s_lang_hu, variable=self.lang, value=2, width=15, command=writeLanguageFile)
+            lang_hu.place(relx=0.5, rely=0.5, anchor=CENTER, y=100)
+
+            def aboutSettings():
+                messagebox.showinfo(language.t_howtouse, language.d_howtouse)
+
+            def aboutNode():
+                webbrowser.open_new(r"https://nodejs.org/en/about/")
+
+            def aboutPm2():
+                webbrowser.open_new(r"https://pm2.keymetrics.io/")
+
+            menu = tk.Menu(self)
+            self.configure(menu=menu)
+            menubar = Menu(self, background='#ffffff', foreground='black',
+                           activebackground='white', activeforeground='black')
+
+            help = Menu(menubar, tearoff=0, background='#ffffff')
+            help.add_command(label=language.s_h_whatisit,
+                             command=aboutSettings)
+            menu.add_cascade(label=language.s_h_category, menu=help)
+
+            modules = Menu(menubar, tearoff=0, background='#ffffff')
+            modules.add_command(label=language.s_m_node, command=aboutNode)
+            modules.add_command(label=language.s_m_pm2, command=aboutPm2)
+            menu.add_cascade(label=language.s_m_category, menu=modules)
+        except Exception as settings_err:
+            criticalLog(
+                f"An error occurred! The following file(s) could not be found in the settings [settings] - {settings_err}")
+
+
+class LSU(tk.Tk):
+    def __init__(self):
+        super().__init__(className="Linux System Updater")
+
+        self.title(language.m_app_name)
+        self.geometry("800x450+50+50")
+        self.resizable(True, True)
+        self.minsize(width=800, height=450)
+        self.configure(background="#181d31")
+        # self.iconbitmap("icons/lsu.ico")
+        self.photo = PhotoImage(file="icons/lsu.png")
+        self.iconphoto(False, self.photo)
 
         # Autolog
-        # *** Datas *** #
-        runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
-        sys = platform.platform()
-        py = platform.python_version()
+        # *** Data *** #
+        self.runtime = time.strftime("%Y-%m-%d - %H:%M:%S")
+        self.sys = platform.platform()
+        self.py = platform.python_version()
 
-        # Check node
-        # Check folder
-        if (os.path.isfile("/usr/bin/node") == True or os.path.isfile("/usr/local/bin/node") == True):
-            node_version = subprocess.check_output(['node', '-v'])
-            debugLog()
+        # Check node folder
+        if (os.path.isfile("/usr/bin/node") or os.path.isfile("/usr/local/bin/node")):
+            self.get_node_version = subprocess.check_output(['node', '-v'])
+            self.node_version = self.get_node_version[:8]
         else:
-            node_version = "NONE"
-            debugLog()
+            self.node_version = "NONE"
 
-        platform.system()
-
-        # FIX: Node output
-        # FIX: Check node available
         def runtimeLog():
-            logFile = open(f"logs/autolog.log", "a")
+            logFile = open(f"logs/runtime.log", "a")
             logFile.write(
-                f"Launched time: {runtime}\nPlatform: {sys}\nPython version: {py}\nNode version: {node_version}\n")
+                f"Launched time: {self.runtime}\nPlatform: {self.sys}\nPython version: {self.py}\nNode version: {self.node_version}\n\n")
             logFile.close()
         runtimeLog()
 
@@ -157,27 +413,34 @@ class LSU:
                     info['RAM'] = str(
                         round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
                 json_object = json.dumps(info, indent=3)
-                with open("files/sysinfo.json", "w") as f:
-                    f.write(json_object)
-                    f.close()
+                with open("files/sysinfo.json", "w") as sysinfo_file:
+                    sysinfo_file.write(json_object)
                 return json.dumps(info)
-            except:
-                logging.basicConfig(
-                    filename="logs/error_sysinfo.log", encoding='utf-8', level=logging.INFO)
-                logging.info(f"Time: {runtime}", exc_info=True)
+            except Exception as sysinfo_err:
+                errorLog(
+                    f"An error occurred while retrieving system information [getSystemInfo] - {sysinfo_err}")
         getSystemInfo()
 
         def runningSystemUpdate():
             try:
-                if (os.path.isfile("files/node.json") == True):
-                    f = open('files/node.json')
-                    data = json.load(f)
-                    if (data["Node update"] == "Enable"):
+                if (os.path.isfile("files/node.json")):
+                    node = open('files/node.json')
+                    node_data = json.load(node)
+                    if (node_data["Node Update"] == "Enable"):
                         subprocess.call("bash/node_update.sh")
-                    f.close()
+                    node.close()
+
+                if (os.path.isfile("files/pm2.json")):
+                    pm2 = open('files/pm2.json')
+                    pm2_data = json.load(pm2)
+                    if (pm2_data["pm2 Update"] == "Enable"):
+                        subprocess.call("bash/pm2_update.sh")
+                    pm2.close()
+
                 subprocess.call("bash/system_update.sh")
-            except Exception as e:
-                debugLog()
+            except Exception as upd_err:
+                errorLog(
+                    f"An error occurred while updating the system [runningSystemUpdate] - {upd_err}")
 
         def openMyWebsite():
             webbrowser.open_new(r"https://richardneuvald.tk")
@@ -186,133 +449,96 @@ class LSU:
             webbrowser.open_new(r"https://github.com/NR-SkaterBoy")
 
         def supportedSystem():
-            messagebox.showwarning("Supported Systems",
+            messagebox.showwarning(language.t_sup_sys,
                                    "Ubuntu, Kali Linux, Raspbian, Sparky Linux")
 
-        # TODO: Edit output
         def systemInfo():
             log = json.load(open("files/sysinfo.json", "r"))
-            messagebox.showinfo("System Information", log)
+            sysinfo = (f"Platform: {log['Platform']}\nPlatform-release: {log['Platform-release']}\nPlatform-version: {log['Platform-version']}\nArchitecture: {log['Architecture']}\nHostname: {log['Hostname']}\nIP-address: {log['IP-address']}\nMAC-address: {log['MAC-address']}\nProcessor: {log['Processor']}\nRAM: {log['RAM']}")
+            messagebox.showinfo(language.t_sys_inf, sysinfo)
         # systemInfo()
 
         def aboutSoftware():
-            messagebox.showinfo("About this project", "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.4")
+            messagebox.showinfo(language.t_about, language.d_about)
 
         def quitLSU():
-            logFile = open(f"logs/autolog.log", "a")
+            logFile = open(f"logs/runtime.log", "a")
             logFile.write(
-                f"Exit time: {runtime}\n\n")
+                f"Exit time: {self.runtime}\n\n")
             logFile.close()
-            root.quit()
+            self.protocol("WM_DELETE_WINDOW", self.quit())
 
         def openQuestionnaire():
             webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
 
         def openLastLog():
             lastLog = []
-            if len(os.listdir("logs")) == 0:
-                messagebox.showerror("Error", "No log file")
+            if (not os.path.isfile("logs/runtime.log")):
+                messagebox.showerror(language.t_error, "No log file")
             else:
-                with open("logs/autolog.log", encoding="utf-8") as f:
-                    for line in (f.readlines()[-4:]):
+                with open("logs/runtime.log", encoding="utf-8") as lastlog_file:
+                    for line in (lastlog_file.readlines()[-4:]):
                         lastLog.append(line)
-                    messagebox.showinfo(
-                        "Last Log", f"{lastLog[0]}{lastLog[1]}{lastLog[2]}{lastLog[3]}")
+                    messagebox.showinfo(language.t_lastlog,
+                                        "{}{}{}{}".format(*lastLog))
 
-        def settings():
-            # TODO: Add help
-            # FIX: Checkbutton style
-            setting = Toplevel()
-            setting.title("Settings")
-            setting.geometry("300x300")
-            setting.resizable(False, False)
-            setting.grab_set()
-            setting.configure(background="#383838")
-            photo = PhotoImage(file="icons/setting.png")
-            setting.iconphoto(False, photo)
-
-            def save():
-                if (add_node.get() == 1):
-                    try:
-                        node = {}
-                        node["Node update"] = "Enable"
-                        json_object = json.dumps(node, indent=3)
-                        with open("files/node.json", "w") as f:
-                            f.write(json_object)
-                            f.close()
-                        return json.dumps(node)
-                    except Exception as e:
-                        criticalLog()
-                else:
-                    try:
-                        node = {}
-                        node["Node update"] = "Disable"
-                        json_object = json.dumps(node, indent=3)
-                        with open("files/node.json", "w") as f:
-                            f.write(json_object)
-                            f.close()
-                        return json.dumps(node)
-                    except Exception as e:
-                        criticalLog()
-
-            node_stngs = open("files/node.json", "r")
-            data = json.load(node_stngs)
-            if (data["Node update"] == "Enable"):
-                node_opts = 1
-            else:
-                node_opts = 0
-            node_stngs.close()
-            add_node = IntVar(value=node_opts)
-
-            Label(setting, text="Modules", bg="#383838", fg="#FFFFFF", font=('arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
-            ttk.Checkbutton(setting, text="Node Update", command=save,
-                            variable=add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
-        # settings()
+        def openLogFile():
+            try:
+                os.system("gedit logs/runtime.log")
+            except Exception as openLog:
+                errorLog(
+                    f"Error occured while opening the file [logfile] - {openLog}")
 
         # Menu
-        self.menubar = Menu(root, background='#ffffff', foreground='black',
+        self.menubar = Menu(self, background='#ffffff', foreground='black',
                             activebackground='white', activeforeground='black')
         help = Menu(self.menubar, tearoff=0, background='#ffffff')
-        help.add_command(label="Supported System", command=supportedSystem)
-        help.add_command(label="About", command=aboutSoftware)
-        help.add_command(label="About System", command=systemInfo)
-        help.add_command(label="Settings", command=settings)
-        help.add_command(label="Quit", command=quitLSU)
-        self.menubar.add_cascade(label="Help", menu=help)
+        help.add_command(label=language.m_h_sup_sys, command=supportedSystem)
+        help.add_command(label=language.m_h_about, command=aboutSoftware)
+        help.add_command(label=language.m_h_settings,
+                         command=self.open_settings)
+        help.add_command(label=language.m_h_quit, command=quitLSU)
+        self.menubar.add_cascade(label=language.m_h_category, menu=help)
         userHelp = Menu(self.menubar, tearoff=0, background='#ffffff')
         # Not available yet
-        userHelp.add_command(label="Questionnaire", command=openQuestionnaire)
-        self.menubar.add_cascade(label="News", menu=userHelp)
-        logs = Menu(self.menubar, tearoff=0, background='#ffffff')
-        logs.add_command(label="Open last Log", command=openLastLog)
-        self.menubar.add_cascade(label="Logger", menu=logs)
+        userHelp.add_command(label=language.m_n_questionaire,
+                             command=openQuestionnaire)
+        self.menubar.add_cascade(label=language.m_n_category, menu=userHelp)
+        info = Menu(self.menubar, tearoff=0, background='#ffffff')
+        info.add_command(label=language.m_i_log_file, command=openLogFile)
+        info.add_command(label=language.m_i_last_log, command=openLastLog)
+        info.add_command(label=language.m_i_system, command=systemInfo)
+        self.menubar.add_cascade(label=language.m_i_category, menu=info)
         # Title
-        Label(root, text='System\nUpdater', bg="#181d31",
+        Label(self, text=language.m_app_title, bg="#181d31",
               fg="#ffffff", font=('arial', 40, 'bold')).place(x=60, y=25)
         # Btn of sysupdate
-        Button(root, text='Update your system', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_upd_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=runningSystemUpdate).place(x=70, y=190)
         # Btn of my website
-        Button(root, text='Visit my Website', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_web_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=openMyWebsite).place(x=70, y=250)
         # Btn of my github profile
-        Button(root, text='Follow me on Github', bg='#F0F8FF', width=20, font=(
+        Button(self, text=language.m_git_btn, bg='#F0F8FF', width=25, font=(
             'arial', 12, 'normal'), command=openMyGithub).place(x=70, y=310)
         # Pictures
-        self.lsu_pic = Canvas(root, height=470, width=449,
+        self.lsu_pic = Canvas(self, height=470, width=449,
                               bg="#181d31", borderwidth=0, highlightthickness=0)
         self.picture_file = PhotoImage(file='pictures/lsu.png')
         self.lsu_pic.create_image(470, 0, anchor=NE, image=self.picture_file)
-        self.lsu_pic.place(x=290, y=54)
+        self.lsu_pic.place(x=310, y=84)
         # Menu
-        root.config(menu=self.menubar)
+        self.config(menu=self.menubar)
+
+    def open_settings(self):
+        settings = Settings(self)
+        settings.grab_set()
 
 
 if __name__ == "__main__":
     try:
-        root = Tk(className="Linux System Updater")
-        lsu = LSU(root)
-        root.mainloop()
-    except Exception as e:
-        criticalLog()
-        errorLog()
+        lsu = LSU()
+        lsu.mainloop()
+    except Exception as startup_err:
+        criticalLog(
+            f"An error occurred while starting the application - {startup_err}")

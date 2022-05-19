@@ -1,0 +1,59 @@
+{
+    "main": {
+        "app_name": "Linux Updater",
+        "app_title": "System Updater",
+        "upd_btn": "Update your System",
+        "web_btn": "Visit my Website",
+        "git_btn": "Follow me on Github",
+        "help": {
+            "category": "Help",
+            "sup_sys": "Supported Systems",
+            "about": "About",
+            "setting": "Settings",
+            "quit": "Quit"
+        },
+        "news": {
+            "category": "News",
+            "questionaire": "Questionaire"
+        },
+        "info": {
+            "category": "Info",
+            "log_file": "Open log file",
+            "last_log": "Last log",
+            "system": "System Information"
+        }
+    },
+    "settings": {
+        "window_name": "Settings",
+        "title": "Modules",
+        "node": "Node Update",
+        "pm2": "PM2 Update",
+        "l_title": "Language",
+        "english": "English",
+        "hungary": "Hungary",
+        "help": {
+            "category": "Help",
+            "whatisit": "What is it?"
+        },
+        "modules": {
+            "category": "Modules",
+            "node": "Node",
+            "pm2": "PM2"
+        }
+    },
+    "tmessagebox": {
+        "howtouseit": "How to use it?",
+        "error": "Error",
+        "sup_sys": "Supported Systems",
+        "sys_inf": "System Information",
+        "about_project": "About",
+        "lastlog": "Last Log",
+        "notify": "Notify"
+    },
+    "dmessagebox": {
+        "restart": "An error occurred! Please restart the application",
+        "howtouse": "Please check in these modules what you want to update?",
+        "about": "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5",
+        "notify_res": "Please restart the application to complete the language settings!"
+    }
+}

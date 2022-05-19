@@ -10,7 +10,7 @@ shell=True
 
 case "$ID" in
     "ubuntu" | "kali" | "raspbian" | "sparky")
-        pip3 install -r ../requirements.txt
+        pip3 install -r requirements.txt
         sudo apt-get install -y python3.6
         sudo apt install python3-tk -y
         sudo apt install python-tk -y

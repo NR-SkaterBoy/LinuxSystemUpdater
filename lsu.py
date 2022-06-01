@@ -261,7 +261,7 @@ class Settings(tk.Toplevel):
                 self.forever_opts = 1
             else:
                 self.forever_opts = 0
-            self.forever_strngs.close()
+            self.forever_strngs.close()                    
 
             def writeLanguageFile():
                 if (self.lang.get() == 1):
@@ -270,10 +270,13 @@ class Settings(tk.Toplevel):
                         language_file["Language"] = "English"
                         language_file_json_object = json.dumps(
                             language_file, indent=3)
+                        with open("files/language.json", "r") as readLang:
+                            getLang = json.load(readLang)
+                            if (not getLang["Language"] == "English"):
+                                messagebox.showinfo(
+                                    language.t_notify, language.d_not_res)
                         with open("files/language.json", "w") as language_file:
                             language_file.write(language_file_json_object)
-                        messagebox.showinfo(
-                            language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -284,10 +287,13 @@ class Settings(tk.Toplevel):
                         language_file["Language"] = "Hungary"
                         language_file_json_object = json.dumps(
                             language_file, indent=3)
+                        with open("files/language.json", "r") as readLang:
+                            getLang = json.load(readLang)
+                            if (not getLang["Language"] == "Hungary"):
+                                messagebox.showinfo(
+                                    language.t_notify, language.d_not_res)
                         with open("files/language.json", "w") as language_file:
                             language_file.write(language_file_json_object)
-                            messagebox.showinfo(
-                                language.t_notify, language.d_not_res)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -484,6 +490,7 @@ class LSU(tk.Tk):
 
         def openLogFile():
             try:
+                # FIX: Gedit works only kali
                 os.system("gedit logs/runtime.log")
             except Exception as openLog:
                 errorLog(
@@ -531,8 +538,8 @@ class LSU(tk.Tk):
         self.config(menu=self.menubar)
 
     def open_settings(self):
-        settings = Settings(self)
-        settings.grab_set()
+        self.settings = Settings(self)
+        self.settings.grab_set()
 
 
 if __name__ == "__main__":

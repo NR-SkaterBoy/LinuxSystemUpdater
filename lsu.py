@@ -155,6 +155,7 @@ EDITORS = [
     "nano",
 ]
 
+
 class Settings(tk.Toplevel):
     def __init__(self, parent):
         try:
@@ -269,7 +270,7 @@ class Settings(tk.Toplevel):
                 self.forever_opts = 1
             else:
                 self.forever_opts = 0
-            self.forever_strngs.close()                    
+            self.forever_strngs.close()
 
             def writeLanguageFile():
                 if (self.lang.get() == 1):
@@ -507,16 +508,16 @@ class LSU(tk.Tk):
             except Exception as openLog:
                 errorLog(
                     f"Error occured while opening the file [logfile] - {openLog}")
-        
+
         def openInstagram():
             webbrowser.open(r"https://www.instagram.com/richardneuvald/")
-        
+
         def openTwitter():
             webbrowser.open(r"https://twitter.com/richardneuvald")
-        
+
         def openPayPal():
             webbrowser.open(r"https://www.paypal.com/paypalme/richardneuvald")
-        
+
         def openBuymeacoffee():
             webbrowser.open(r"https://www.buymeacoffee.com/richardneuvald")
 
@@ -561,16 +562,20 @@ class LSU(tk.Tk):
         # Support & Media
         ### Instagram ###
         self.insta = PhotoImage(file="pictures/instagram.png")
-        Button(self, image=self.insta, width=25, height=25, bg="#181d31", borderwidth=0, command=openInstagram).place(x=30, y=410)
+        Button(self, image=self.insta, width=25, height=25, bg="#181d31",
+               borderwidth=0, command=openInstagram).place(x=30, y=410)
         ### Twitter ###
         self.twitter = PhotoImage(file="pictures/twitter.png")
-        Button(self, image=self.twitter, width=25, height=25, bg="#181d31", borderwidth=0, command=openTwitter).place(x=60, y=410)
+        Button(self, image=self.twitter, width=25, height=25, bg="#181d31",
+               borderwidth=0, command=openTwitter).place(x=60, y=410)
         ### PayPal ###
         self.paypal = PhotoImage(file="pictures/paypal.png")
-        Button(self, image=self.paypal, width=25, height=25, bg="#181d31", borderwidth=0, command=openPayPal).place(x=90, y=410)
+        Button(self, image=self.paypal, width=25, height=25, bg="#181d31",
+               borderwidth=0, command=openPayPal).place(x=90, y=410)
         ### Buymeacoffee ###
         self.coffee = PhotoImage(file="pictures/coffee-cup.png")
-        Button(self, image=self.coffee, width=25, height=25, bg="#181d31", borderwidth=0, command=openBuymeacoffee).place(x=120, y=410)
+        Button(self, image=self.coffee, width=25, height=25, bg="#181d31",
+               borderwidth=0, command=openBuymeacoffee).place(x=120, y=410)
         # Menu
         self.config(menu=self.menubar)
 

@@ -6,6 +6,8 @@
 # Linux Systems source package Updater
 # Version: Alpha 0.5
 
+# TODO: Repofrissíés után automatikus modultelepítés
+
 # Import modules
 import os
 import sys
@@ -143,6 +145,15 @@ node_file()
 pm2_file()
 forever_file()
 
+# Linux editors
+EDITORS = [
+    "code",
+    "subl"
+    "atom",
+    "geany",
+    "gedit",
+    "nano",
+]
 
 class Settings(tk.Toplevel):
     def __init__(self, parent):
@@ -487,8 +498,12 @@ class LSU(tk.Tk):
 
         def openLogFile():
             try:
-                # FIX: Gedit works only kali
-                os.system("gedit logs/runtime.log")
+                for editor in EDITORS:
+                    iseditor = subprocess.run(["which", f"{editor}"])
+                    if (iseditor.returncode == 0):
+                        os.system(f"{editor} logs/runtime.log")
+                        break
+                    # TODO: Ha nincs telepíve semmi akkor ajánlja fel a teleítési lehetőséget
             except Exception as openLog:
                 errorLog(
                     f"Error occured while opening the file [logfile] - {openLog}")

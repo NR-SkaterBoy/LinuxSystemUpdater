@@ -341,10 +341,10 @@ class Settings(tk.Toplevel):
                 messagebox.showinfo(language.t_howtouse, language.d_howtouse)
 
             def aboutNode():
-                webbrowser.open_new(r"https://nodejs.org/en/about/")
+                webbrowser.open(r"https://nodejs.org/en/about/")
 
             def aboutPm2():
-                webbrowser.open_new(r"https://pm2.keymetrics.io/")
+                webbrowser.open(r"https://pm2.keymetrics.io/")
 
             menu = tk.Menu(self)
             self.configure(menu=menu)
@@ -472,7 +472,7 @@ class LSU(tk.Tk):
             self.protocol("WM_DELETE_WINDOW", self.quit())
 
         def openQuestionnaire():
-            webbrowser.open_new(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
+            webbrowser.open(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
 
         def openLastLog():
             lastLog = []
@@ -494,7 +494,7 @@ class LSU(tk.Tk):
                     f"Error occured while opening the file [logfile] - {openLog}")
         
         def openInstagram():
-            webbrowser.open(r"https://www.instagram.com/ricsineuwald/")
+            webbrowser.open(r"https://www.instagram.com/richardneuvald/")
         
         def openTwitter():
             webbrowser.open(r"https://twitter.com/richardneuvald")

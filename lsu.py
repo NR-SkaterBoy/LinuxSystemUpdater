@@ -36,9 +36,6 @@ for file in os.listdir(directory):
     files = os.path.join(directory, file)
     os.chmod(files, stat.S_IRWXU)
 
-# Terminal
-# os.system("gnome-terminal 'bash -c \"sudo apt-get update; exec bash\"'") # It opens terminal
-
 # LogTypes:
 
 # () => task        @not necessary
@@ -449,10 +446,10 @@ class LSU(tk.Tk):
                     f"An error occurred while updating the system [runningSystemUpdate] - {upd_err}")
 
         def openMyWebsite():
-            webbrowser.open_new(r"https://richardneuvald.tk")
+            webbrowser.open(r"https://richardneuvald.tk")
 
         def openMyGithub():
-            webbrowser.open_new(r"https://github.com/NR-SkaterBoy")
+            webbrowser.open(r"https://github.com/NR-SkaterBoy")
 
         def supportedSystem():
             messagebox.showwarning(language.t_sup_sys,
@@ -495,6 +492,18 @@ class LSU(tk.Tk):
             except Exception as openLog:
                 errorLog(
                     f"Error occured while opening the file [logfile] - {openLog}")
+        
+        def openInstagram():
+            webbrowser.open(r"https://www.instagram.com/ricsineuwald/")
+        
+        def openTwitter():
+            webbrowser.open(r"https://twitter.com/richardneuvald")
+        
+        def openPayPal():
+            webbrowser.open(r"https://www.paypal.com/paypalme/richardneuvald")
+        
+        def openBuymeacoffee():
+            webbrowser.open(r"https://www.buymeacoffee.com/richardneuvald")
 
         # Menu
         self.menubar = Menu(self, background='#ffffff', foreground='black',
@@ -534,6 +543,19 @@ class LSU(tk.Tk):
         self.picture_file = PhotoImage(file='pictures/lsu.png')
         self.lsu_pic.create_image(470, 0, anchor=NE, image=self.picture_file)
         self.lsu_pic.place(x=310, y=84)
+        # Support & Media
+        ### Instagram ###
+        self.insta = PhotoImage(file="pictures/instagram.png")
+        Button(self, image=self.insta, width=25, height=25, bg="#181d31", borderwidth=0, command=openInstagram).place(x=30, y=410)
+        ### Twitter ###
+        self.twitter = PhotoImage(file="pictures/twitter.png")
+        Button(self, image=self.twitter, width=25, height=25, bg="#181d31", borderwidth=0, command=openTwitter).place(x=60, y=410)
+        ### PayPal ###
+        self.paypal = PhotoImage(file="pictures/paypal.png")
+        Button(self, image=self.paypal, width=25, height=25, bg="#181d31", borderwidth=0, command=openPayPal).place(x=90, y=410)
+        ### Buymeacoffee ###
+        self.coffee = PhotoImage(file="pictures/coffee-cup.png")
+        Button(self, image=self.coffee, width=25, height=25, bg="#181d31", borderwidth=0, command=openBuymeacoffee).place(x=120, y=410)
         # Menu
         self.config(menu=self.menubar)
 

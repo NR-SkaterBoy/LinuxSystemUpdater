@@ -272,7 +272,7 @@ class Settings(tk.Toplevel):
                 self.forever_opts = 0
             self.forever_strngs.close()
 
-            def writeLanguageFile():
+            async def writeLanguageFile():
                 if (self.lang.get() == 1):
                     try:
                         language_file = {}
@@ -285,7 +285,7 @@ class Settings(tk.Toplevel):
                                 messagebox.showinfo(
                                     language.t_notify, language.d_not_res)
                         with open("files/language.json", "w") as language_file:
-                            language_file.write(language_file_json_object)
+                            await language_file.write(language_file_json_object)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(
@@ -302,7 +302,7 @@ class Settings(tk.Toplevel):
                                 messagebox.showinfo(
                                     language.t_notify, language.d_not_res)
                         with open("files/language.json", "w") as language_file:
-                            language_file.write(language_file_json_object)
+                            await language_file.write(language_file_json_object)
                         return json.dumps(language_file)
                     except Exception as language_file_err:
                         errorLog(

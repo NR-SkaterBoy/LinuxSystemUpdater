@@ -19,7 +19,6 @@
 # Debian: Ubuntu|Kali|Raspbian|Sparky
 # RPM: Fedora - Later
 
-git pull
 shell=True
 
 # Linux version ID

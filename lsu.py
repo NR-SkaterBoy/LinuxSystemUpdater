@@ -58,6 +58,7 @@ if (not os.path.isfile("files/modules.json")):
 if (not os.path.isfile("files/app.json")):
     app = {}
     app["language"] = "English"
+    app["editor"] = "nano"
     json_object = json.dumps(app, indent=3)
     with open("files/app.json", "w") as app_file:
         app_file.write(json_object)
@@ -70,11 +71,9 @@ EDITORS = [
     "atom",     "geany",
     "gedit",    "nano",
     "vi",       "vim",
-    "gvim",     "subl",
+    "gvim",     "notepad-plus-plus",
     "emacs",    "pico",
     "bluefish", "kate",
-    "notepad-plus-plus",
-
 ]
 
 AVAILABLE_EDITORS = []
@@ -98,7 +97,7 @@ class Settings(tk.Toplevel):
         try:
             super().__init__(parent)
 
-            self.geometry("300x300")
+            self.geometry("500x300")
             self.title(language.settings)
             self.resizable(False, True)
             self.configure(background="#383838")
@@ -255,36 +254,100 @@ class Settings(tk.Toplevel):
                 self.lang.set(1)
             elif self.getLang["language"] == "Hungary":
                 self.lang.set(2)
+                
+            # TODO: add value to Editor
+                
+            def writeEditor(new_editor):
+                with open(application_file, "r+") as default_editor:
+                    editor = json.load(default_editor)
+                    editor['editor'] = new_editor
+                    default_editor.seek(0)
+                    json.dump(editor, default_editor, indent=3)
+                    default_editor.truncate()
+                
+            def setEditor():
+                if (self.editor.get() == 3):
+                    writeEditor("code")
+                elif (self.editor.get() == 4):
+                    writeEditor("subl")
+                elif (self.editor.get() == 5):
+                    writeEditor("atom")
+                elif (self.editor.get() == 6):
+                    writeEditor("geany")
+                elif (self.editor.get() == 7):
+                    writeEditor("gedit")
+                elif (self.editor.get() == 8):
+                    writeEditor("nano")
+                elif (self.editor.get() == 9):
+                    writeEditor("vi")
+                elif (self.editor.get() == 10):
+                    writeEditor("vim")
+                elif (self.editor.get() == 11):
+                    writeEditor("gvim")
+                elif (self.editor.get() == 12):
+                    writeEditor("notepad-plus-plus")
+                elif (self.editor.get() == 13):
+                    writeEditor("emacs")
+                elif (self.editor.get() == 14):
+                    writeEditor("")
+                elif (self.editor.get() == 15):
+                    writeEditor("")
 
             Label(self, text=language.t_modul, bg="#383838", fg="#FFFFFF", font=(
-                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110)
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110, x=-140)
             ttk.Checkbutton(self, text=language.m_node, command=node_save,
-                            variable=self.add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60)
+                            variable=self.add_node, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-60, x=-140)
             ttk.Checkbutton(self, text=language.m_pm2, command=pm2_save,
-                            variable=self.add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30)
+                            variable=self.add_pm2, onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER, y=-30, x=-140)
             # ttk.Checkbutton(self, text="Forever", command=forever_save, variable=add_forever,
             #                 onvalue=1, offvalue=0, width=15).place(relx=0.5, rely=0.5, anchor=CENTER)
 
             # Language
             Label(self, text=language.t_language, bg="#383838", fg="#FFFFFF", font=(
-                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30, x=-140)
 
             lang_en = Radiobutton(
                 self, text=language.l_eng, variable=self.lang, value=1, width=15, command=setLanguage)
-            lang_en.place(relx=0.5, rely=0.5, anchor=CENTER, y=70)
+            lang_en.place(relx=0.5, rely=0.5, anchor=CENTER, y=70, x=-140)
             lang_hu = Radiobutton(
                 self, text=language.l_hu, variable=self.lang, value=2, width=15, command=setLanguage)
-            lang_hu.place(relx=0.5, rely=0.5, anchor=CENTER, y=100)
+            lang_hu.place(relx=0.5, rely=0.5, anchor=CENTER, y=100, x=-140)
 
-            # Label(self, text="Editor", bg="#383838", fg="#FFFFFF", font=(
-            #     'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=30)
+            Label(self, text=language.t_editor, bg="#383838", fg="#FFFFFF", font=(
+                'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110, x=100)
 
-            # TODO: Annyi radiogombot kell létrehozni, ahágy szerkesztő van a gépen, viszont az értékekre figyelni kell
-            # editor_y = 160
-            # for editor in AVAILABLE_EDITORS:
-            #     editor_y += 30
-            #     Radiobutton(
-            #     self, text=editor, variable=self.editor, value=1, width=15, command=None).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y)
+            editor_y = -90
+            for editor in AVAILABLE_EDITORS:
+                editor_y += 30
+                if editor == "code":
+                    Radiobutton( self, text="VSCode", variable=self.editor, value=3, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "subl":
+                    Radiobutton( self, text="Subl", variable=self.editor, value=4, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "atom":
+                    Radiobutton( self, text="Atom", variable=self.editor, value=5, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "geany":
+                    Radiobutton( self, text="Geany", variable=self.editor, value=6, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "gedit":
+                    Radiobutton( self, text="Gedit", variable=self.editor, value=7, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "nano":
+                    Radiobutton( self, text="Nano", variable=self.editor, value=8, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "vi":
+                    Radiobutton( self, text="Vi", variable=self.editor, value=9, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "vim":
+                    Radiobutton( self, text="Vim", variable=self.editor, value=10, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "gvim":
+                    Radiobutton( self, text="Gvim", variable=self.editor, value=11, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "notepad-plus-plus":
+                    Radiobutton( self, text="Notepad++", variable=self.editor, value=12, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "emacs":
+                    Radiobutton( self, text="Emacs", variable=self.editor, value=13, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "pico":
+                    Radiobutton( self, text="Pico", variable=self.editor, value=14, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "bluefish":
+                    Radiobutton( self, text="Bluefish", variable=self.editor, value=15, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "kate":
+                    Radiobutton( self, text="Kate", variable=self.editor, value=16, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+               
 
             def aboutSettings():
                 messagebox.showinfo(language.tm_howtouse, language.dm_howtouse)

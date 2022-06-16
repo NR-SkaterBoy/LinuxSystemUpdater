@@ -19,6 +19,7 @@ if [ $returncode -eq 0 ]
             sudo -A npm cache clean -f
             sudo -A npm install -g n
             sudo -A n stable
+            sudo -A n latest
         fi
     else
         if zenity --question --title="Node Installing..." --text="Would you like to install node package?" --no-wrap; then

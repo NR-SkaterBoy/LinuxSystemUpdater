@@ -255,9 +255,9 @@ class Settings(tk.Toplevel):
             elif self.getLang["language"] == "Hungary":
                 self.lang.set(2)
 
-            self.read_code_editor = open("files/app.json", "r")
-            self.getEditor = json.load(self.read_code_editor)
-            match self.getEditor["editor"]:
+            read_code_editor = open("files/app.json", "r")
+            getEditor = json.load(read_code_editor)
+            match getEditor["editor"]:
                 case "code": self.editor.set(3)
                 case "subl": self.editor.set(4)
                 case "atom": self.editor.set(5)

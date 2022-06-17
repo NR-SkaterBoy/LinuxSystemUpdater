@@ -31,39 +31,12 @@ if (platform.system() != "Windows"):
 import language
 import logger
 
+
 # Set the file(s) rights
 directory = "bash"
 for file in os.listdir(directory):
     files = os.path.join(directory, file)
     os.chmod(files, stat.S_IRWXU)
-
-# LogFolder and neccesary file(s) [Modules]
-if (not os.path.isdir("logs")):
-    os.mkdir(os.path.join("logs"))
-if (not os.path.isdir("files")):
-    os.mkdir(os.path.join("files"))
-
-
-if (not os.path.isfile("files/modules.json")):
-    modules = {}
-    modules["node update"] = "Disable"
-    modules["pm2 update"] = "Disable"
-    modules["forever update"] = "Disable"
-    json_object = json.dumps(modules, indent=3)
-    with open("files/modules.json", "w") as modules_file:
-        modules_file.write(json_object)
-    json.dumps(modules)
-
-
-if (not os.path.isfile("files/app.json")):
-    app = {}
-    app["language"] = "English"
-    app["editor"] = "nano"
-    json_object = json.dumps(app, indent=3)
-    with open("files/app.json", "w") as app_file:
-        app_file.write(json_object)
-    json.dumps(app)
-
 
 # Linux editors and installed editor(s)
 EDITORS = [
@@ -85,8 +58,8 @@ for editor in EDITORS:
         AVAILABLE_EDITORS.append(editor)
 
 # Files
-modules_file = "files/modules.json"
-application_file = "files/app.json"
+modules_file = f"/home/{os.getlogin()}/lsu/files/modules.json"
+application_file = f"/home/{os.getlogin()}/lsu/files/app.json"
 
 # Launched time
 l_time = ""
@@ -101,7 +74,7 @@ class Settings(tk.Toplevel):
             self.title(language.settings)
             self.resizable(False, True)
             self.configure(background="#383838")
-            self.photo = PhotoImage(file="icons/setting.png")
+            self.photo = PhotoImage(file="img/setting.png")
             self.iconphoto(False, self.photo)
 
             def node_save():
@@ -176,8 +149,8 @@ class Settings(tk.Toplevel):
                         logger.errorLog(
                             f"Error writing forever file (Enable) [forever_save] - {forever_err}")
 
-                        # NODE
-            self.node_strngs = open("files/modules.json", "r")
+            # NODE
+            self.node_strngs = open(modules_file, "r")
             self.data = json.load(self.node_strngs)
             if (self.data["node update"] == "Enable"):
                 self.node_opts = 1
@@ -186,7 +159,7 @@ class Settings(tk.Toplevel):
             self.node_strngs.close()
 
             # PM2
-            self.pm2_strngs = open("files/modules.json", "r")
+            self.pm2_strngs = open(modules_file, "r")
             self.data = json.load(self.pm2_strngs)
             if (self.data["pm2 update"] == "Enable"):
                 self.pm2_opts = 1
@@ -195,14 +168,14 @@ class Settings(tk.Toplevel):
             self.pm2_strngs.close()
 
             # Forever
-            self.forever_strngs = open("files/modules.json", "r")
+            self.forever_strngs = open(modules_file, "r")
             self.data = json.load(self.forever_strngs)
             if (self.data["forever update"] == "Enable"):
                 self.forever_opts = 1
             else:
                 self.forever_opts = 0
             self.forever_strngs.close()
-
+            
             def setLanguage():
                 if (self.lang.get() == 1):
                     try:
@@ -233,7 +206,7 @@ class Settings(tk.Toplevel):
                         logger.errorLog(
                             f"Error writing language_file file (Disable) [language_file_save] - {language_file_err}")
                     finally:
-                        if (not os.path.isfile("files/app.json")):
+                        if (not os.path.isfile(f"/home/{os.getlogin()}/lsu/files/app.json")):
                             self.destroy()
                             messagebox.showerror(
                                 language.tm_error, language.dm_restart)
@@ -248,29 +221,43 @@ class Settings(tk.Toplevel):
             ############################################
 
             # Add value to lang
-            self.read_lang_file = open("files/app.json", "r")
+            self.read_lang_file = open(application_file, "r")
             self.getLang = json.load(self.read_lang_file)
             if self.getLang["language"] == "English":
                 self.lang.set(1)
             elif self.getLang["language"] == "Hungary":
                 self.lang.set(2)
 
-            read_code_editor = open("files/app.json", "r")
+            read_code_editor = open(application_file, "r")
             getEditor = json.load(read_code_editor)
-            if getEditor["editor"] =="code": self.editor.set(3)
-            elif getEditor["editor"] == "subl": self.editor.set(4)
-            elif getEditor["editor"] == "atom": self.editor.set(5)
-            elif getEditor["editor"] == "geany": self.editor.set(6)
-            elif getEditor["editor"] == "gedit": self.editor.set(7)
-            elif getEditor["editor"] == "nano": self.editor.set(8)
-            elif getEditor["editor"] == "vi": self.editor.set(9)
-            elif getEditor["editor"] == "vim": self.editor.set(10)
-            elif getEditor["editor"] == "gvim": self.editor.set(11)
-            elif getEditor["editor"] == "notepad-plus-plus": self.editor.set(12)
-            elif getEditor["editor"] == "emacs": self.editor.set(13)
-            elif getEditor["editor"] == "pico": self.editor.set(14)
-            elif getEditor["editor"] == "bluefish": self.editor.set(15)
-            elif getEditor["editor"] == "kate": self.editor.set(16)
+            if getEditor["editor"] == "code":
+                self.editor.set(3)
+            elif getEditor["editor"] == "subl":
+                self.editor.set(4)
+            elif getEditor["editor"] == "atom":
+                self.editor.set(5)
+            elif getEditor["editor"] == "geany":
+                self.editor.set(6)
+            elif getEditor["editor"] == "gedit":
+                self.editor.set(7)
+            elif getEditor["editor"] == "nano":
+                self.editor.set(8)
+            elif getEditor["editor"] == "vi":
+                self.editor.set(9)
+            elif getEditor["editor"] == "vim":
+                self.editor.set(10)
+            elif getEditor["editor"] == "gvim":
+                self.editor.set(11)
+            elif getEditor["editor"] == "notepad-plus-plus":
+                self.editor.set(12)
+            elif getEditor["editor"] == "emacs":
+                self.editor.set(13)
+            elif getEditor["editor"] == "pico":
+                self.editor.set(14)
+            elif getEditor["editor"] == "bluefish":
+                self.editor.set(15)
+            elif getEditor["editor"] == "kate":
+                self.editor.set(16)
 
             def writeEditor(new_editor):
                 with open(application_file, "r+") as default_editor:
@@ -281,20 +268,34 @@ class Settings(tk.Toplevel):
                     default_editor.truncate()
 
             def setEditor():
-                if self.editor.get() == 3: writeEditor("code")
-                elif self.editor.get() == 4: writeEditor("subl")
-                elif self.editor.get() == 5: writeEditor("atom")
-                elif self.editor.get() == 6: writeEditor("geany")
-                elif self.editor.get() == 7: writeEditor("gedit")
-                elif self.editor.get() == 8: writeEditor("nano")
-                elif self.editor.get() == 9: writeEditor("vi")
-                elif self.editor.get() == 10: writeEditor("vim")
-                elif self.editor.get() == 11: writeEditor("gvim")
-                elif self.editor.get() == 12: writeEditor("notepad-plus-plus")
-                elif self.editor.get() == 13: writeEditor("emacs")
-                elif self.editor.get() == 14: writeEditor("pico")
-                elif self.editor.get() == 15: writeEditor("bluefish")
-                elif self.editor.get() == 16: writeEditor("kate")
+                if self.editor.get() == 3:
+                    writeEditor("code")
+                elif self.editor.get() == 4:
+                    writeEditor("subl")
+                elif self.editor.get() == 5:
+                    writeEditor("atom")
+                elif self.editor.get() == 6:
+                    writeEditor("geany")
+                elif self.editor.get() == 7:
+                    writeEditor("gedit")
+                elif self.editor.get() == 8:
+                    writeEditor("nano")
+                elif self.editor.get() == 9:
+                    writeEditor("vi")
+                elif self.editor.get() == 10:
+                    writeEditor("vim")
+                elif self.editor.get() == 11:
+                    writeEditor("gvim")
+                elif self.editor.get() == 12:
+                    writeEditor("notepad-plus-plus")
+                elif self.editor.get() == 13:
+                    writeEditor("emacs")
+                elif self.editor.get() == 14:
+                    writeEditor("pico")
+                elif self.editor.get() == 15:
+                    writeEditor("bluefish")
+                elif self.editor.get() == 16:
+                    writeEditor("kate")
 
             Label(self, text=language.t_modul, bg="#383838", fg="#FFFFFF", font=(
                 'arial', 25, 'bold')).place(relx=0.5, rely=0.5, anchor=CENTER, y=-110, x=-140)
@@ -322,20 +323,48 @@ class Settings(tk.Toplevel):
             editor_y = -90
             for editor in AVAILABLE_EDITORS:
                 editor_y += 30
-                if editor == "code": Radiobutton(self, text="VSCode", variable=self.editor, value=3, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "subl": Radiobutton(self, text="Subl", variable=self.editor, value=4, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "atom": Radiobutton(self, text="Atom", variable=self.editor, value=5, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "geany": Radiobutton(self, text="Geany", variable=self.editor, value=6, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "gedit": Radiobutton(self, text="Gedit", variable=self.editor, value=7, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "nano": Radiobutton(self, text="Nano", variable=self.editor, value=8, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "vi": Radiobutton(self, text="Vi", variable=self.editor, value=9, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "vim": Radiobutton(self, text="Vim", variable=self.editor, value=10, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "gvim": Radiobutton(self, text="Gvim", variable=self.editor, value=11, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "notepad-plus-plus": Radiobutton(self, text="Notepad++", variable=self.editor, value=12, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "emacs": Radiobutton(self, text="Emacs", variable=self.editor, value=13, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "pico": Radiobutton(self, text="Pico", variable=self.editor, value=14, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "bluefish": Radiobutton(self, text="Bluefish", variable=self.editor, value=15, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
-                elif editor == "kate": Radiobutton(self, text="Kate", variable=self.editor, value=16, width=15, command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                if editor == "code":
+                    Radiobutton(self, text="VSCode", variable=self.editor, value=3, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "subl":
+                    Radiobutton(self, text="Subl", variable=self.editor, value=4, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "atom":
+                    Radiobutton(self, text="Atom", variable=self.editor, value=5, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "geany":
+                    Radiobutton(self, text="Geany", variable=self.editor, value=6, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "gedit":
+                    Radiobutton(self, text="Gedit", variable=self.editor, value=7, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "nano":
+                    Radiobutton(self, text="Nano", variable=self.editor, value=8, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "vi":
+                    Radiobutton(self, text="Vi", variable=self.editor, value=9, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "vim":
+                    Radiobutton(self, text="Vim", variable=self.editor, value=10, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "gvim":
+                    Radiobutton(self, text="Gvim", variable=self.editor, value=11, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "notepad-plus-plus":
+                    Radiobutton(self, text="Notepad++", variable=self.editor, value=12, width=15,
+                                command=setEditor).place(relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "emacs":
+                    Radiobutton(self, text="Emacs", variable=self.editor, value=13, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "pico":
+                    Radiobutton(self, text="Pico", variable=self.editor, value=14, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "bluefish":
+                    Radiobutton(self, text="Bluefish", variable=self.editor, value=15, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
+                elif editor == "kate":
+                    Radiobutton(self, text="Kate", variable=self.editor, value=16, width=15, command=setEditor).place(
+                        relx=0.5, rely=0.5, anchor=CENTER, y=editor_y, x=100)
 
             def aboutSettings():
                 messagebox.showinfo(language.tm_howtouse, language.dm_howtouse)
@@ -376,7 +405,7 @@ class LSU(tk.Tk):
         self.minsize(width=800, height=450)
         self.configure(background="#181d31")
         # self.iconbitmap("icons/lsu.ico")
-        self.photo = PhotoImage(file="icons/lsu.png")
+        self.photo = PhotoImage(file="img/lsu.png")
         self.iconphoto(False, self.photo)
 
         # Autolog
@@ -402,14 +431,14 @@ class LSU(tk.Tk):
                     "Node version": self.node_version.decode("utf-8")
                 }
             }
-            if (not os.path.isfile("logs/runtime.json")):
-                with open("logs/runtime.json", "w") as runtime:
+            if (not os.path.isfile(f"/home/{os.getlogin()}/lsu/logs/runtime.json")):
+                with open(f"/home/{os.getlogin()}/lsu/logs/runtime.json", "w") as runtime:
                     json.dump([log_data], runtime, indent=3)
             else:
-                with open("logs/runtime.json", "r") as file:
+                with open(f"/home/{os.getlogin()}/lsu/logs/runtime.json", "r") as file:
                     data = json.load(file)
                 data.append(log_data)
-                with open("logs/runtime.json", "w") as file:
+                with open(f"/home/{os.getlogin()}/lsu/logs/runtime.json", "w") as file:
                     json.dump(data, file, indent=3)
         runtimeLog()
 
@@ -431,7 +460,7 @@ class LSU(tk.Tk):
                     info['RAM'] = str(
                         round(psutil.virtual_memory().total / (1024.0 ** 3)))+" GB"
                 json_object = json.dumps(info, indent=3)
-                with open("files/sysinfo.json", "w") as sysinfo_file:
+                with open(f"/home/{os.getlogin()}/lsu/files/sysinfo.json", "w") as sysinfo_file:
                     sysinfo_file.write(json_object)
                 return json.dumps(info)
             except Exception as sysinfo_err:
@@ -471,7 +500,8 @@ class LSU(tk.Tk):
                                    "Ubuntu, Kali Linux, Raspbian, Sparky Linux")
 
         def systemInfo():
-            log = json.load(open("files/sysinfo.json", "r"))
+            log = json.load(
+                open(f"/home/{os.getlogin()}/lsu/files/sysinfo.json", "r"))
             sysinfo = (f"Platform: {log['Platform']}\nPlatform-release: {log['Platform-release']}\nPlatform-version: {log['Platform-version']}\nArchitecture: {log['Architecture']}\nHostname: {log['Hostname']}\nIP-address: {log['IP-address']}\nMAC-address: {log['MAC-address']}\nProcessor: {log['Processor']}\nRAM: {log['RAM']}")
             messagebox.showinfo(language.tm_sysinfo, sysinfo)
         # systemInfo()
@@ -480,7 +510,7 @@ class LSU(tk.Tk):
             messagebox.showinfo(language.tm_about, language.dm_about)
 
         def quitLSU():
-            logFile = open(f"logs/runtime.log", "a")
+            logFile = open(f"/home/{os.getlogin()}/lsu/logs/runtime.log", "a")
             logFile.write(
                 f"Exit time: {self.runtime}\n\n")
             logFile.close()
@@ -490,7 +520,7 @@ class LSU(tk.Tk):
             webbrowser.open(r"https://forms.gle/Xb5kY6cajjvRHTNB7")
 
         def openLastLog():
-            lastlog_file = open("logs/runtime.json")
+            lastlog_file = open(f"/home/{os.getlogin()}/lsu/logs/runtime.json")
             data = json.load(lastlog_file)
             plat = data[-1][f"{l_time}"]["Platform"]
             py = data[-1][f"{l_time}"]["Python version"]
@@ -500,9 +530,11 @@ class LSU(tk.Tk):
 
         def openLogFile():
             try:
-                read_editor = open("files/app.json", "r")
+                read_editor = open(
+                    f"/home/{os.getlogin()}/lsu/files/app.json", "r")
                 def_editor = json.load(read_editor)
-                os.system(f"{def_editor['editor']} logs/runtime.json")
+                os.system(
+                    f"{def_editor['editor']} /home/{os.getlogin()}/lsu/logs/runtime.json")
             except Exception as openLog:
                 logger.errorLog(
                     f"Error occured while opening the file [logfile] - {openLog}")
@@ -554,24 +586,24 @@ class LSU(tk.Tk):
         # Pictures
         self.lsu_pic = Canvas(self, height=470, width=449,
                               bg="#181d31", borderwidth=0, highlightthickness=0)
-        self.picture_file = PhotoImage(file='pictures/lsu.png')
+        self.picture_file = PhotoImage(file='img/lsu.png')
         self.lsu_pic.create_image(470, 0, anchor=NE, image=self.picture_file)
         self.lsu_pic.place(x=310, y=84)
         # Support & Media
         ### Instagram ###
-        self.insta = PhotoImage(file="pictures/instagram.png")
+        self.insta = PhotoImage(file="img/instagram.png")
         Button(self, image=self.insta, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openInstagram).place(x=30, y=410)
         ### Twitter ###
-        self.twitter = PhotoImage(file="pictures/twitter.png")
+        self.twitter = PhotoImage(file="img/twitter.png")
         Button(self, image=self.twitter, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openTwitter).place(x=60, y=410)
         ### PayPal ###
-        self.paypal = PhotoImage(file="pictures/paypal.png")
+        self.paypal = PhotoImage(file="img/paypal.png")
         Button(self, image=self.paypal, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openPayPal).place(x=90, y=410)
         ### Buymeacoffee ###
-        self.coffee = PhotoImage(file="pictures/coffee-cup.png")
+        self.coffee = PhotoImage(file="img/coffee-cup.png")
         Button(self, image=self.coffee, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openBuymeacoffee).place(x=120, y=410)
         # Menu

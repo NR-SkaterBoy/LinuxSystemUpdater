@@ -7,21 +7,10 @@
 
 import json
 import os
-
-if (not os.path.isdir("files")):
-    os.mkdir(os.path.join("files"))
-
-if (not os.path.isfile("files/app.json")):
-    app = {}
-    app["language"] = "English"
-    json_object = json.dumps(app, indent=3)
-    with open("files/app.json", "w") as app_file:
-        app_file.write(json_object)
-        json.dumps(app)
-
+import createfile
 
 # Set language
-read_lang_file = open("files/app.json", "r")
+read_lang_file = open(f"/home/{os.getlogin()}/lsu/files/app.json", "r")
 getLang = json.load(read_lang_file)
 
 if getLang["language"] == "English":

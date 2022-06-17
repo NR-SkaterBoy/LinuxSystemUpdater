@@ -1,11 +1,14 @@
 import logging
+import os
+
+logfile = "/home/{}/lsu/logs/dev.log".format(os.getlogin())
 
 def criticalLog(msg):
     logging.basicConfig(
         level=logging.CRITICAL,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/dev.log",
+        filename=logfile,
         filemode="a"
     )
     logging.critical(msg)
@@ -16,7 +19,7 @@ def errorLog(msg):
         level=logging.ERROR,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/dev.log",
+        filename=logfile,
         filemode="a"
     )
     logging.error(msg)
@@ -27,7 +30,7 @@ def warningLog(msg):
         level=logging.WARNING,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/dev.log",
+        filename=logfile,
         filemode="a"
     )
     logging.warning(msg)
@@ -38,7 +41,7 @@ def infoLog(msg):
         level=logging.INFO,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/dev.log",
+        filename=logfile,
         filemode="a"
     )
     logging.info(msg)
@@ -49,7 +52,7 @@ def debugLog(msg):
         level=logging.DEBUG,
         format="{asctime} {levelname} {message}",
         style='{',
-        filename="logs/dev.log",
+        filename=logfile,
         filemode="a"
     )
     logging.debug(msg)

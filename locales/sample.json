@@ -1,0 +1,71 @@
+{
+    "window_name": {
+        "lsu": "",
+        "settings": ""
+    },
+    "titles": {
+        "systm_updater": "",
+        "modul": "",
+        "language": "",
+        "editor": ""
+    },
+    "buttons": {
+        "lsu_sys": "",
+        "lsu_web": "",
+        "lsu_github": ""
+    },
+    "modul": {
+        "node": "",
+        "pm2": ""
+    },
+    "language": {
+        "eng": "",
+        "hun": ""
+    },
+    "menu_line": {
+        "lsu_menu": "",
+        "lsu_news": "",
+        "lsu_info": "",
+        "stngs_menu": "",
+        "stngs_modul": ""
+    },
+    "lsu_menu": {
+        "supsys": "",
+        "about": "",
+        "settings": "",
+        "exit": ""
+    },
+    "lsu_news": {
+        "questionaire": ""
+    },
+    "lsu_info": {
+        "log_file": "",
+        "last_log": "",
+        "sysinfo": ""
+    },
+    "stngs_menu": {
+        "whatis": ""
+    },
+    "stngs_modul": {
+        "node": "",
+        "pm2": ""
+    },
+    "msgbox_title": {
+        "notify": "",
+        "error": "",
+        "howtouse": "",
+        "supsys": "",
+        "sysinfo": "",
+        "about": "",
+        "lastlog": ""
+    },
+    "msgbox_des": {
+        "restart": "",
+        "howtouse": "",
+        "about": "",
+        "lang_res": ""
+    },
+    "app": {
+        "version": ""
+    }
+}

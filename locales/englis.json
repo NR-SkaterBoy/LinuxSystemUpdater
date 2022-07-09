@@ -1,59 +1,71 @@
 {
-    "main": {
-        "app_name": "Linux Updater",
-        "app_title": "System Updater",
-        "upd_btn": "Update your System",
-        "web_btn": "Visit my Website",
-        "git_btn": "Follow me on Github",
-        "help": {
-            "category": "Help",
-            "sup_sys": "Supported Systems",
-            "about": "About",
-            "setting": "Settings",
-            "quit": "Quit"
-        },
-        "news": {
-            "category": "News",
-            "questionaire": "Questionaire"
-        },
-        "info": {
-            "category": "Info",
-            "log_file": "Open log file",
-            "last_log": "Last log",
-            "system": "System Information"
-        }
+    "window_name": {
+        "lsu": "Linux Updater",
+        "settings": "Settings"
     },
-    "settings": {
-        "window_name": "Settings",
-        "title": "Modules",
-        "node": "Node Update",
-        "pm2": "PM2 Update",
-        "l_title": "Language",
-        "english": "English",
-        "hungary": "Hungary",
-        "help": {
-            "category": "Help",
-            "whatisit": "What is it?"
-        },
-        "modules": {
-            "category": "Modules",
-            "node": "Node",
-            "pm2": "PM2"
-        }
+    "titles": {
+        "systm_updater": "System Updater",
+        "modul": "Modules",
+        "language": "Language",
+        "editor": "Editor(s)"
     },
-    "tmessagebox": {
-        "howtouseit": "How to use it?",
+    "buttons": {
+        "lsu_sys": "Update your System",
+        "lsu_web": "Visit my Website",
+        "lsu_github": "Follow me on Github"
+    },
+    "modul": {
+        "node": "Node update",
+        "pm2": "PM2 update"
+    },
+    "language": {
+        "eng": "English",
+        "hun": "Hungary"
+    },
+    "menu_line": {
+        "lsu_menu": "Menu",
+        "lsu_news": "News",
+        "lsu_info": "Information",
+        "stngs_menu": "Menu",
+        "stngs_modul": "Modules"
+    },
+    "lsu_menu": {
+        "supsys": "Supported Systems",
+        "about": "About",
+        "settings": "Settings",
+        "exit": "Quit"
+    },
+    "lsu_news": {
+        "questionaire": "Questionaire"
+    },
+    "lsu_info": {
+        "log_file": "Open log file",
+        "last_log": "Last log",
+        "sysinfo": "System information"
+    },
+    "stngs_menu": {
+        "whatis": "What is it?"
+    },
+    "stngs_modul": {
+        "node": "What is Node?",
+        "pm2": "What is PM2?"
+    },
+    "msgbox_title": {
+        "notify": "Notify",
         "error": "Error",
-        "sup_sys": "Supported Systems",
-        "sys_inf": "System Information",
-        "about_project": "About",
-        "lastlog": "Last Log",
-        "notify": "Notify"
+        "howtouse": "How to use it?",
+        "supsys": "Supported Systems",
+        "sysinfo": "System Information",
+        "about": "About",
+        "lastlog": "Last Log"
     },
-    "dmessagebox": {
-        "restart": "An error occurred! Please restart the application",
-        "howtouse": "Please check in these modules what you want to update?",
-        "about": "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 10 different systems and has a built-in OS recognizer.\n\nVersion: Alpha 0.5",
-        "notify_res": "Please restart the application to complete the language settings!"
+    "msgbox_des": {
+        "restart": "An error occurred! Please restart the application!",
+        "howtouse": "Please check in these modules what you want to update",
+        "about": "Most PC users stick to Windows and are not willing to change to Linux because there are fewer GUI applications and they would need to learn the basic Linux commands. Moreover, most Linux-based systems get an update every week and some people think it is a waste of time to type the update commands.\n\nThis app may come handy for both beginners and advanced users because it is able to update the system by simply clicking a button. It supports over 4 different systems and has a built-in OS recognizer.",
+        "lang_res": "Please restart the application to complete the language settings!"
+    },
+    "app": {
+        "version": "Version"
     }
 }

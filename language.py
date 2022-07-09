@@ -7,17 +7,17 @@
 
 import json
 import os
-import createfile
+from createfile import *
 
 # Set language
 read_lang_file = open(f"/home/{os.getlogin()}/lsu/files/app.json", "r")
 getLang = json.load(read_lang_file)
 
 if getLang["language"] == "English":
-    eng_lang = open("./locales/englis.json", "r")
+    eng_lang = open("/home/ricsi/Dokumentumok/LinuxSystemUpdate/locales/englis.json", "r")
     lang = json.load(eng_lang)
 elif getLang["language"] == "Hungary":
-    hun_lang = open("./locales/hungary.json", "r")
+    hun_lang = open("/home/ricsi/Dokumentumok/LinuxSystemUpdate/locales/hungary.json", "r")
     lang = json.load(hun_lang)
 
 # Name of window(s)
@@ -85,3 +85,6 @@ dm_restart = lang["msgbox_des"]["restart"]
 dm_howtouse = lang["msgbox_des"]["howtouse"]
 dm_about = lang["msgbox_des"]["about"]
 dm_lang_res = lang["msgbox_des"]["lang_res"]
+
+# AppInfo
+appi = lang["app"]["version"]

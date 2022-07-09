@@ -64,5 +64,8 @@
         "howtouse": "",
         "about": "",
         "lang_res": ""
+    },
+    "app": {
+        "version": ""
     }
 }

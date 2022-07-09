@@ -4,16 +4,16 @@
 # Website: https://richardneuvald.tk
 # E-mail: nr.rick.dev@gmail.com
 # Linux Systems source package Updater
-# Version: Alpha 0.5
 
+__version__ = "0.8.0"
 
 # Import modules
 import os
 import socket
 import re
+from turtle import clear
 import uuid
 import json
-import stat
 import subprocess
 import webbrowser
 import time
@@ -30,13 +30,14 @@ if (platform.system() != "Windows"):
 # Import local file
 import language
 import logger
+import app
 
 
 # Set the file(s) rights
-directory = "bash"
-for file in os.listdir(directory):
-    files = os.path.join(directory, file)
-    os.chmod(files, stat.S_IRWXU)
+# directory = "bash"
+# for file in os.listdir(directory):
+#     files = os.path.join(directory, file)
+#     os.chmod(files, stat.S_IRWXU)
 
 # Linux editors and installed editor(s)
 EDITORS = [
@@ -57,6 +58,9 @@ for editor in EDITORS:
     if (iseditor.returncode == 0):
         AVAILABLE_EDITORS.append(editor)
 
+# Cleare console
+os.system('cls' if os.name == 'nt' else 'clear')
+
 # Files
 modules_file = f"/home/{os.getlogin()}/lsu/files/modules.json"
 application_file = f"/home/{os.getlogin()}/lsu/files/app.json"
@@ -74,7 +78,7 @@ class Settings(tk.Toplevel):
             self.title(language.settings)
             self.resizable(False, True)
             self.configure(background="#383838")
-            self.photo = PhotoImage(file="img/setting.png")
+            self.photo = PhotoImage(file=f"./img/setting.png")
             self.iconphoto(False, self.photo)
 
             def node_save():
@@ -175,7 +179,7 @@ class Settings(tk.Toplevel):
             else:
                 self.forever_opts = 0
             self.forever_strngs.close()
-            
+
             def setLanguage():
                 if (self.lang.get() == 1):
                     try:
@@ -405,7 +409,7 @@ class LSU(tk.Tk):
         self.minsize(width=800, height=450)
         self.configure(background="#181d31")
         # self.iconbitmap("icons/lsu.ico")
-        self.photo = PhotoImage(file="img/lsu.png")
+        self.photo = PhotoImage(file=f"./img/lsu_icon.png")
         self.iconphoto(False, self.photo)
 
         # Autolog
@@ -507,7 +511,7 @@ class LSU(tk.Tk):
         # systemInfo()
 
         def aboutSoftware():
-            messagebox.showinfo(language.tm_about, language.dm_about)
+            messagebox.showinfo(language.tm_about, language.dm_about + "\n{} {}".format(language.appi, app.__version__))
 
         def quitLSU():
             logFile = open(f"/home/{os.getlogin()}/lsu/logs/runtime.log", "a")
@@ -591,19 +595,19 @@ class LSU(tk.Tk):
         self.lsu_pic.place(x=310, y=84)
         # Support & Media
         ### Instagram ###
-        self.insta = PhotoImage(file="img/instagram.png")
+        self.insta = PhotoImage(file=f"./img/instagram.png")
         Button(self, image=self.insta, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openInstagram).place(x=30, y=410)
         ### Twitter ###
-        self.twitter = PhotoImage(file="img/twitter.png")
+        self.twitter = PhotoImage(file=f"./img/twitter.png")
         Button(self, image=self.twitter, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openTwitter).place(x=60, y=410)
         ### PayPal ###
-        self.paypal = PhotoImage(file="img/paypal.png")
+        self.paypal = PhotoImage(file=f"./img/paypal.png")
         Button(self, image=self.paypal, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openPayPal).place(x=90, y=410)
         ### Buymeacoffee ###
-        self.coffee = PhotoImage(file="img/coffee-cup.png")
+        self.coffee = PhotoImage(file=f"./img/coffee-cup.png")
         Button(self, image=self.coffee, width=25, height=25, bg="#181d31",
                borderwidth=0, command=openBuymeacoffee).place(x=120, y=410)
         # Menu

@@ -9,3 +9,4 @@
 - Logical rewriting of a log file
 - Delete unnecessary snippets of code
 - Folders moved to the root directory [/home/user/]
+- Improve logger function

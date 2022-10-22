@@ -1,23 +1,31 @@
 #!/usr/bin/python3
-# Developer/Author: NR-SkaterBoy
-# Github: https://github.com/NR-SkaterBoy
-# Website: https://richardneuvald.tk
-# E-mail: nr.rick.dev@gmail.com
-# Linux Systems source package Updater
 
 import json
 import os
+import app
 from createfile import *
 
+
+
+# Make valid lang file
+languages = ["englis", "hungary"]
+for langFile in languages:
+    with open("/home/{}/lsu/locales/{}.json".format(os.getlogin(), langFile), "r+", encoding='utf8') as writeFile:
+        file = json.load(writeFile)
+        file["app"]["version"] = "Version: {}".format(app.__version__) if langFile == "englis" else "Verzió: {}".format(app.__version__)
+        writeFile.seek(0)
+        json.dump(file, writeFile, indent=3, ensure_ascii=False)
+        writeFile.truncate()
+
 # Set language
-read_lang_file = open(f"/home/{os.getlogin()}/lsu/files/app.json", "r")
+read_lang_file = open("/home/{}/lsu/files/app.json".format(os.getlogin()), "r")
 getLang = json.load(read_lang_file)
 
 if getLang["language"] == "English":
-    eng_lang = open("/home/ricsi/Dokumentumok/LinuxSystemUpdate/locales/englis.json", "r")
+    eng_lang = open("/home/{}/lsu/locales/englis.json".format(os.getlogin()), "r")
     lang = json.load(eng_lang)
 elif getLang["language"] == "Hungary":
-    hun_lang = open("/home/ricsi/Dokumentumok/LinuxSystemUpdate/locales/hungary.json", "r")
+    hun_lang = open("/home/{}/lsu/locales/hungary.json".format(os.getlogin()), "r")
     lang = json.load(hun_lang)
 
 # Name of window(s)

@@ -7,7 +7,7 @@
 shell=True
 . /etc/os-release
 
-package_list=(python3 python3-tk)
+package_list=(python3.10 python3-tk)
 
 function pkgscheck() {
     case "$ID" in
@@ -32,6 +32,11 @@ function pkgscheck() {
 }
 
 pkgscheck
+
+# echo 'alias lsu="bash /home/$USER/lsu/run.sh"' >> /home/ricsi/.bashrc
+# echo 'alias lsu="bash /home/$USER/lsu/run.sh"' >> /home/ricsi/.bash_aliases
+# source ~/.bashrc
+# source ~/.bash_aliases
 
 # Launch LSU
 python3 lsu.py

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 0.9.0
+
+### Major Changes
+
+- End of support for Python 3.9 (Required version Python 3.10) 
+- Store language files in /home/user/lsu/locales folder
+- Better Code
+
 ## Version 0.8.0
 
 ### Major Changes

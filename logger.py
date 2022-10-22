@@ -1,7 +1,7 @@
 import logging
 import os
 
-logfile = "/home/{0}/lsu/logs/dev.log".format(os.getlogin())
+logfile = "/home/{}/lsu/logs/dev.log".format(os.getlogin())
 
 
 def criticalLog(msg):
